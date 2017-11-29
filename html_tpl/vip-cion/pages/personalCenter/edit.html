@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>编辑个人信息</title>
+		<style>
+			.content .common-width {
+				position: relative;
+				height: 100%;
+				margin-top: 20px;
+			}
+			
+			.info-input {
+			}
+			.info-list {
+				display: flex;
+				justify-content: space-between;
+				height: 40px;
+				align-items: center;
+				background-color: rgba(0, 0, 0, 0.5);
+				margin-bottom: 10px;
+				border-radius: 4px;
+				text-indent: 12px;
+				padding-right: 12px;
+				box-sizing: border-box;
+				color: #cbaa67;
+				cursor: pointer;
+				font-size: 13px;
+			}
+			
+			.info-list .el-radio {
+				width: 100%
+			}
+			
+			.info-list .el-radio__inner {
+				display: none;
+			}
+			
+			.info-list .el-radio__label {
+				color: #cbaa67;
+				padding-left: 0px;
+			}
+			
+			.info-list .right {
+				display: flex;
+				align-items: center;
+			}
+			
+			.info-list .right span:first-child {
+				color: #fff;
+				margin-right: 13px;
+			}
+			
+			.info-list .el-radio__input.is-checked+.el-radio__label {
+				color: #cbaa67;
+			}
+			
+			.icon {
+				display: inline-block
+			}
+			
+			.icon-arrow {
+				width: 8.5px;
+				height: 15.5px;
+				background: url(../../img/icon-arrow.png) no-repeat 100% 100%;
+				background-size: 100% 100%;
+			}
+			
+			.icon-selected {
+				width: 12px;
+				height: 8.5px;
+				background: url(../../img/icon-selected.png) no-repeat 100% 100%;
+				background-size: 100% 100%;
+			}
+			
+			.list-input {
+				display: flex;
+				background-color: rgba(0, 0, 0, 0.5);
+				margin-bottom: 10px;
+				border-radius: 4px;
+			}
+			
+			.list-input .label-name {
+				min-width: 50px;
+				display: flex;
+				align-items: center;
+				text-indent: 12px;
+				color: #CBAA67;
+				font-size: 13px;
+			}
+			
+			.list-input .el-input {
+				flex: 1;
+			}
+			
+			.el-input input {
+				background: none;
+				margin-bottom: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="edit" class="wrap-page">
+			<div class="title-bar">
+				VIP-CION
+				<span class="btn" v-if="edit.name" @click="save()">
+					保存
+				</span>
+			</div>
+			<div class="content">
+				<div class="common-width">
+					<div class="info-input" v-if="!edit.name">
+						<div class="info-list" v-for="item in info" @click="editInfo(item)">
+							<span class="label-name" v-text="item.name"></span>
+							<div class="right">
+								<span class="" v-text="item.value"></span>
+								<span class="icon icon-arrow"></span>
+							</div>
+						</div>
+					</div>
+					<div v-if="edit.name === '性别'">
+						<div class="info-list" v-for ="item in edit.list" >
+							<el-radio v-model="edit.value" :label="item.label"> {{ item.label }}</el-radio>
+							<div class="right" v-if="edit.value === item.label">
+								<span class="icon icon-selected"></span>
+							</div>
+						</div>
+					</div>
+					<div class="list-input" v-else-if="edit.name">
+						<span class="label-name"> {{ edit.name }} </span>
+						<el-input :placeholder="edit.placeholder" v-model="edit.value">
+						</el-input>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 先引入 router -->
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#edit',
+		data() {
+			return {
+				info: [{
+						name: '姓名',
+						value: '我是啦啦啦'
+					},
+					{
+						name: '性别',
+						value: '女'
+					},
+					{
+						name: '身份证号',
+						value: '32011144522366999'
+					}
+				],
+				edit: {
+					name: '',
+					value: '',
+					placeholder: '请输入',
+					list:[{
+						label: '男'
+					},
+					{
+						label: '女'
+					}
+					]
+				}
+			}
+		},
+		methods: {
+			editInfo (item) {
+				console.log(item, item.name, item.value)
+				this.edit = {
+					name: item.name,
+					value: item.value,
+					placeholder: '请输入' + item.name
+				}
+				if (item.name === '性别') {
+					this.edit.list = [{
+						label: '男'
+					},
+					{
+						label: '女'
+					}
+					]
+				}
+				console.log(this.edit)
+			},
+			save () {
+				if (this.edit.name === '姓名') {
+					console.log('保存提交姓名的接口，返回新的value')
+					this.info[0].value = this.edit.value
+				} else if (this.edit.name === '性别') {
+					this.info[1].value = this.edit.value
+					console.log('保存提交性别的接口，返回新的value')
+				} else if (this.edit.name === '身份证号') {
+					this.info[2].value = this.edit.value
+					console.log('保存提交性别的接口，返回新的value')
+				}
+				console.log(this.info)
+				console.log('保存提交接口，返回新的value')
+				this.edit = {
+					name: '',
+					value: '',
+					placeholder: '请输入'
+				}
+			}
+		}
+	})
+</script>

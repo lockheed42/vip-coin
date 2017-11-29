@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>个人中心</title>
+		<style>
+			.content .common-width {
+				position: relative;
+				height: 100%;
+			}
+			
+			.content img {
+				width: 100%;
+			}
+			
+			.el-tabs {
+				margin-top: 10px;
+			}
+			
+			.el-tabs__nav {
+				display: flex;
+				width: 100%;
+			}
+			
+			.el-tabs .el-tabs__item {
+				color: #fff;
+				font-size: 16px;
+				padding: 0px;
+				flex: 1;
+				text-align: center;
+			}
+			
+			.el-tabs__active-bar {
+				height: 3px;
+				background:#cbaa67;
+			}
+			
+			.el-tabs__nav-wrap::after {
+				display: none;
+			}
+			
+			.el-tabs__item.is-active {
+				/*background: #282830;
+				color: #cbaa67;
+				border-radius: 5px 5px 0px 0px;*/
+			}
+			
+			.tab-content {
+				position: absolute;
+				width: 100%;
+				border-top: 18px solid #282830;
+				box-sizing: border-box;
+				top: 0px;
+				bottom: 70px;
+				background: #282830;
+				color: #999999;
+				font-size: 13px;
+				border-radius: 10px;
+				overflow-y: auto;
+			}
+			
+			.person-info {
+				margin-top: 10px;
+				margin-bottom: 35px;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			.person-info li {
+				color: #574c3d;
+				font-size: 13px;
+				margin-bottom: 8px;
+				text-align: center;
+			}
+			
+			.person-info li:first-child {
+				font-size: 16px;
+				color: #cbaa67;
+			}
+			
+			.other-operate {
+				height: 50px;
+			}
+			
+			.other-operate .wrap-ul {
+				display: flex;
+			}
+			
+			.other-operate .wrap-ul ul {
+				flex: 1;
+				border-right: 1px solid #cbaa67;
+				flex-direction: column;
+				cursor: pointer;
+			}
+			
+			.other-operate .wrap-ul ul:last-child {
+				border-right: 0px;
+			}
+			.other-operate .wrap-ul ul li {
+				display: flex;
+			    flex-direction: column;
+			    justify-content: center;
+			    align-items: center
+			}
+			.other-operate .wrap-ul ul li span:first-child {
+				margin-bottom: 10px
+			}
+			
+			.icon {
+				display: inline-block;
+			}
+			.icon-edit {
+				width: 12px;
+				height: 12px;
+				background: url(../../img/icon_edit.png) no-repeat 100% 100%;
+				background-size: 100% 100%;
+			}
+			
+			.icon-card {
+				width: 32px;
+				height: 22px;
+				background: url(../../img/icon-card.png) no-repeat 100% 100%;
+				background-size: 100% 100%;
+			}
+			
+			.icon-password {
+				width: 32px;
+				height: 32px;
+				background: url(../../img/icon-password.png) no-repeat 100% 100%;
+				background-size: 100% 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="instro" class="wrap-page">
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
+				</el-tabs>
+				<div class="common-width">
+					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
+						<img src="../../img/vip_bar.png" />
+						<ul class="person-info">
+							<li v-for="item in personalInfo" :class="item.name" >
+								{{ item.value }}
+								<span class="icon icon-edit" v-if="item.eidt" @click="jumpTo('edit')"></span>
+							</li>
+						</ul>
+						<div class="other-operate">
+							<div class="wrap-ul">
+								<ul @click="jumpTo('card')">
+									<li v-for="(name, key) in operateCard">
+										<span class="icon" :class="key"></span>
+										<span v-text="name"></span>
+									</li>
+								</ul>
+								<ul @click="jumpTo('password')">
+									<li v-for="(name, key) in operatePassword">
+										<span class="icon" :class="key"></span>
+										<span v-text="name"></span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 先引入 router -->
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#instro',
+		data() {
+			return {
+				tabList: {
+					'plan': '发行计划',
+					'place': '标的一览',
+					'money': '收益统计',
+					'person': '个人中心'
+				},
+				activeName: 'person',
+				personalInfo: [{
+						name: 'nickName',
+						value: '我是前多多',
+						eidt: false
+					},
+					{
+						name: 'sex',
+						value: '男',
+						eidt: false
+					},
+					{
+						name: 'id',
+						value: '3****************2',
+						eidt: true
+					}
+				],
+				operateCard: {
+					'icon-card': '绑定银行卡'
+				},
+				operatePassword: {
+					'icon-password': '修改密码'
+				}
+			}
+		},
+		watch: {},
+		mounted: function() {
+			console.log((document.body.clientHeight - 145) + 'px')
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
+		},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo (name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if (name === 'card') {
+					jumpUrl = jumpUrl + 'bindCard/index.html'
+				} else if  (name === 'password') {
+					jumpUrl = jumpUrl + 'account/editPassword.html'
+				} else if (name === 'edit') {
+					jumpUrl = jumpUrl + 'personalCenter/edit.html'
+				}
+				console.log(jumpUrl)
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>

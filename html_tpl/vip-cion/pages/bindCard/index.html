@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>绑定银行卡</title>
+		<style>
+			.wrap-page .common-width {
+				margin-top: 10px;
+			}
+			
+			.wrap-tips {
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+			}
+			
+			.wrap-card .tips {
+				margin: 15px 0px;
+				color: #999;
+				font-size: 12px;
+			}
+			
+			.wrap-card-input {
+				display: flex;
+				background-color: rgba(0, 0, 0, 0.5);
+				margin-bottom: 10px;
+				border-radius: 4px;
+			}
+			
+			.wrap-card-input .label-name {
+				min-width: 50px;
+				display: flex;
+				align-items: center;
+				text-indent: 12px;
+				color: #CBAA67;
+				font-size: 13px;
+			}
+			
+			.wrap-card-input .el-input {
+				flex: 1;
+			}
+			
+			.el-input input {
+				background: none;
+				margin-bottom: 0px;
+			}
+			
+			.el-radio__input.is-checked .el-radio__inner {
+				border-color: #CBAA67;
+				background: none;
+			}
+			
+			.el-radio__input.is-checked+.el-radio__label {
+				color: #999
+			}
+			
+			.el-radio__inner::after {
+				width: 8px;
+				height: 8px;
+				border-radius: 4px;
+				background: #CBAA67;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="bindCard" class="wrap-page wrap-card">
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="common-width">
+					<div class="tips">
+						{{ card.info1.tipsText }}
+					</div>
+					<div class="info-input">
+						<div class="wrap-card-input" v-for="item in card.info1.inputList">
+							<span class="label-name"> {{ item.name }} </span>
+							<el-input :placeholder="item.placeholder" v-model="item.value">
+								<template slot="prepend"> </template>
+							</el-input>
+						</div>
+					</div>
+					<div class="tips">
+						{{ card.info2.tipsText }}
+					</div>
+					<div class="info-input">
+						<div class="wrap-card-input" v-for="item in card.info2.inputList">
+							<span class="label-name"> {{ item.name }} </span>
+							<el-input :placeholder="item.placeholder" v-model="item.value">
+								<template slot="prepend"> </template>
+							</el-input>
+						</div>
+					</div>
+					<div class="info-input">
+						<el-radio v-model="card.agreement.value" :label="1"> {{ card.agreement.name }} </el-radio>
+					</div>
+					<!--					
+					<el-input placeholder="请输入内容" v-model="input3">
+						<template slot="prepend">Http://</template>
+					</el-input>
+					<el-input placeholder="请输入内容" v-model="input3">
+						<template slot="prepend">Http://</template>
+					</el-input>
+					<el-input placeholder="请输入内容" v-model="input3">
+						<template slot="prepend">Http://</template>
+					</el-input>-->
+					<!--<el-radio v-model="radio" label="1">备选项</el-radio>true
+					
+					<el-input v-model="mobile" placeholder="输入手机号"></el-input>
+					<el-input v-model="password" type="password" placeholder="输入密码"></el-input>
+					<div class="wrap-tips">
+						<a class="tips" href="register.html">注册</a>
+						<a class="tips" href="">忘记密码</a>
+					</div>-->
+				</div>
+				<div class="wrap-enter">
+					<el-button type="primary" @click="bind()">确认</el-button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#bindCard',
+		data() {
+			return {
+				card: {
+					info1: {
+						tipsText: '请绑定持卡人本人的银行卡（只能绑定一张）',
+						inputList: [{
+								name: '持卡人',
+								placeholder: '请输入持卡人姓名',
+								value: ''
+							},
+							{
+								name: '卡号',
+								placeholder: '请输入持卡人卡号',
+								value: ''
+							}
+						]
+					},
+					info2: {
+						tipsText: '请选择银行类型',
+						inputList: [{
+								name: '卡类型',
+								placeholder: '请选择卡类型',
+								value: ''
+							},
+							{
+								name: '手机号',
+								placeholder: '请输入卡类型',
+								value: ''
+							}
+						]
+					},
+					agreement: {
+						name: '同意《用户协议》',
+						value: 1
+					}
+				}
+			}
+		},
+		methods: {
+			bind () {
+				console.log(this.card)
+			}
+		}
+	})
+</script>

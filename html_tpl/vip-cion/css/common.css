@@ -1,0 +1,180 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+
+/*CSS 兼容手机浏览器 点击蓝色边框*/
+
+* {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-appearance: none;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+img {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+html,
+body {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.common-width {
+	width: 72%;
+	margin: 0 auto;
+}
+
+.wrap-page {
+	flex-flow: column;
+	display: flex;
+	height: 100%;
+	min-height: 100%;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	overflow-y: scroll;
+}
+
+.title-bar {
+	height: 45px;
+	text-indent: 25px;
+	display: flex;
+	align-items: center;
+	color: #fff;
+	font-size: 16px;
+	background: url(../img/title_bar.jpg) no-repeat center center;
+	background-size: 100% 100%;
+	display: flex;
+	justify-content: space-between;
+	padding-right: 25px;
+	box-sizing: border-box;
+}
+
+.title-bar span {
+	cursor: pointer;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	background: url(../img/content_bg.jpg) no-repeat center center;
+	background-size: 100% 100%;
+}
+
+.wrap-input,
+.wrap-enter {
+	flex: 1;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+}
+
+.wrap-tips {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.tips {
+	color: #cbaa67;
+	font-size: 14px;
+	margin-top: 15px;
+	margin-right: 13px;
+}
+
+.wrap-input {
+	flex-direction: column;
+	margin-top: 50px;
+}
+
+.wrap-line-input {
+	position: relative;
+	width: 100%;
+}
+
+.wrap-input .el-button {
+	position: absolute;
+	height: 25px;
+	background: #cbaa67;
+	right: 10px;
+	top: 7.5px;
+	padding: 0px;
+	width: 100px;
+	border: none;
+	color: #222222;
+	font-size: 14px;
+}
+
+.el-input input {
+	border: none;
+	height: 40px;
+	background-color: rgba(0, 0, 0, 0.5);
+	margin-bottom: 10px;
+	font-size: 13px;
+	color: #fff;
+}
+
+.wrap-enter .el-button {
+	width: 200px;
+	height: 50px;
+	background: #cbaa67;
+	border-radius: 6px;
+	border: none;
+	font-size: 16px;
+	color: #222222;
+}
+
+.el-button:hover {
+	background: #dfa225;
+}
+
+.el-button:active {
+	background: #ffab00;
+}
