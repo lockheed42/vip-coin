@@ -7,7 +7,7 @@
 		<!-- 引入样式 -->
 		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
 		<link rel="stylesheet" href="../../css/common.css">
-		<title>个人中心</title>
+		<title>收益统计</title>
 		<style>
 			.content .common-width {
 				position: relative;
@@ -134,12 +134,42 @@
 				background: url(../../img/icon-password.png) no-repeat 100% 100%;
 				background-size: 100% 100%;
 			}
+			
+			.data-list {
+				width: 60%;
+				margin: 0 auto;
+			}
+			
+			.data-list {
+				text-align: center;
+				margin-top: 55px;
+			}
+			
+			.data-list .money { 
+				font-size: 30px;
+				color: #cbaa67;
+			}
+			
+			.data-list .text1 {
+				font-size: 15px;
+				color: #666666;
+				border-bottom: 1px solid #cbaa67;
+				margin-top: 43px;
+				padding-bottom: 15px;
+			}
+			
+			.data-list .text2 {
+				font-size: 15px;
+				color: #666666;
+				color: #cbaa67;
+				margin-top: 55px;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div id="instro" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> 个人中心
+		<div id="earnings" class="wrap-page">
+			<div class="back-bar"><span class="icon-back"></span> 每日总收益明细
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -151,7 +181,21 @@
 				<div class="common-width">
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<img src="../../img/vip_bar.png" />
-						<ul class="person-info">
+						<div class="data-list">
+							<div v-for="(item, i) in earning" :class="i">
+								{{ item }}
+							</div>
+							<!--<div v-text="earning.money">
+								
+							</div>
+							<div v-text="earning.money">
+								
+							</div>
+							<div v-text="earning.money">
+								
+							</div>-->
+						</div>
+						<!--<ul class="person-info">
 							<li v-for="item in personalInfo" :class="item.name" >
 								{{ item.value }}
 								<span class="icon icon-edit" v-if="item.eidt" @click="jumpTo('edit')"></span>
@@ -172,7 +216,7 @@
 									</li>
 								</ul>
 							</div>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</div>
@@ -190,37 +234,20 @@
 <script src="../../js/axios.min.js"></script>
 <script>
 	new Vue({
-		el: '#instro',
+		el: '#earnings',
 		data() {
 			return {
 				tabList: {
 					'plan': '发行计划',
 					'place': '标的一览',
-					'earnings': '收益统计',
+					'money': '收益统计',
 					'person': '个人中心'
 				},
-				activeName: 'person',
-				personalInfo: [{
-						name: 'nickName',
-						value: '我是前多多',
-						eidt: false
-					},
-					{
-						name: 'sex',
-						value: '男',
-						eidt: false
-					},
-					{
-						name: 'id',
-						value: '3****************2',
-						eidt: true
-					}
-				],
-				operateCard: {
-					'icon-card': '绑定银行卡'
-				},
-				operatePassword: {
-					'icon-password': '修改密码'
+				activeName: 'money',
+				earning: {
+					money: '100000000',
+					text1: '昨日总收益',
+					text2: '每日总收益明细'
 				}
 			}
 		},
@@ -230,10 +257,8 @@
 			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
 		},
 		methods: {
-			handleClick() {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				jumpUrl = jumpUrl + this.activeName + '/index.html'
-				window.location.href = jumpUrl
+			handleClick(val) {
+				console.log(val)
 			},
 			jumpTo (name) {
 				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
