@@ -37,7 +37,7 @@
 			
 			.el-tabs__active-bar {
 				height: 3px;
-				background:#cbaa67;
+				background: #cbaa67;
 			}
 			
 			.el-tabs__nav-wrap::after {
@@ -101,12 +101,14 @@
 			.other-operate .wrap-ul ul:last-child {
 				border-right: 0px;
 			}
+			
 			.other-operate .wrap-ul ul li {
 				display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center
+				flex-direction: column;
+				justify-content: center;
+				align-items: center
 			}
+			
 			.other-operate .wrap-ul ul li span:first-child {
 				margin-bottom: 10px
 			}
@@ -114,6 +116,7 @@
 			.icon {
 				display: inline-block;
 			}
+			
 			.icon-edit {
 				width: 12px;
 				height: 12px;
@@ -145,7 +148,7 @@
 				margin-top: 55px;
 			}
 			
-			.data-list .money { 
+			.data-list .money {
 				font-size: 30px;
 				color: #cbaa67;
 			}
@@ -182,41 +185,16 @@
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<img src="../../img/vip_bar.png" />
 						<div class="data-list">
-							<div v-for="(item, i) in earning" :class="i">
-								{{ item }}
+							<div class="money">
+								100000000
 							</div>
-							<!--<div v-text="earning.money">
-								
+							<div class="text1">
+								昨日总收益
 							</div>
-							<div v-text="earning.money">
-								
+							<div class="text2" @click="jumpTo('detail')">
+								每日总收益明细
 							</div>
-							<div v-text="earning.money">
-								
-							</div>-->
 						</div>
-						<!--<ul class="person-info">
-							<li v-for="item in personalInfo" :class="item.name" >
-								{{ item.value }}
-								<span class="icon icon-edit" v-if="item.eidt" @click="jumpTo('edit')"></span>
-							</li>
-						</ul>
-						<div class="other-operate">
-							<div class="wrap-ul">
-								<ul @click="jumpTo('card')">
-									<li v-for="(name, key) in operateCard">
-										<span class="icon" :class="key"></span>
-										<span v-text="name"></span>
-									</li>
-								</ul>
-								<ul @click="jumpTo('password')">
-									<li v-for="(name, key) in operatePassword">
-										<span class="icon" :class="key"></span>
-										<span v-text="name"></span>
-									</li>
-								</ul>
-							</div>
-						</div>-->
 					</div>
 				</div>
 			</div>
@@ -260,14 +238,14 @@
 			handleClick(val) {
 				console.log(val)
 			},
-			jumpTo (name) {
+			jumpTo(name) {
 				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if (name === 'card') {
+				if(name === 'card') {
 					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if  (name === 'password') {
+				} else if(name === 'password') {
 					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if (name === 'edit') {
-					jumpUrl = jumpUrl + 'personalCenter/edit.html'
+				} else if(name === 'detail') {
+					jumpUrl = jumpUrl + 'earnings/detail.html'
 				}
 				console.log(jumpUrl)
 				window.location.href = jumpUrl

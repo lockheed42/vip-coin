@@ -56,6 +56,7 @@ img {
 ul {
 	list-style: none;
 }
+
 html,
 body {
 	height: 100%;
@@ -202,4 +203,51 @@ a {
 
 .el-button:active {
 	background: #ffab00;
+}
+
+.white {
+	color: #fff;
+}
+
+.status-yellow {
+	color: #cbaa67;
+}
+
+.status-red {
+	color: #c23131;
+}
+
+.wrap-card-input {
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.5);
+	margin-bottom: 10px;
+	border-radius: 4px;
+}
+
+.wrap-card-input .label-name {
+	min-width: 50px;
+	display: flex;
+	align-items: center;
+	text-indent: 12px;
+	color: #CBAA67;
+	font-size: 13px;
+}
+
+.wrap-card-input .el-input {
+	flex: 1;
+}
+
+.wrap-card-input .el-input input {
+    background: none;
+    margin-bottom: 0px;
+}
+
+.preview .el-button {
+	width: 75px;
+	height: 30px;
+	font-size: 13px;
+	padding: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

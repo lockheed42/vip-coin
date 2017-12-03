@@ -7,14 +7,12 @@
 		<!-- 引入样式 -->
 		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
 		<link rel="stylesheet" href="../../css/common.css">
-		<title>发行计划</title>
+		<title>我的标的</title>
 		<style>
 			.list {
 				height: 88px;
 				width: 100%;
 				border-radius: 4px;
-				background:url(../../img/bar_bg.png) no-repeat;
-				background-size: 100% 100%;
 				display: flex;
 				box-shadow: #666 0px 0px 10px;
 				box-sizing: border-box;
@@ -30,35 +28,44 @@
 			}
 			
 			.list .part-left {
-				width: 36%;
-				background: #fff;
+				flex: 1;
 				align-content: center;
 				padding: 10px 15px 10px 10px;
 				border-radius: 5px 0px 0px 5px;
+				background:url(../../img/bar_bg.png) no-repeat;
+				background-size: 100% 100%;
 			}
 			
 			.list .part-right {
-				flex: 1;
+				width: 25%;
+				background: #fff;
 				padding: 10px 15px 10px 10px;
-				border-radius: 0px 0px 5px 5px;
+				border-radius: 0px 5px 5px 0px;
+			}
+			
+			.list .part-right .money {
+				color: #816835;
+			}
+			.list .part-right ul {
+				height: 100%;
+				display: flex;
+			}
+			.list .part-right li {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+    			justify-content: center;
+			}
+			
+			.list .part-right li span {
+				margin-bottom: 6px;
 			}
 			
 			.list .part-left li {
 				box-sizing: border-box;
 				align-items: center;
-			}
-			
-			.list .part-left li .flag {
-				font-size: 10px;
-				width: 18px;
-				height: 18px;
-				border-radius: 4px;
-				color: #816835; 
-				border: 1px solid #816835;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 10px;
 			}
 			.list .part-left li .text {
 				font-size: 14px
@@ -88,8 +95,8 @@
 	</head>
 
 	<body>
-		<div id="plan" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> 发行计划
+		<div id="place" class="wrap-page">
+			<div class="back-bar"><span class="icon-back"></span> 我的标的
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -102,48 +109,42 @@
 					<div class="list" @click="jumpTo('detail')">
 						<div class="part-left">
 							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
+								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
+								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+								<li><span class="flag">已收益</span><span class="money">4728</span></li>
 							</ul>
 						</div>
 					</div>
 					<div class="list" @click="jumpTo('detail')">
 						<div class="part-left">
 							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
+								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
+								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+								<li><span class="flag">已收益</span><span class="money">4728</span></li>
 							</ul>
 						</div>
 					</div>
 					<div class="list" @click="jumpTo('detail')">
 						<div class="part-left">
 							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+								<li><span class="name">发电站 <span class="status status-red">进行中</span></span><span class="money">预计收益</span></li>
+								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
+								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-red">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+								<li><span class="flag">已收益</span><span class="money">4728</span></li>
 							</ul>
 						</div>
 					</div>
@@ -163,7 +164,7 @@
 <script src="../../js/axios.min.js"></script>
 <script>
 	new Vue({
-		el: '#plan',
+		el: '#place',
 		data() {
 			return {
 				tabList: {
@@ -172,7 +173,7 @@
 					'money': '收益统计',
 					'person': '个人中心'
 				},
-				activeName: 'plan',
+				activeName: 'plan'
 			}
 		},
 		watch: {},
@@ -188,11 +189,10 @@
 					jumpUrl = jumpUrl + 'bindCard/index.html'
 				} else if  (name === 'password') {
 					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if (name === 'edit') {
-					jumpUrl = jumpUrl + 'personalCenter/edit.html'
 				} else if (name === 'detail') {
-					jumpUrl = jumpUrl + 'plan/detail.html'
+					jumpUrl = jumpUrl + 'myPlace/detail.html'
 				}
+				console.log(jumpUrl)
 				window.location.href = jumpUrl
 			}
 		}

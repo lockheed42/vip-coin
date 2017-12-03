@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>购买算力</title>
+		<style>
+			.list {
+				height: 88px;
+				width: 100%;
+				border-radius: 4px;
+				background: url(../../img/bar_bg.png) no-repeat;
+				background-size: 100% 100%;
+				display: flex;
+				box-shadow: #666 0px 0px 10px;
+				box-sizing: border-box;
+				margin: 20px 0px;
+			}
+			
+			.list ul {
+				width: 100%;
+				padding: 10px 15px;
+				box-sizing: border-box;
+				color: #999999;
+			}
+			
+			.list ul span i,
+			.list li .nums {
+				color: #cbaa67;
+			}
+			
+			.list li {
+				margin-bottom: 5px;
+				font-size: 12px;
+				display: flex;
+				justify-content: space-between;
+				min-height: 20px;
+			}
+			
+			.name {
+				color: #fff;
+				font-size: 15px;
+			}
+			#order .wrap-card-input {
+				justify-content: space-between;
+			}
+			#order .wrap-card-input .label-name {
+				min-width: 65px;
+			}
+			#order .wrap-card-input input {
+				text-align: right;
+			}
+			.unit {
+				color: #cbaa67;
+				display: flex;
+				align-items: center;
+				margin: 0px 15px;
+				font-size: 13px;
+			}
+			#order .preview {
+				justify-content: flex-end;
+				margin: 18px 0px 80px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="order" class="wrap-page">
+			<div class="back-bar"><span class="icon-back" @click="jumpTo('order')"></span> 购买算力
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="common-width">
+					<div class="list">
+						<ul>
+							<li><span class="name">发电站</span><span class="white"><span class="status-yellow">2000/</span>10000T</span>
+							</li>
+							<li><span class="money">预计收益</span><span class="nums">2384296</span></li>
+							<li><span class="date">2017.12.30-2018.12.30</span></li>
+						</ul>
+					</div>
+					<div class="info-list">
+						<div class="wrap-card-input"><span class="label-name">购买算力</span>
+						<div class="right">
+							<el-input placeholder="请输入购买算力" v-model="nums">
+						</div>
+						<span class="unit">T</span>
+						</div>
+					</div>
+					<div class="info-list">
+						<div class="wrap-card-input"><span class="label-name">算力单价</span>
+						<div class="right">
+							<el-input placeholder="请输入算力单价" v-model="price">
+						</div>
+						<span class="unit">元</span>
+						</div>
+					</div>
+					<div class="info-list">
+						<div class="wrap-card-input"><span class="label-name">总金额</span>
+						<div class="right">
+							<el-input placeholder="请输入总金额" v-model="amount">
+						</div>
+						<span class="unit">元</span>
+						</div>
+					</div>
+					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">预览合同</button></div>
+					<div class="wrap-enter"><button @click="jumpTo('success')" type="button" class="el-button el-button--primary">立即抢购</button></div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#order',
+		data() {
+			return {
+				nums: '',
+				price: '',
+				amount: ''
+			}
+		},
+		watch: {},
+		mounted: function() {},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo(name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if(name === 'order') {
+					jumpUrl = jumpUrl + 'plan/order.html'
+				} else if(name === 'success') {
+					jumpUrl = jumpUrl + 'plan/success.html'
+				}
+				console.log(jumpUrl)
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>

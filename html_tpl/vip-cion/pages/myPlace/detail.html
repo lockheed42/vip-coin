@@ -7,7 +7,7 @@
 		<!-- 引入样式 -->
 		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
 		<link rel="stylesheet" href="../../css/common.css">
-		<title>计划详情</title>
+		<title>标的详情</title>
 		<style>
 			.common-width {
 				background: #282830;
@@ -48,41 +48,15 @@
 				width: 100%;
 				box-sizing: border-box;
 				overflow: hidden;
-				padding: 10px 20px;
+				padding: 20px 20px;
 			}
 			
 			.status-list li {
-				width: 50%;
-				float: left;
 				display: flex;
-				margin-bottom: 10px;
-			}
-			
-			.status-list li:last-child {
-				margin-bottom: 0px;
-			}
-			
-			.status-list li.leftNums {
+				justify-content: space-between;
+				width: 100%;
 				color: #cbaa67;
-			}
-			
-			.status-list li .flag {
-				font-size: 10px;
-				width: 18px;
-				height: 18px;
-				border-radius: 4px;
-				color: #816835;
-				border: 1px solid #816835;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 10px;
-				margin-right: 20px;
-			}
-			
-			.status-list li .text {
-				color: #999999;
-				font-size: 14px
+				font-size: 14px;
 			}
 			
 			.other-list {
@@ -131,12 +105,13 @@
 			.preview {
 				padding: 12px;
 			}
+			#placeDetail 
 		</style>
 	</head>
 
 	<body>
-		<div id="planDetail" class="wrap-page">
-			<div class="back-bar"><span @click="jumpTo('index')" class="icon-back"></span> 计划详情
+		<div id="placeDetail" class="wrap-page">
+			<div class="back-bar"><span  @click="jumpTo('index')" class="icon-back"></span> 计划详情
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -145,12 +120,10 @@
 				<div class="common-width">
 					<dl class="title-info">
 						<dt>发电站</dt>
-						<dd class="status status-yellow">预售中</dd>
+						<dd class="status status-red">预售中</dd>
 					</dl>
 					<ul class="status-list">
-						<li><span class="flag">总</span><span class="text">10000T</span></li>
-						<li><span class="flag">卖</span><span class="text">2000T</span></li>
-						<li class="leftNums"><span class="flag">剩</span><span class="text">8000T</span></li>
+						<li><span>拥有算力</span><span class="text">10000T</span></li>
 					</ul>
 					<ul class="other-list">
 						<li class="date">
@@ -165,9 +138,8 @@
 						<dt>计划介绍</dt>
 						<dd>计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计。</dd>
 					</dl>
-					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">预览合同</button></div>
+					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">查看合同</button></div>
 				</div>
-				<div class="wrap-enter"><button @click="jumpTo('order')" type="button" class="el-button el-button--primary">立即抢购</button></div>
 			</div>
 		</div>
 	</body>
@@ -183,20 +155,32 @@
 <script src="../../js/axios.min.js"></script>
 <script>
 	new Vue({
-		el: '#planDetail',
+		el: '#placeDetail',
 		data() {
 			return {
+				tabList: {
+					'plan': '发行计划',
+					'place': '标的一览',
+					'money': '收益统计',
+					'person': '个人中心'
+				},
+				activeName: 'plan'
 			}
 		},
 		watch: {},
 		mounted: function() {},
 		methods: {
-			jumpTo (name) {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo(name) {
 				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'index') {
-					jumpUrl = jumpUrl + 'plan/index.html'
-				} else if(name === 'order') {
-					jumpUrl = jumpUrl + 'plan/order.html'
+				if(name === 'card') {
+					jumpUrl = jumpUrl + 'bindCard/index.html'
+				} else if(name === 'password') {
+					jumpUrl = jumpUrl + 'account/editPassword.html'
+				} else if(name === 'index') {
+					jumpUrl = jumpUrl + 'myPlace/index.html'
 				}
 				console.log(jumpUrl)
 				window.location.href = jumpUrl

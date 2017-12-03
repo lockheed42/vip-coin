@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>计划详情</title>
+		<style>
+			.common-width {
+				border-radius: 5px;
+				margin-top: 15px;
+			}
+			
+			.text-tips {
+				color: #bfbfbf;
+				font-size: 12px;
+				line-height: 22px;
+			}
+			
+			.list {
+				margin: 25px 0px;
+			}
+			.list ul {
+				color:#999999;
+			}
+			.list ul li {
+				display: flex;
+				justify-content: space-between;
+			}
+			.list ul:first-child {
+				background: #323237;
+				padding: 10px 15px;
+				border-radius: 5px 5px 0px 0px;
+			}
+			.list ul:first-child .name {
+				color: #fff;
+				font-size: 15px;
+			}
+			.list ul:first-child .name {
+				color: #fff;
+				font-size: 15px;
+			}
+			.list ul:first-child .nums {
+				color: #cbaa67;
+				font-size: 14px;
+			}
+			.list ul:first-child .date {
+				font-size: 10px;
+			}
+			.list ul:last-child {
+				background: #fff;
+				padding: 10px 15px;
+				border-radius: 0px 0px 5px 5px;
+			}
+			.list ul:last-child span.money{
+				color: #333333;
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="buySuccess" class="wrap-page">
+			<div class="back-bar"><span @click="jumpTo('index')" class="icon-back"></span> 计划详情
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="common-width">
+					<div class="text-tips">
+						您的标的抢购成功，该笔标的已为您锁定24小时，请在锁定期内内使用您绑定的银行卡账号转账到*******该公司账号，超过锁定时间后该笔标的自动解除。
+					</div>
+					<div class="list">
+						<ul>
+							<li><span class="name">发电站</span><span class="nums">8000T</span></li>
+							<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
+						</ul>
+						<ul>
+							<li>
+								<span></span><span class="money">合计160000元</span>
+							</li>
+						</ul>
+					</div>
+					<div class="text-tips">
+						请您用电脑登录，下载并打印两份合同，完善信息之后，签字寄到****公司地址，公司会在盖完公章之后，将合同扫描成电子版，您可在我的标的内查看合同扫描件。如需要寄送合同原件，发送邮件到***公司邮箱。
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#buySuccess',
+		data() {
+			return {
+				tabList: {
+					'plan': '发行计划',
+					'place': '标的一览',
+					'money': '收益统计',
+					'person': '个人中心'
+				},
+				activeName: 'plan',
+				list: [{
+
+				}, {
+
+				}]
+			}
+		},
+		watch: {},
+		mounted: function() {},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo(name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if(name === 'index') {
+					jumpUrl = jumpUrl + 'plan/index.html'
+				}
+				console.log(jumpUrl)
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>

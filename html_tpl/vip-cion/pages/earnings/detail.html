@@ -35,9 +35,9 @@
 	</head>
 
 	<body>
-		<div id="earnings" class="wrap-page">
+		<div id="earningsDetails" class="wrap-page">
 			<div class="back-bar">
-				<span class="icon-back"></span>
+				<span @click="jumpTo('index')" class="icon-back"></span>
 				收益统计
 				<span ></span>
 			</div>
@@ -74,7 +74,7 @@
 <script src="../../js/axios.min.js"></script>
 <script>
 	new Vue({
-		el: '#earnings',
+		el: '#earningsDetails',
 		data() {
 			return {
 				list: [{
@@ -110,8 +110,8 @@
 					jumpUrl = jumpUrl + 'bindCard/index.html'
 				} else if(name === 'password') {
 					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if(name === 'edit') {
-					jumpUrl = jumpUrl + 'personalCenter/edit.html'
+				} else if(name === 'index') {
+					jumpUrl = jumpUrl + 'personalCenter/index.html'
 				}
 				console.log(jumpUrl)
 				window.location.href = jumpUrl
