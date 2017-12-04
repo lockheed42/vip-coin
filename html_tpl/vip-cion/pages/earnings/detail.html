@@ -37,7 +37,7 @@
 	<body>
 		<div id="earningsDetails" class="wrap-page">
 			<div class="back-bar">
-				<span @click="jumpTo('index')" class="icon-back"></span>
+				<span onclick="jumpTo('earnings/index.html')" class="icon-back"></span>
 				收益统计
 				<span ></span>
 			</div>
@@ -45,9 +45,6 @@
 				VIP-CION
 			</div>
 			<div class="content">
-				<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
-				</el-tabs>
 				<div class="common-width">
 					<div v-for="(item, i) in list" class="list">
 						<dl>
@@ -97,25 +94,8 @@
 		},
 		watch: {},
 		mounted: function() {
-			console.log((document.body.clientHeight - 145) + 'px')
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
 		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
-			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'card') {
-					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if(name === 'password') {
-					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if(name === 'index') {
-					jumpUrl = jumpUrl + 'personalCenter/index.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
-			}
 		}
 	})
 </script>

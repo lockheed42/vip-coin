@@ -54,7 +54,7 @@
 				width: 100%;
 				border: 18px solid #282830;
 				box-sizing: border-box;
-				top: 50px;
+				/*top: 50px;*/
 				bottom: 70px;
 				background: #282830;
 				color: #999999;
@@ -118,16 +118,24 @@
 
 	<body>
 		<div id="instro" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> vip-cion 用户端M站
+			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
 			<div class="content">
+				<div class="nav-list">
+					<ul>
+						<li onclick="jumpTo('instro/company.html')">公司简介</li>
+						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
+						<li class="active">公司公告</li>
+						<li onclick="jumpTo('plan/index.html')">发行计划</li>
+						<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
+						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
+					</ul>
+				</div>
 				<div class="common-width">
-					<el-tabs v-model="activeName" @tab-click="handleClick">
-						<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
-					</el-tabs>
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<div v-if="activeName === 'instro'">
 							<img :src="instro.picUrl">
@@ -181,8 +189,8 @@
 						</div>
 					</div>
 					<div class="wrap-enter">
-						<el-button type="primary" @click="jumpTo('login')">登录</el-button>
-						<el-button type="primary" @click="jumpTo('register')">注册</el-button>
+						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
+						<el-button type="primary" onclick="jumpTo('plan/register.html')">注册</el-button>
 					</div>
 				</div>
 			</div>
@@ -208,7 +216,7 @@
 					'info': '行业资讯',
 					'message': '公告通知'
 				},
-				activeName: 'instro',
+				activeName: 'message',
 				instro: {
 					picUrl: '../../img/intro_banner.png',
 					content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
@@ -369,17 +377,10 @@
 			}
 		},
 		mounted: function() {
-			console.log((document.body.clientHeight - 145) + 'px')
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px'
 		},
 		methods: {
-			handleClick() {
-			},
-			jumpTo (name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				jumpUrl = jumpUrl + 'account/'+ name +'.html'
-				window.location.href = jumpUrl
-			},
+			handleClick() {},
 			getDetail(id) {
 				let requestUrl = common_url
 				console.log(this.activeName)

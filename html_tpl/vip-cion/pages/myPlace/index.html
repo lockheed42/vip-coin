@@ -96,17 +96,25 @@
 
 	<body>
 		<div id="place" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> 我的标的
+			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 我的标的
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
 			<div class="content">
-				<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
-				</el-tabs>
+				<div class="nav-list">
+						<ul>
+							<li onclick="jumpTo('instro/company.html')">公司简介</li>
+							<li onclick="jumpTo('instro/info.html')">行业资讯</li>
+							<li onclick="jumpTo('instro/notice.html')">公司公告</li>
+							<li onclick="jumpTo('plan/index.html')">发行计划</li>
+							<li class="active">标的一览</li>
+							<li onclick="jumpTo('earnings/index.html')">收益统计</li>
+							<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
+						</ul>
+					</div>
 				<div class="common-width">
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('myPlace/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
@@ -120,7 +128,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('myPlace/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
@@ -134,7 +142,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('myPlace/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="name">发电站 <span class="status status-red">进行中</span></span><span class="money">预计收益</span></li>
@@ -168,12 +176,15 @@
 		data() {
 			return {
 				tabList: {
-					'plan': '发行计划',
-					'place': '标的一览',
-					'money': '收益统计',
-					'person': '个人中心'
+					'instro/company.html': '公司简介',
+					'instro/info.html': '行业资讯',
+					'instro/notice.html': '公司公告',
+					'plan/index.html': '发行计划',
+					'myPlace/index.html': '标的一览',
+					'earnings/index.html': '收益统计',
+					'personalCenter/index.html': '个人中心'
 				},
-				activeName: 'plan'
+				activeName: 'plan/index.html'
 			}
 		},
 		watch: {},
@@ -182,18 +193,6 @@
 		methods: {
 			handleClick(val) {
 				console.log(val)
-			},
-			jumpTo (name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if (name === 'card') {
-					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if  (name === 'password') {
-					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if (name === 'detail') {
-					jumpUrl = jumpUrl + 'myPlace/detail.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
 			}
 		}
 	})

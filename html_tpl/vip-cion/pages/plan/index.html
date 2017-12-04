@@ -89,17 +89,37 @@
 
 	<body>
 		<div id="plan" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> 发行计划
+			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 发行计划
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
 			<div class="content">
-				<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
-				</el-tabs>
+				<div class="nav-list">
+					<ul>
+						<li onclick="jumpTo('instro/company.html')">公司简介</li>
+						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
+						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
+						<li class="active">发行计划</li>
+						<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
+						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
+					</ul>
+				</div>
+				<!--<el-tabs v-model="activeName" @tab-click="handleClick">
+				    <el-tab-pane label="公司简介" name="company" onclick="jumpTo('instro/company.html')"></el-tab-pane>
+				    <el-tab-pane label="行业资讯" name="info" onclick="jumpTo('instro/info.html')"></el-tab-pane>
+				    <el-tab-pane label="公司公告" name="notice" onclick="jumpTo('instro/notice.html')"></el-tab-pane>
+				    <el-tab-pane label="发行计划" name="plan" onclick="jumpTo('plan/index.html')"></el-tab-pane>
+				    <el-tab-pane label="标的一览" name="myPlace" onclick="jumpTo('myPlace/index.html')"></el-tab-pane>
+				    <el-tab-pane label="收益统计" name="earnings" onclick="jumpTo('earnings/index.html')"></el-tab-pane>
+				    <el-tab-pane label="个人中心" name="personalCenter" onclick="jumpTo('personalCenter/index.html')"></el-tab-pane>
+				  </el-tabs>-->
+				<!--<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path" onclick="jumpTo(path)"></el-tab-pane>
+				</el-tabs>-->
 				<div class="common-width">
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('plan/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="flag">总</span><span class="text">10000T</span></li>
@@ -115,7 +135,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('plan/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="flag">总</span><span class="text">10000T</span></li>
@@ -131,7 +151,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="list" @click="jumpTo('detail')">
+					<div class="list" onclick="jumpTo('plan/detail.html')">
 						<div class="part-left">
 							<ul>
 								<li><span class="flag">总</span><span class="text">10000T</span></li>
@@ -167,10 +187,13 @@
 		data() {
 			return {
 				tabList: {
-					'plan': '发行计划',
-					'place': '标的一览',
-					'money': '收益统计',
-					'person': '个人中心'
+					'instro/company.html': '公司简介',
+					'instro/info.html': '行业资讯',
+					'instro/notice.html': '公司公告',
+					'plan/index.html': '发行计划',
+					'myPlace/index.html': '标的一览',
+					'earnings/index.html': '收益统计',
+					'personalCenter/index.html': '个人中心'
 				},
 				activeName: 'plan',
 			}
@@ -181,19 +204,6 @@
 		methods: {
 			handleClick(val) {
 				console.log(val)
-			},
-			jumpTo (name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if (name === 'card') {
-					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if  (name === 'password') {
-					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if (name === 'edit') {
-					jumpUrl = jumpUrl + 'personalCenter/edit.html'
-				} else if (name === 'detail') {
-					jumpUrl = jumpUrl + 'plan/detail.html'
-				}
-				window.location.href = jumpUrl
 			}
 		}
 	})

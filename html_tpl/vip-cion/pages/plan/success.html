@@ -64,7 +64,7 @@
 
 	<body>
 		<div id="buySuccess" class="wrap-page">
-			<div class="back-bar"><span @click="jumpTo('index')" class="icon-back"></span> 计划详情
+			<div class="back-bar"><span onclick="jumpTo('plan/index.html')" class="icon-back"></span> 计划详情
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -107,34 +107,11 @@
 		el: '#buySuccess',
 		data() {
 			return {
-				tabList: {
-					'plan': '发行计划',
-					'place': '标的一览',
-					'money': '收益统计',
-					'person': '个人中心'
-				},
-				activeName: 'plan',
-				list: [{
-
-				}, {
-
-				}]
 			}
 		},
 		watch: {},
 		mounted: function() {},
 		methods: {
-			handleClick(val) {
-				console.log(val)
-			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'index') {
-					jumpUrl = jumpUrl + 'plan/index.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
-			}
 		}
 	})
 </script>

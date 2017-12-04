@@ -70,7 +70,7 @@
 
 	<body>
 		<div id="order" class="wrap-page">
-			<div class="back-bar"><span class="icon-back" @click="jumpTo('order')"></span> 购买算力
+			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/order.html')"></span> 购买算力
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -110,7 +110,7 @@
 						</div>
 					</div>
 					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">预览合同</button></div>
-					<div class="wrap-enter"><button @click="jumpTo('success')" type="button" class="el-button el-button--primary">立即抢购</button></div>
+					<div class="wrap-enter"><button onclick="jumpTo('plan/success.html')" type="button" class="el-button el-button--primary">立即抢购</button></div>
 				</div>
 			</div>
 		</div>
@@ -138,19 +138,6 @@
 		watch: {},
 		mounted: function() {},
 		methods: {
-			handleClick(val) {
-				console.log(val)
-			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'order') {
-					jumpUrl = jumpUrl + 'plan/order.html'
-				} else if(name === 'success') {
-					jumpUrl = jumpUrl + 'plan/success.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
-			}
 		}
 	})
 </script>
