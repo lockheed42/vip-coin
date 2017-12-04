@@ -7,6 +7,6 @@ class IndexController extends Controller
 {
     public function index()
     {
-        echo 4546;
+        $this->display();
     }
 }
