@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>发行计划</title>
+		<style>
+			.list {
+				height: 88px;
+				width: 100%;
+				border-radius: 4px;
+				background:url(../../img/bar_bg.png) no-repeat;
+				background-size: 100% 100%;
+				display: flex;
+				box-shadow: #666 0px 0px 10px;
+				box-sizing: border-box;
+				margin-top: 10px;
+			}
+			
+			.list li {
+				margin-bottom: 5px;
+				font-size: 12px;
+				display: flex;
+				justify-content: space-between;
+				min-height: 20px;
+			}
+			
+			.list .part-left {
+				width: 36%;
+				background: #fff;
+				align-content: center;
+				padding: 10px 15px 10px 10px;
+				border-radius: 5px 0px 0px 5px;
+			}
+			
+			.list .part-right {
+				flex: 1;
+				padding: 10px 15px 10px 10px;
+				border-radius: 0px 0px 5px 5px;
+			}
+			
+			.list .part-left li {
+				box-sizing: border-box;
+				align-items: center;
+			}
+			
+			.list .part-left li .flag {
+				font-size: 10px;
+				width: 18px;
+				height: 18px;
+				border-radius: 4px;
+				color: #816835; 
+				border: 1px solid #816835;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 10px;
+			}
+			.list .part-left li .text {
+				font-size: 14px
+			}
+			.name {
+				color: #fff;
+				font-size: 15px;
+			}
+			.money, .nums ,.date {
+				color: #bababa;
+			}
+			
+			.status, .nums {
+				font-size: 10px;
+			}
+			
+			.status-yellow {
+				color: #cbaa67;
+			}
+			.status-red {
+				color: #c23131;
+			}
+			.date {
+				color: #999999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="plan" class="wrap-page">
+			<div class="back-bar"><span class="icon-back"></span> 发行计划
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
+				</el-tabs>
+				<div class="common-width">
+					<div class="list" @click="jumpTo('detail')">
+						<div class="part-left">
+							<ul>
+								<li><span class="flag">总</span><span class="text">10000T</span></li>
+								<li><span class="flag">卖</span><span class="text">2000T</span></li>
+								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+							</ul>
+						</div>
+						<div class="part-right">
+							<ul>
+								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
+								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
+								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="list" @click="jumpTo('detail')">
+						<div class="part-left">
+							<ul>
+								<li><span class="flag">总</span><span class="text">10000T</span></li>
+								<li><span class="flag">卖</span><span class="text">2000T</span></li>
+								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+							</ul>
+						</div>
+						<div class="part-right">
+							<ul>
+								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
+								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
+								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="list" @click="jumpTo('detail')">
+						<div class="part-left">
+							<ul>
+								<li><span class="flag">总</span><span class="text">10000T</span></li>
+								<li><span class="flag">卖</span><span class="text">2000T</span></li>
+								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+							</ul>
+						</div>
+						<div class="part-right">
+							<ul>
+								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
+								<li><span class="status status-red">预售中</span><span class="nums">2384296</span></li>
+								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#plan',
+		data() {
+			return {
+				tabList: {
+					'plan': '发行计划',
+					'place': '标的一览',
+					'money': '收益统计',
+					'person': '个人中心'
+				},
+				activeName: 'plan',
+			}
+		},
+		watch: {},
+		mounted: function() {
+		},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo (name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if (name === 'card') {
+					jumpUrl = jumpUrl + 'bindCard/index.html'
+				} else if  (name === 'password') {
+					jumpUrl = jumpUrl + 'account/editPassword.html'
+				} else if (name === 'edit') {
+					jumpUrl = jumpUrl + 'personalCenter/edit.html'
+				} else if (name === 'detail') {
+					jumpUrl = jumpUrl + 'plan/detail.html'
+				}
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>每日总收益</title>
+		<style>
+			.list {
+				height: 60px;
+				width: 100%;
+				background-color: rgba(0, 0, 0, 0.5);
+				margin-top: 10px;
+				border-radius: 4px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 13px;
+				color: #cbaa67;
+				padding: 0px 12px;
+				box-sizing: border-box;
+			}
+			.list:first-child {
+				margin-top: 20px;
+			}
+			.list dd {
+				font-size: 10px;
+				color: #999999;
+				margin-top: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="earningsDetails" class="wrap-page">
+			<div class="back-bar">
+				<span @click="jumpTo('index')" class="icon-back"></span>
+				收益统计
+				<span ></span>
+			</div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
+				</el-tabs>
+				<div class="common-width">
+					<div v-for="(item, i) in list" class="list">
+						<dl>
+							<dt> {{ item.money }} </dt>
+							<dd> {{ item.date }} </dd>
+						</dl>
+						<span class="status">
+							{{ item.status }}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#earningsDetails',
+		data() {
+			return {
+				list: [{
+						'money': '¥2918',
+						'date': '2017.11.17',
+						'status': '已兑现'
+					},
+					{
+						'money': '¥2918',
+						'date': '2017.11.17',
+						'status': '已兑现'
+					},
+					{
+						'money': '¥2918',
+						'date': '2017.11.17',
+						'status': '未兑现'
+					}
+				]
+			}
+		},
+		watch: {},
+		mounted: function() {
+			console.log((document.body.clientHeight - 145) + 'px')
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
+		},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo(name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if(name === 'card') {
+					jumpUrl = jumpUrl + 'bindCard/index.html'
+				} else if(name === 'password') {
+					jumpUrl = jumpUrl + 'account/editPassword.html'
+				} else if(name === 'index') {
+					jumpUrl = jumpUrl + 'personalCenter/index.html'
+				}
+				console.log(jumpUrl)
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>

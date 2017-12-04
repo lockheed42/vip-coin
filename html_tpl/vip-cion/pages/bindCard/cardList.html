@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<!-- 引入样式 -->
-		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
 		<link rel="stylesheet" href="../../css/common.css">
 		<title>绑定银行卡</title>
 		<style>
@@ -43,11 +43,6 @@
 			
 			.wrap-card-input .el-input {
 				flex: 1;
-			}
-			
-			.el-input input {
-				background: none;
-				margin-bottom: 0px;
 			}
 			
 			.el-radio__input.is-checked .el-radio__inner {
@@ -110,6 +105,8 @@
 
 	<body>
 		<div id="bindCard" class="wrap-page wrap-card">
+			<div class="back-bar"><span class="icon-back"></span> 绑定银行卡
+				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
@@ -153,11 +150,11 @@
 <!-- common.js -->
 <script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../js/axios.min.js"></script>
 <script>
 	new Vue({
 		el: '#bindCard',

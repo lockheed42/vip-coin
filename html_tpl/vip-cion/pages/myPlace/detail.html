@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>标的详情</title>
+		<style>
+			.common-width {
+				background: #282830;
+				border-radius: 5px;
+				margin-top: 15px;
+			}
+			
+			.title-info {
+				text-align: center;
+				margin: 10px 0px;
+			}
+			
+			.title-info dt {
+				font-size: 15px;
+				color: #fff;
+				margin-bottom: 6px;
+			}
+			
+			.status {
+				font-size: 10px;
+			}
+			
+			.status-yellow {
+				color: #cbaa67;
+			}
+			
+			.status-red {
+				color: #c23131;
+			}
+			
+			.date {
+				color: #999999;
+			}
+			
+			.status-list {
+				background: #35353f;
+				padding: 10px;
+				width: 100%;
+				box-sizing: border-box;
+				overflow: hidden;
+				padding: 20px 20px;
+			}
+			
+			.status-list li {
+				display: flex;
+				justify-content: space-between;
+				width: 100%;
+				color: #cbaa67;
+				font-size: 14px;
+			}
+			
+			.other-list {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 10px 20px;
+			}
+			
+			.other-list li:first-child {
+				font-size: 10px;
+			}
+			
+			.money {
+				font-size: 12px;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			.money span:first-child {
+				color: #bababa;
+				margin-bottom: 6px;
+			}
+			
+			.money span:last-child {
+				color: #cbaa67;
+			}
+			
+			.plan-detail {
+				padding: 13px 20px 25px 20px;
+				background: #35353f;
+			}
+			
+			.plan-detail dt {
+				color: #cbaa67;
+				font-size: 14px;
+				margin-bottom: 10px;
+			}
+			
+			.plan-detail dd {
+				font-size: 13px;
+				color: #999999;
+				line-height: 22px;
+			}
+			
+			.preview {
+				padding: 12px;
+			}
+			#placeDetail 
+		</style>
+	</head>
+
+	<body>
+		<div id="placeDetail" class="wrap-page">
+			<div class="back-bar"><span  @click="jumpTo('index')" class="icon-back"></span> 计划详情
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="common-width">
+					<dl class="title-info">
+						<dt>发电站</dt>
+						<dd class="status status-red">预售中</dd>
+					</dl>
+					<ul class="status-list">
+						<li><span>拥有算力</span><span class="text">10000T</span></li>
+					</ul>
+					<ul class="other-list">
+						<li class="date">
+							2017.12.30-2018.12.30
+						</li>
+						<li class="money">
+							<span>预计收益</span>
+							<span>2384296</span>
+						</li>
+					</ul>
+					<dl class="plan-detail">
+						<dt>计划介绍</dt>
+						<dd>计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计。</dd>
+					</dl>
+					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">查看合同</button></div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#placeDetail',
+		data() {
+			return {
+				tabList: {
+					'plan': '发行计划',
+					'place': '标的一览',
+					'money': '收益统计',
+					'person': '个人中心'
+				},
+				activeName: 'plan'
+			}
+		},
+		watch: {},
+		mounted: function() {},
+		methods: {
+			handleClick(val) {
+				console.log(val)
+			},
+			jumpTo(name) {
+				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+				if(name === 'card') {
+					jumpUrl = jumpUrl + 'bindCard/index.html'
+				} else if(name === 'password') {
+					jumpUrl = jumpUrl + 'account/editPassword.html'
+				} else if(name === 'index') {
+					jumpUrl = jumpUrl + 'myPlace/index.html'
+				}
+				console.log(jumpUrl)
+				window.location.href = jumpUrl
+			}
+		}
+	})
+</script>
