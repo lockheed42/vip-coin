@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<!-- 引入样式 -->
-		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+		<link rel="stylesheet" href="../../Public/css/element-ui@2.0.7.css">
 		<link rel="stylesheet" href="../../Public/css/common.css">
 		<title>介绍</title>
 		<style>
@@ -118,6 +118,8 @@
 
 	<body>
 		<div id="instro" class="wrap-page">
+			<div class="back-bar"><span class="icon-back"></span> vip-cion 用户端M站
+				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
@@ -179,17 +181,10 @@
 						</div>
 					</div>
 					<div class="wrap-enter">
-						<el-button type="primary" @click="login()">登录</el-button>
-						<el-button type="primary" @click="login()">注册</el-button>
+						<el-button type="primary" @click="jumpTo('login')">登录</el-button>
+						<el-button type="primary" @click="jumpTo('register')">注册</el-button>
 					</div>
 				</div>
-
-				<!--<ul>
-					<li v-for="(name, path) in tabList">
-						<router-link :to="'/'+path"> {{ name }} </router-link>
-					</li>
-				</ul>-->
-				<!--<router-view></router-view>-->
 			</div>
 		</div>
 	</body>
@@ -198,48 +193,12 @@
 <!-- common.js -->
 <script src="../../Public/js/common.js"></script>
 <!-- 先引入 Vue -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- 先引入 router -->
-<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="../../Public/js/vue.js"></script>
 <!-- 引入组件库 -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../../Public/js/element-ui@2.0.7.js"></script>
 <!-- axios -->
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="../../Public/js/axios.min.js"></script>
 <script>
-	const instro = {
-		template: '<div>instro1111111111111111</div>'
-	}
-	const info = {
-		template: '<div>info222222222222222</div>'
-	}
-	const message = {
-		template: '<div>message333333333333333333</div>'
-	}
-
-	// 2. 定义路由
-	// 每个路由应该映射一个组件。 其中"component" 可以是
-	// 通过 Vue.extend() 创建的组件构造器，
-	// 或者，只是一个组件配置对象。
-	// 我们晚点再讨论嵌套路由。
-	const routes = [{
-			path: '/instro',
-			component: instro
-		},
-		{
-			path: '/info',
-			component: info
-		},
-		{
-			path: '/message',
-			component: message
-		}
-	]
-
-	// 3. 创建 router 实例，然后传 `routes` 配置
-	// 你还可以传别的配置参数, 不过先这么简单着吧。
-	const router = new VueRouter({
-		routes // （缩写）相当于 routes: routes
-	})
 	new Vue({
 		el: '#instro',
 		data() {
@@ -251,7 +210,7 @@
 				},
 				activeName: 'instro',
 				instro: {
-					picUrl: '../../img/intro_banner.png',
+					picUrl: '../../Public/img/intro_banner.png',
 					content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
 						'金融行业人员组成的专业队伍，为平台持续提供稳定、安全、便捷的服务保障。',
 						'比特币交易网先后获得过港股上市公司神州数字（08255.HK）、亚杰商会（AAMA）、国富财智（GFCZ）等机构的战略投资。'
@@ -260,7 +219,7 @@
 				detail: {
 					show: false,
 					title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-					picUrl: '../../img/info_banner.png',
+					picUrl: '../../Public/img/info_banner.png',
 					content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
 						'金融行业人员组成的专业队伍，为平台持续提供稳定、安全、便捷的服务保障。',
 						'比特币交易网先后获得过港股上市公司神州数字（08255.HK）、亚杰商会（AAMA）、国富财智（GFCZ）等机构的战略投资。'
@@ -414,11 +373,14 @@
 			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
 		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
+			handleClick() {
+			},
+			jumpTo (name) {
+				let jumpUrl = 'http://' + window.location.host
+				jumpUrl = jumpUrl + '/?c=user&' + 'a=' + name
+				window.location.href = jumpUrl
 			},
 			getDetail(id) {
-				console.log(id)
 				let requestUrl = common_url
 				console.log(this.activeName)
 				if(this.activeName === 'info') {
@@ -444,7 +406,6 @@
 					});
 
 			}
-		},
-		router
+		}
 	})
 </script>

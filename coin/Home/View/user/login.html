@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../Public/css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../Public/css/common.css">
+		<title>登录</title>
+	</head>
+
+	<body>
+		<div id="login" class="wrap-page">
+			<div class="back-bar"><span class="icon-back"></span> 登录账号
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="wrap-input common-width">
+					<el-input v-model="mobile" placeholder="输入手机号"></el-input>
+					<el-input v-model="password" type="password" placeholder="输入密码"></el-input>
+					<div class="wrap-tips">
+						<!--<a class="tips" href="register.html">注册</a>-->
+						<a class="tips" href="">忘记密码</a>
+					</div>
+				</div>
+				<div class="wrap-enter">
+					<el-button type="primary" @click="login()">登录</el-button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../Public/js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../Public/js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../Public/js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../Public/js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#login',
+		data() {
+			return {
+				mobile: '',
+				password: ''
+			}
+		},
+		methods: {
+			/*提交接口参数*/
+			login: function() {
+				console.log(this)
+				let textTips = ""
+				if(!this.mobile) {
+					textTips = "手机号不能为空！"
+				} else if(!this.password) {
+					textTips = "密码不能为空！"
+				}
+				if(textTips) {
+					this.$message({
+						message: textTips,
+						type: 'error'
+					});
+					return
+				}
+				const loginParams = {
+					mobile: this.mobile,
+					password: this.password
+				}
+				console.log(loginParams)
+				return axios.get(common_url + '/login', loginParams)
+					.then(function(response) {
+						console.log(response);
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			}
+		}
+	})
+</script>

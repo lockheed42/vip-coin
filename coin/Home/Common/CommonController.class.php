@@ -24,8 +24,15 @@ class CommonController extends Controller
 
     }
 
+    public function setCookie($mobile, $pwd)
+    {
+        $value = md5($mobile . $pwd);
+        cookie('account', $value, 3600);
+    }
+
     public function check()
     {
+        var_dump(cookie('account'));
     }
 
     public function getUserInfo()

@@ -53,6 +53,10 @@ img {
 	border: 0;
 }
 
+ul {
+	list-style: none;
+}
+
 html,
 body {
 	height: 100%;
@@ -79,6 +83,27 @@ a {
 	padding-top: 0;
 	padding-bottom: 0;
 	overflow-y: scroll;
+}
+
+.back-bar {
+	width: 100%;
+	height: 35px;
+	background: #816835;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	justify-content: space-between;
+	color: #fff;
+	font-size: 18px;
+}
+
+.icon-back {
+	display: block;
+	width: 8.5px;
+	height: 16.5px;
+	background: url(../img/icon-back.png) no-repeat center center;
+	background-size: 100% 100%;
+	margin-left: 12px;
 }
 
 .title-bar {
@@ -119,7 +144,8 @@ a {
 .wrap-tips {
 	width: 100%;
 	display: flex;
-	justify-content: space-between;
+	/*justify-content: space-between;*/
+	justify-content: flex-end;
 }
 
 .tips {
@@ -177,4 +203,51 @@ a {
 
 .el-button:active {
 	background: #ffab00;
+}
+
+.white {
+	color: #fff;
+}
+
+.status-yellow {
+	color: #cbaa67;
+}
+
+.status-red {
+	color: #c23131;
+}
+
+.wrap-card-input {
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.5);
+	margin-bottom: 10px;
+	border-radius: 4px;
+}
+
+.wrap-card-input .label-name {
+	min-width: 50px;
+	display: flex;
+	align-items: center;
+	text-indent: 12px;
+	color: #CBAA67;
+	font-size: 13px;
+}
+
+.wrap-card-input .el-input {
+	flex: 1;
+}
+
+.wrap-card-input .el-input input {
+    background: none;
+    margin-bottom: 0px;
+}
+
+.preview .el-button {
+	width: 75px;
+	height: 30px;
+	font-size: 13px;
+	padding: 0px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
