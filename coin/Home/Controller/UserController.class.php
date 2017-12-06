@@ -13,65 +13,83 @@ use Home\Common\CommonController;
 class UserController extends CommonController
 {
     /**
-     * 用户注册
+     * @api            {get} /?c=user&a=info [个人信息]
+     * @apiDescription 登录
+     * @apiName        info
+     * @apiGroup       user
+     *
+     * @apiSuccess {string} name 姓名
+     * @apiSuccess {string} sex 性别
+     * @apiSuccess {string} id_card 身份证
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":0,"error":"","data":{"name":"\u8def\u4eba\u7532","sex":"\u7537","id_card":"310104197704240051"}}
+     *
+     * @apiVersion     1.0.0
      */
-    public function register()
+    public function info()
     {
-        if (IS_POST) {
-            $mobile = I('post.mobile');
-            $verify = I('post.verify');
-            $pwd = I('post.pwd');
+        $a = [
+            'status' => 0,
+            'error'  => '',
+            'data'   => [
+                'name'    => '路人甲',
+                'sex'     => '男',
+                'id_card' => '310104197704240051',
+            ],
+        ];
 
-            $verifyCtl = new VerifyController();
-            $rs = $verifyCtl->check($mobile, $verify);
-            if ($rs === false) {
-                $this->error('注册失败');
-            } else {
-                M('user')->add(
-                    [
-                        'account' => $mobile,
-                        'verify'  => $verify,
-                        'pwd'     => md5($pwd),
-                    ]
-                );
-
-                $this->setCookie($mobile, $pwd);
-
-                $this->success('注册成功', 'Index/index');
-            }
-        } else {
-            $this->display();
-        }
+        echo json_encode($a);
     }
 
-    public function login()
+    /**
+     * @api            {post} /?c=user&a=saveName [保存姓名]
+     * @apiDescription 登录
+     * @apiName        saveName
+     * @apiGroup       user
+     *
+     * @apiParam {string} name 姓名
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function saveName()
     {
-        if (IS_AJAX) {
-            $mobile = I('post.mobile');
-            $pwd = I('post.pwd');
-
-            $info = M('user')->where(
-                [
-                    'account' => $mobile,
-                    'pwd'     => md5($pwd),
-                ]
-            )->select();
-
-            if (!empty($info)) {
-                $this->setCookie($mobile, $pwd);
-            }
-        } else {
-            $this->display();
-        }
     }
 
-    public function forget($verify, $pwd)
+    /**
+     * @api            {post} /?c=user&a=saveSex [保存性别]
+     * @apiDescription 登录
+     * @apiName        saveSex
+     * @apiGroup       user
+     *
+     * @apiParam {string} sex 性别
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function saveSex()
     {
-        $verify = I('post.verify');
-        $pwd = I('post.pwd');
     }
 
-    public function get()
+    /**
+     * @api            {post} /?c=user&a=saveIdCard [保存身份证]
+     * @apiDescription 登录
+     * @apiName        saveIdCard
+     * @apiGroup       user
+     *
+     * @apiParam {string} id_card 身份证号
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function saveIdCard()
     {
     }
 }
