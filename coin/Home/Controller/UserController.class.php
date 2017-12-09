@@ -92,4 +92,72 @@ class UserController extends CommonController
     public function saveIdCard()
     {
     }
+
+    /**
+     * @api            {post} /?c=user&a=changePwd [修改密码]
+     * @apiDescription 修改密码
+     * @apiName        changePwd
+     * @apiGroup       user
+     *
+     * @apiParam {string} pwd 新密码
+     * @apiParam {string} verify 验证码
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function changePwd()
+    {
+
+    }
+
+    /**
+     * @api            {post} /?c=user&a=bindCard [绑定银行卡]
+     * @apiDescription 绑定银行卡
+     * @apiName        bindCard
+     * @apiGroup       user
+     *
+     * @apiParam {string} name 姓名
+     * @apiParam {string} code 银行卡号
+     * @apiParam {string} bank 银行名称
+     * @apiParam {string} mobile 银行预留手机号
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function bindCard()
+    {
+
+    }
+
+    /**
+     * @api            {get} /?c=user&a=getCard [获取银行卡信息]
+     * @apiDescription 获取银行卡信息
+     * @apiName        getCard
+     * @apiGroup       user
+     *
+     * @apiSuccess {string} bank 银行名称
+     * @apiSuccess {string} code 卡号
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":0,"error":"","data":{"bank":"\u5149\u5927\u94f6\u884c","code":"345349402342308"}}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function getCard()
+    {
+        $a = [
+            'status' => 0,
+            'error'  => '',
+            'data'   => [
+                'bank' => '光大银行',
+                'code' => '345349402342308',
+            ],
+        ];
+
+        echo json_encode($a);
+    }
 }
