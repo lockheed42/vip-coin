@@ -9,9 +9,27 @@
 namespace Home\Controller;
 
 use Home\Common\CommonController;
+use Think\Exception;
 
 class LoginController extends CommonController
 {
+    /**
+     * api key长度
+     */
+    const KEY_LENGTH = 15;
+    /**
+     * security长度
+     */
+    const SECURITY_LENGTH = 25;
+    /**
+     * 用户登录
+     */
+    const IS_LOGIN = 0;
+    /**
+     * 用户注册
+     */
+    const IS_REG = 1;
+
     /**
      * @api            {post} /?c=login&a=register [注册]
      * @apiDescription 注册
@@ -34,22 +52,34 @@ class LoginController extends CommonController
         $verify = I('post.verify');
         $pwd = I('post.pwd');
 
-        $verifyCtl = new VerifyController();
-        $rs = $verifyCtl->check($mobile, $verify);
-        if ($rs === false) {
-            $this->error('注册失败');
-        } else {
+        try {
+            $verifyCtl = new VerifyController();
+            $verifyCtl->check($mobile, $verify);
+
+            $user = M('user')->where('mobile = %s', $mobile)->find();
+            if (!empty($user)) {
+                throw new Exception('该手机号已经注册');
+            }
+
+            $rand = new RandController();
+            $key = $rand->createOneCode(self::KEY_LENGTH);
+            $connectWord = $rand->createOneCode(1, 1);
+            $timeString = $this->_numToWord(time());
+            $apiKey = $key . $connectWord . $timeString;
+            $apiSecurity = $rand->createOneCode(self::SECURITY_LENGTH);
+
             M('user')->add(
                 [
-                    'account' => $mobile,
-                    'verify'  => $verify,
-                    'pwd'     => md5($pwd),
+                    'account'      => $mobile,
+                    'verify'       => $verify,
+                    'pwd'          => md5($pwd),
+                    'api_key'      => $apiKey,
+                    'api_security' => $apiSecurity,
+                    'cdate'        => date('Y-m-d H:i:s'),
                 ]
             );
+        } catch (\Exception $e) {
 
-            $this->setCookie($mobile, $pwd);
-
-            $this->success('注册成功', 'Index/index');
         }
     }
 
@@ -80,7 +110,6 @@ class LoginController extends CommonController
         )->select();
 
         if (!empty($info)) {
-            $this->setCookie($mobile, $pwd);
         }
     }
 
@@ -104,5 +133,41 @@ class LoginController extends CommonController
         $mobile = I('post.mobile');
         $verify = I('post.verify');
         $pwd = I('post.pwd');
+    }
+
+    /**
+     * @api            {post} /?c=login&a=logout [用户退出]
+     * @apiDescription 用户推出
+     * @apiName        logout
+     * @apiGroup       login
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function logout()
+    {
+
+    }
+
+    /**
+     * 将时间戳修改成字符。
+     *
+     * @param int $timestamp 时间戳
+     *
+     * @return string
+     */
+    private function _numToWord($timestamp)
+    {
+        $example = 'cEIklNorTs';
+
+        $len = strlen($timestamp);
+        $return = '';
+        for ($i = 0; $i < $len; $i++) {
+            $return .= substr($example, substr($timestamp, $i, 1), 1);
+        }
+
+        return $return;
     }
 }

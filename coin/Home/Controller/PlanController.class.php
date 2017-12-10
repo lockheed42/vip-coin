@@ -85,6 +85,7 @@ class PlanController extends CommonController
      * @apiSuccess {string} profit 预计总收益
      * @apiSuccess {string} begin 开始日期
      * @apiSuccess {string} end 结束日期
+     * @apiSuccess {string} unit 单价
      * @apiSuccess {string} total 总算力
      * @apiSuccess {string} sell 已售部分
      * @apiSuccess {string} status 状态。1=预售中，2=进行中，3=已关闭
@@ -107,6 +108,7 @@ class PlanController extends CommonController
                 'begin'   => '2017-07-23',
                 'end'     => '2018-03-23',
                 'total'   => '80000',
+                'unit'    => '20',
                 'sell'    => '34985',
                 'status'  => '1',
             ],

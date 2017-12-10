@@ -29,6 +29,8 @@ class UserController extends CommonController
      */
     public function info()
     {
+        M('user')->where('')->find();
+
         $a = [
             'status' => 0,
             'error'  => '',
