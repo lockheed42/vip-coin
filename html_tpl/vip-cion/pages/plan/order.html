@@ -88,7 +88,7 @@
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">购买算力</span>
 						<div class="right">
-							<el-input placeholder="请输入购买算力" v-model="nums">
+							<el-input-number placeholder="请输入购买算力" v-model="nums" :step="inputNumberObj.step" :controls="inputNumberObj.controls">
 						</div>
 						<span class="unit">T</span>
 						</div>
@@ -96,7 +96,7 @@
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">算力单价</span>
 						<div class="right">
-							<el-input placeholder="请输入算力单价" v-model="price">
+							<el-input placeholder="请输入算力单价" v-model="detail.price" :readonly="priceObj.readonly">
 						</div>
 						<span class="unit">元</span>
 						</div>
@@ -130,21 +130,29 @@
 		el: '#order',
 		data() {
 			return {
-				detail: {
-					'name': '发电站',
-					'time': '2017.12.30-2018.12.30',
-					'profit': 2384296,
-					'sell':  2000 +  'T',
-					'total': 8000 + 'T'
+				inputNumberObj: {
+					step: 1,
+					controls: false
 				},
-				nums: '',
+				priceObj: {
+					readonly: true
+				},
+				detail: {
+					name: '发电站',
+					time: '2017.12.30-2018.12.30',
+					profit: 2384296,
+					price: 200,
+					sell: 2000 +  'T',
+					total: 8000 + 'T'
+				},
+				nums: 1,
 				price: '',
 				amount: 0
 			}
 		},
 		watch: {
-			'nums' () {
-				this.amount = Number(this.nums) * Number(this.price)
+			'nums' (val) {
+				this.amount = Number(this.nums) * Number(this.detail.price)
 			}
 		},
 		mounted: function() {
@@ -160,12 +168,13 @@
 						console.log(response);
 						const data = response.data;
 						this.detail = {
-							'name': data.name,
-							'time': data.begin + '-' + data.end,
-							'statusName': this.statusList[data.status],
-							'profit': data.profit,
-							'sell':  data.sell +  'T',
-							'total': data.total + 'T'
+							name: data.name,
+							time: data.begin + '-' + data.end,
+							statusName: this.statusList[data.status],
+							price: data.unit,
+							profit: data.profit,
+							sell: data.sell +  'T',
+							total: data.total + 'T'
 						}
 					})
 					.catch(function(error) {
