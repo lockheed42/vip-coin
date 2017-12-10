@@ -76,12 +76,12 @@
 					</div>
 					<div class="list">
 						<ul>
-							<li><span class="name">发电站</span><span class="nums">8000T</span></li>
-							<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
+							<li><span class="name"> {{ successInfo.name }} </span><span class="nums"> {{ successInfo.count }} </span></li>
+							<li><span class="date"> {{ successInfo.time }} </span><span></span></li>
 						</ul>
 						<ul>
 							<li>
-								<span></span><span class="money">合计160000元</span>
+								<span></span><span class="money">合计 {{ successInfo.mount }} 元</span>
 							</li>
 						</ul>
 					</div>
@@ -107,10 +107,23 @@
 		el: '#buySuccess',
 		data() {
 			return {
+				successInfo: {
+					name: 'fadianzhan',
+					time: '2017.12.30-2018.12.30',
+					count: '3000T',
+					mount: '19000'
+				}
 			}
 		},
 		watch: {},
-		mounted: function() {},
+		mounted: function() {
+			this.successInfo = {
+				name: params('name'),
+				time: params('time'),
+				count: params('count'),
+				mount: params('mount')
+			}
+		},
 		methods: {
 		}
 	})

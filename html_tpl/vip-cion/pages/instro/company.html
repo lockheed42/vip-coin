@@ -129,10 +129,10 @@
 						<li class="active">公司简介</li>
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
-						<li onclick="jumpTo('plan/index.html')">发行计划</li>
-						<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
-						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
-						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
+						<li v-if="isLogin" onclick="jumpTo('plan/index.html')">发行计划</li>
+						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li v-if="isLogin" onclick="jumpTo('earnings/index.html')">收益统计</li>
+						<li v-if="isLogin" onclick="jumpTo('personalCenter/index.html')">个人中心</li>
 					</ul>
 				</div>
 				<div class="common-width">
@@ -190,7 +190,7 @@
 					</div>
 					<div class="wrap-enter">
 						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
-						<el-button type="primary" onclick="jumpTo('plan/register.html')">注册</el-button>
+						<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
 					</div>
 				</div>
 			</div>
@@ -216,6 +216,7 @@
 					'info': '行业资讯',
 					'message': '公告通知'
 				},
+				isLogin: false,
 				activeName: 'instro',
 				instro: {
 					picUrl: '../../img/intro_banner.png',
@@ -377,10 +378,12 @@
 			}
 		},
 		mounted: function() {
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px'
+			if (getCookie('user')) {
+				this.isLogin = true
+			}
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px';
 		},
 		methods: {
-			handleClick() {},
 			getDetail(id) {
 				let requestUrl = common_url
 				console.log(this.activeName)

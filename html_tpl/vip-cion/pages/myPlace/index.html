@@ -82,13 +82,8 @@
 				font-size: 10px;
 			}
 			
-			.status-yellow {
-				color: #cbaa67;
-			}
-			.status-red {
-				color: #c23131;
-			}
-			.date {
+			.date,
+			.status  {
 				color: #999999;
 			}
 		</style>
@@ -114,45 +109,17 @@
 						</ul>
 					</div>
 				<div class="common-width">
-					<div class="list" onclick="jumpTo('myPlace/detail.html')">
+					<div class="list" v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
 						<div class="part-left">
 							<ul>
-								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
-								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
-								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
+								<li><span class="name"> {{ item.name }} <span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}"> {{ item.statusName }} </span></span><span class="money">预计收益</span></li>
+								<li><span class="status-yellow "> {{ item.total }} </span><span class="status-yellow"> {{ item.total_profit }} </span></li>
+								<li><span class="date"> {{ item.time }} </span><span></span></li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="flag">已收益</span><span class="money">4728</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="list" onclick="jumpTo('myPlace/detail.html')">
-						<div class="part-left">
-							<ul>
-								<li><span class="name">发电站 <span class="status status-yellow">预售中</span></span><span class="money">预计收益</span></li>
-								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
-								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="flag">已收益</span><span class="money">4728</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="list" onclick="jumpTo('myPlace/detail.html')">
-						<div class="part-left">
-							<ul>
-								<li><span class="name">发电站 <span class="status status-red">进行中</span></span><span class="money">预计收益</span></li>
-								<li><span class="status-yellow ">8000T</span><span class="status-yellow">2384296</span></li>
-								<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="flag">已收益</span><span class="money">4728</span></li>
+								<li><span class="flag">已收益</span><span class="money"> {{ item.get_profit }} </span></li>
 							</ul>
 						</div>
 					</div>
@@ -175,6 +142,11 @@
 		el: '#place',
 		data() {
 			return {
+				statusList: {
+					'1': '预售中',
+					'2': '进行中',
+					'3': '已关闭'
+				},
 				tabList: {
 					'instro/company.html': '公司简介',
 					'instro/info.html': '行业资讯',
@@ -184,15 +156,77 @@
 					'earnings/index.html': '收益统计',
 					'personalCenter/index.html': '个人中心'
 				},
+				contentList: [{
+						id: 1,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '1',
+						'statusName': '进行中',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					},
+					{
+						id: 2,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '2',
+						'statusName': '进行中',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					},
+					{
+						id: 3,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '3',
+						'statusName': '已关闭',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					}
+				],
 				activeName: 'plan/index.html'
 			}
 		},
 		watch: {},
 		mounted: function() {
+			console.log(getCookie('user'));
+			this.$nextTick(function() {
+				console.log(getCookie('user'));
+				this.getList()
+			})
 		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
+			getList () {
+				axios.get(common_url + '/project/plan', {})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						let middleObj = '';
+						let list = [];
+						for(var i = 0; i < data.length; i++) {
+							middleObj = {
+								id: data.plan_id,
+								total: data.total,
+								name: data.name,
+								time: data.begin + '-' + data.end,
+								status: data.status,
+								statusName: this.statusList[data.status],
+								get_profit: data.get_profit,
+								total_profit: data.total_profit,
+							}
+							list.push(middleObj);
+						}
+						this.contentList = list;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			},
+			jumpTo(path) {
+				jumpTo(path)
 			}
 		}
 	})

@@ -12,7 +12,7 @@
 
 	<body>
 		<div id="login" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo('intro/index.html')" class="icon-back"></span> 登录账号
+			<div class="back-bar"><span onclick="jumpTo('instro/company.html')" class="icon-back"></span> 登录账号
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -54,12 +54,13 @@
 		methods: {
 			/*提交接口参数*/
 			login: function() {
-				console.log(this)
 				let textTips = ""
 				if(!this.mobile) {
-					textTips = "手机号不能为空！"
+					textTips = "手机号不能为空！";
 				} else if(!this.password) {
-					textTips = "密码不能为空！"
+					textTips = "密码不能为空！";
+				} else if(!mobile_test.test(this.mobile)) {
+					textTips = "手机号格式不正确！"
 				}
 				if(textTips) {
 					this.$message({
@@ -70,12 +71,12 @@
 				}
 				const loginParams = {
 					mobile: this.mobile,
-					password: this.password
+					pwd: this.password
 				}
-				console.log(loginParams)
-				return axios.get(common_url + '/login', loginParams)
+				return axios.post(common_url + '/login', loginParams)
 					.then(function(response) {
 						console.log(response);
+						setCookie('user', loginParams.mobile);
 					})
 					.catch(function(error) {
 						console.log(error);

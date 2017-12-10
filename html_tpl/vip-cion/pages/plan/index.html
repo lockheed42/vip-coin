@@ -13,7 +13,7 @@
 				height: 88px;
 				width: 100%;
 				border-radius: 4px;
-				background:url(../../img/bar_bg.png) no-repeat;
+				background: url(../../img/bar_bg.png) no-repeat;
 				background-size: 100% 100%;
 				display: flex;
 				box-shadow: #666 0px 0px 10px;
@@ -53,35 +53,36 @@
 				width: 18px;
 				height: 18px;
 				border-radius: 4px;
-				color: #816835; 
+				color: #816835;
 				border: 1px solid #816835;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				font-size: 10px;
 			}
+			
 			.list .part-left li .text {
 				font-size: 14px
 			}
+			
 			.name {
 				color: #fff;
 				font-size: 15px;
 			}
-			.money, .nums ,.date {
+			
+			.money,
+			.nums,
+			.date {
 				color: #bababa;
 			}
 			
-			.status, .nums {
+			.status,
+			.nums {
 				font-size: 10px;
 			}
 			
-			.status-yellow {
-				color: #cbaa67;
-			}
-			.status-red {
-				color: #c23131;
-			}
-			.date {
+			.date,
+			.status {
 				color: #999999;
 			}
 		</style>
@@ -106,64 +107,21 @@
 						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
 					</ul>
 				</div>
-				<!--<el-tabs v-model="activeName" @tab-click="handleClick">
-				    <el-tab-pane label="公司简介" name="company" onclick="jumpTo('instro/company.html')"></el-tab-pane>
-				    <el-tab-pane label="行业资讯" name="info" onclick="jumpTo('instro/info.html')"></el-tab-pane>
-				    <el-tab-pane label="公司公告" name="notice" onclick="jumpTo('instro/notice.html')"></el-tab-pane>
-				    <el-tab-pane label="发行计划" name="plan" onclick="jumpTo('plan/index.html')"></el-tab-pane>
-				    <el-tab-pane label="标的一览" name="myPlace" onclick="jumpTo('myPlace/index.html')"></el-tab-pane>
-				    <el-tab-pane label="收益统计" name="earnings" onclick="jumpTo('earnings/index.html')"></el-tab-pane>
-				    <el-tab-pane label="个人中心" name="personalCenter" onclick="jumpTo('personalCenter/index.html')"></el-tab-pane>
-				  </el-tabs>-->
-				<!--<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path" onclick="jumpTo(path)"></el-tab-pane>
-				</el-tabs>-->
 				<div class="common-width">
-					<div class="list" onclick="jumpTo('plan/detail.html')">
+					<div class="list" v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
 						<div class="part-left">
 							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
+								<li v-for="(list, index) of item.partLeft">
+									<span class="flag"> {{ index }}</span>
+									<span class="text"> {{ list }} </span>
+								</li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="list" onclick="jumpTo('plan/detail.html')">
-						<div class="part-left">
-							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-yellow">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
-							</ul>
-						</div>
-					</div>
-					<div class="list" onclick="jumpTo('plan/detail.html')">
-						<div class="part-left">
-							<ul>
-								<li><span class="flag">总</span><span class="text">10000T</span></li>
-								<li><span class="flag">卖</span><span class="text">2000T</span></li>
-								<li><span class="flag">剩</span><span class="text">8000T</span></li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="name">发电站</span><span class="money">预计收益</span></li>
-								<li><span class="status status-red">预售中</span><span class="nums">2384296</span></li>
-								<li><span class="flag"></span><span class="date">2017.12.30-2018.12.30</span></li>
+								<li><span class="name"> {{ item.partRight.name }} </span><span class="money">预计收益</span></li>
+								<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}"> {{ item.partRight.statusName }} </span><span class="nums"> {{ item.partRight.profit }} </span></li>
+								<li><span class="flag"></span><span class="date"> {{ item.partRight.time }} </span></li>
 							</ul>
 						</div>
 					</div>
@@ -195,15 +153,100 @@
 					'earnings/index.html': '收益统计',
 					'personalCenter/index.html': '个人中心'
 				},
+				statusList: {
+					'1': '预售中',
+					'2': '进行中',
+					'3': '已关闭'
+				},
+				contentList: [{
+						id: 1,
+						partLeft: {
+							'总': '10000T',
+							'卖': '10000T',
+							'剩': '10000T'
+						},
+						partRight: {
+							'name': '计划名称',
+							'time': '2017.12.30-2018.12.30',
+							'status': '1',
+							'statusName': '进行中',
+							'profit': 2384296
+						}
+					},
+					{
+						id: 2,
+						partLeft: {
+							'总': '10000T',
+							'卖': '10000T',
+							'剩': '10000T',
+						},
+						partRight: {
+							'name': '计划名称',
+							'time': '2017.12.30-2018.12.30',
+							'status': '2',
+							'statusName': '预售中',
+							'profit': 2384296
+						}
+					},
+					{
+						id: 3,
+						partLeft: {
+							'总': '10000T',
+							'卖': '10000T',
+							'剩': '10000T',
+						},
+						partRight: {
+							'name': '计划名称',
+							'time': '2017.12.30-2018.12.30',
+							'status': '3',
+							'statusName': '已关闭',
+							'profit': 2384296
+						}
+					}
+				],
 				activeName: 'plan',
 			}
 		},
 		watch: {},
 		mounted: function() {
+			this.$nextTick(function() {
+				this.getList()
+			})
 		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
+			getList () {
+				axios.get(common_url + '/all/plan', {})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						let middleObj = '';
+						let list = [];
+						for(var i = 0; i < data.length; i++) {
+							middleObj = {
+								id: data.plan_id,
+								partLeft: {
+									'总': data.total + 'T',
+									'卖': data.sell + '10000T',
+									'剩': (Number(data.total) - Number(data.sell)) + 'T',
+								},
+								partRight: {
+									'name': data.name,
+									'time': data.begin + '-' + data.end,
+									'status': data.status,
+									'statusName': this.statusList[data.status],
+									'profit': data.profit
+								}
+							}
+							list.push(middleObj);
+						}
+						this.contentList = list;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			},
+			jumpTo(path) {
+				jumpTo(path)
 			}
 		}
 	})

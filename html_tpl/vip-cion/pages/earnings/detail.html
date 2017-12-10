@@ -52,7 +52,7 @@
 							<dd> {{ item.date }} </dd>
 						</dl>
 						<span class="status">
-							{{ item.status }}
+							{{ item.statusName }}
 						</span>
 					</div>
 				</div>
@@ -74,28 +74,56 @@
 		el: '#earningsDetails',
 		data() {
 			return {
+				statusList: {
+					'0': '未兑现',
+					'1': '已兑现'
+				},
 				list: [{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '已兑现'
+						'statusName': '已兑现'
 					},
 					{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '已兑现'
+						'statusName': '已兑现'
 					},
 					{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '未兑现'
+						'statusName': '未兑现'
 					}
 				]
 			}
 		},
 		watch: {},
 		mounted: function() {
+			this.$nextTick(function() {
+				this.getList()
+			})
 		},
 		methods: {
+			getList () {
+				axios.get(common_url + '/profit/log', {})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						let middleObj = '';
+						let list = [];
+						for(var i = 0; i < data.length; i++) {
+							middleObj = {
+								money: '¥' + data[i].date,
+								date: data[i].date,
+								statusName: this.statusList[data.status]
+							}
+							list.push(middleObj);
+						}
+						this.list = list;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			}
 		}
 	})
 </script>

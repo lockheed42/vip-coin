@@ -232,12 +232,13 @@ a {
 	color: #fff;
 }
 
-.status-yellow {
-	color: #cbaa67;
+.status-red {
+	color: #c23131!important;
 }
 
-.status-red {
-	color: #c23131;
+
+.status-yellow {
+	color: #cbaa67!important;
 }
 
 .wrap-card-input {
