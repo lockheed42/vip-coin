@@ -30,14 +30,6 @@
 				font-size: 10px;
 			}
 			
-			.status-yellow {
-				color: #cbaa67;
-			}
-			
-			.status-red {
-				color: #c23131;
-			}
-			
 			.date {
 				color: #999999;
 			}
@@ -111,7 +103,7 @@
 
 	<body>
 		<div id="placeDetail" class="wrap-page">
-			<div class="back-bar"><span  @click="jumpTo('index')" class="icon-back"></span> 计划详情
+			<div class="back-bar"><span onclick="jumpTo('myPlace/index.html')" class="icon-back"></span> 计划详情
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -119,24 +111,24 @@
 			<div class="content">
 				<div class="common-width">
 					<dl class="title-info">
-						<dt>发电站</dt>
-						<dd class="status status-red">预售中</dd>
+						<dt> {{ detail.name }} </dt>
+						<dd class="status"  :class="{ 'status-red': detail.status === '2', 'status-yellow': detail.status === '1'}"> {{ detail.statusName }} </dd>
 					</dl>
 					<ul class="status-list">
-						<li><span>拥有算力</span><span class="text">10000T</span></li>
+						<li><span>拥有算力</span><span class="text"> {{ detail.total }} </span></li>
 					</ul>
 					<ul class="other-list">
 						<li class="date">
-							2017.12.30-2018.12.30
+							{{ detail.time }} 
 						</li>
 						<li class="money">
 							<span>预计收益</span>
-							<span>2384296</span>
+							<span> {{ detail.profit }} </span>
 						</li>
 					</ul>
 					<dl class="plan-detail">
 						<dt>计划介绍</dt>
-						<dd>计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计。</dd>
+						<dd> {{ detail.con }} </dd>
 					</dl>
 					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">查看合同</button></div>
 				</div>
@@ -158,33 +150,49 @@
 		el: '#placeDetail',
 		data() {
 			return {
-				tabList: {
-					'plan': '发行计划',
-					'place': '标的一览',
-					'money': '收益统计',
-					'person': '个人中心'
+				statusList: {
+					'1': '预售中',
+					'2': '进行中',
+					'3': '已关闭'
 				},
-				activeName: 'plan'
+				detail: {
+					name: '发电站',
+					status: '1',
+					statusName: '预售中',
+					time: '2017.12.30-2018.12.30',
+					profit: 2384296,
+					con: '计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情'
+				}
 			}
 		},
 		watch: {},
-		mounted: function() {},
+		mounted: function() {
+			this.$nextTick(function() {
+				this.getDetail()
+			})
+		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
+			getDetail () {
+				const planId = params('id');
+				axios.get(common_url + '/project/detail', {
+					plan_id: planId
+				})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						this.detail = {
+							name: data.name,
+							time: data.begin + '-' + data.end,
+							status: data.status,
+							statusName: this.statusList[data.status],
+							profit: data.total_profit,
+							con: data.desc
+						}
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'card') {
-					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if(name === 'password') {
-					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if(name === 'index') {
-					jumpUrl = jumpUrl + 'myPlace/index.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
-			}
 		}
 	})
 </script>

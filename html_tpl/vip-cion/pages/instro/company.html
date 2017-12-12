@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>介绍</title>
+		<style>
+			.content .common-width {
+				position: relative;
+				height: 100%;
+			}
+			
+			.content img {
+				width: 100%;
+			}
+			
+			.el-tabs {
+				margin-top: 10px;
+			}
+			
+			.el-tabs__nav {
+				display: flex;
+				width: 100%;
+			}
+			
+			.el-tabs .el-tabs__item {
+				color: #fff;
+				font-size: 16px;
+				padding: 0px;
+				flex: 1;
+				text-align: center;
+			}
+			
+			.el-tabs__active-bar {
+				display: none;
+			}
+			
+			.el-tabs__nav-wrap::after {
+				display: none;
+			}
+			
+			.el-tabs__item.is-active {
+				background: #282830;
+				color: #cbaa67;
+				border-radius: 5px 5px 0px 0px;
+			}
+			
+			.tab-content {
+				position: absolute;
+				width: 100%;
+				border: 18px solid #282830;
+				box-sizing: border-box;
+				/*top: 50px;*/
+				bottom: 70px;
+				background: #282830;
+				color: #999999;
+				font-size: 13px;
+				border-radius: 10px;
+				overflow-y: auto;
+			}
+			
+			.tab-content p {
+				text-indent: 22px;
+				line-height: 20px;
+			}
+			
+			.tab-instro {
+				border-radius: 0px 5px 5px 5px;
+			}
+			
+			.tab-message {
+				border-radius: 5px 0px 5px 5px;
+			}
+			
+			.tab-content .c-title {
+				color: #cbaa67;
+				margin-bottom: 20px;
+			}
+			
+			.tab-content .list {
+				border-bottom: 1px dotted #999999;
+				padding-bottom: 10px;
+				margin-bottom: 20px;
+			}
+			
+			.tab-content .list:last-child {
+				margin-bottom: 0px;
+			}
+			
+			.list .wrap-tips {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 20px;
+			}
+			
+			.content .wrap-enter {
+				position: absolute;
+				width: 100%;
+				bottom: 10px;
+			}
+			
+			.list-detail .wrap-tips {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				text-align: right;
+			}
+			
+			.list-detail .wrap-tips span {
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="instro" class="wrap-page">
+			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div class="nav-list">
+					<ul>
+						<li class="active">公司简介</li>
+						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
+						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
+						<li v-if="isLogin" onclick="jumpTo('plan/index.html')">发行计划</li>
+						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li v-if="isLogin" onclick="jumpTo('earnings/index.html')">收益统计</li>
+						<li v-if="isLogin" onclick="jumpTo('personalCenter/index.html')">个人中心</li>
+					</ul>
+				</div>
+				<div class="common-width">
+					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
+						<div v-if="activeName === 'instro'">
+							<img :src="instro.picUrl">
+							<p v-for="list in instro.content">
+								{{ list }}
+							</p>
+						</div>
+						<div v-if="(activeName === 'info') && (!detail.show)">
+							<div class="list" v-for="list in info.content" @click="getDetail(list.id)">
+								<div class="c-title" v-if="list.title"> {{ list.title }} </div>
+								<div class=""> {{ list.sl_detail }}</div>
+								<div class="wrap-tips">
+									<span>
+								{{ list.read_nums.name }} {{ list.read_nums.value  }}
+							</span>
+									<span>
+								{{ list.current_date }}
+							</span>
+								</div>
+							</div>
+						</div>
+						<div v-if="(activeName === 'message') && (!detail.show)">
+							<div class="list" v-for="list in message.content" @click="getDetail(list.id)">
+								<div class="c-title"> {{ list.title }} </div>
+								<div class=""> {{ list.sl_detail }}</div>
+								<div class="wrap-tips">
+									<span>
+								{{ list.read_nums.name }} {{ list.read_nums.value  }}
+							</span>
+									<span>
+								{{ list.current_date }}
+							</span>
+								</div>
+							</div>
+						</div>
+						<div class="list-detail" v-if="detail.show">
+							<div class="c-title" v-if="detail.title"> {{ detail.title }} </div>
+							<img :src="detail.picUrl" v-if="detail.picUrl">
+							<p> {{ detail.name }} </p>
+							<p v-for="list in detail.content">
+								{{ list }}
+							</p>
+							<div class="wrap-tips">
+								<span>
+							{{ detail.publisher }}
+						</span>
+								<span>
+							{{ detail.time }}
+						</span>
+							</div>
+						</div>
+					</div>
+					<div class="wrap-enter">
+						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
+						<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<script>
+	new Vue({
+		el: '#instro',
+		data() {
+			return {
+				tabList: {
+					'instro': '公司简介',
+					'info': '行业资讯',
+					'message': '公告通知'
+				},
+				isLogin: false,
+				activeName: 'instro',
+				instro: {
+					picUrl: '../../img/intro_banner.png',
+					content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
+						'金融行业人员组成的专业队伍，为平台持续提供稳定、安全、便捷的服务保障。',
+						'比特币交易网先后获得过港股上市公司神州数字（08255.HK）、亚杰商会（AAMA）、国富财智（GFCZ）等机构的战略投资。'
+					]
+				},
+				detail: {
+					show: false,
+					title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+					picUrl: '../../img/info_banner.png',
+					content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
+						'金融行业人员组成的专业队伍，为平台持续提供稳定、安全、便捷的服务保障。',
+						'比特币交易网先后获得过港股上市公司神州数字（08255.HK）、亚杰商会（AAMA）、国富财智（GFCZ）等机构的战略投资。'
+					],
+					name: '尊敬的比特币交易网用户：',
+					time: '2017-10-13',
+					publisher: '比特币交易网'
+				},
+				info: {
+					content: [{
+							id: '1',
+							current_date: '2017-11-01',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '2',
+							current_date: '2017-11-02',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '3',
+							current_date: '2017-11-03',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '4',
+							current_date: '2017-11-04',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						}, {
+							id: '5',
+							current_date: '2017-11-05',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '6',
+							current_date: '2017-11-06',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						}
+					]
+				},
+				message: {
+					content: [{
+							id: '1',
+							current_date: '2017-11-01',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '2',
+							current_date: '2017-11-02',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						}
+					]
+				}
+			}
+		},
+		watch: {
+			'activeName' () {
+				this.detail.show = false
+			}
+		},
+		mounted: function() {
+			if (getCookie('user')) {
+				this.isLogin = true
+			}
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px';
+		},
+		methods: {
+			getDetail(id) {
+				let requestUrl = common_url
+				console.log(this.activeName)
+				if(this.activeName === 'info') {
+					requestUrl = requestUrl + '/info_detail.json'
+				} else if(this.activeName === 'message') {
+					requestUrl = requestUrl + '/message_detail.json'
+				}
+				const requestParams = {
+					id: id
+				}
+				let result = ''
+				const _this = this
+				return axios.get(requestUrl, requestParams)
+					.then(function(response) {
+						result = response.data
+						console.log(result)
+						if(result.status === 0) {
+							_this.detail = result.data.detail
+						}
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+
+			}
+		}
+	})
+</script>

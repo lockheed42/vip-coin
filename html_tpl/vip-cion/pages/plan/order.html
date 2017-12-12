@@ -70,7 +70,7 @@
 
 	<body>
 		<div id="order" class="wrap-page">
-			<div class="back-bar"><span class="icon-back" @click="jumpTo('order')"></span> 购买算力
+			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/order.html')"></span> 抢购成功
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -79,16 +79,16 @@
 				<div class="common-width">
 					<div class="list">
 						<ul>
-							<li><span class="name">发电站</span><span class="white"><span class="status-yellow">2000/</span>10000T</span>
+							<li><span class="name"> {{ detail.name }}  </span><span class="white"><span class="status-yellow"> {{ detail.sell }}/</span> {{ detail.total }} </span>
 							</li>
-							<li><span class="money">预计收益</span><span class="nums">2384296</span></li>
-							<li><span class="date">2017.12.30-2018.12.30</span></li>
+							<li><span class="money">预计收益</span><span class="nums"> {{ detail.profit }} </span></li>
+							<li><span class="date"> {{ detail.time }} </span></li>
 						</ul>
 					</div>
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">购买算力</span>
 						<div class="right">
-							<el-input placeholder="请输入购买算力" v-model="nums">
+							<el-input-number placeholder="请输入购买算力" v-model="nums" :step="inputNumberObj.step" :controls="inputNumberObj.controls">
 						</div>
 						<span class="unit">T</span>
 						</div>
@@ -96,7 +96,7 @@
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">算力单价</span>
 						<div class="right">
-							<el-input placeholder="请输入算力单价" v-model="price">
+							<el-input placeholder="请输入算力单价" v-model="detail.price" :readonly="priceObj.readonly">
 						</div>
 						<span class="unit">元</span>
 						</div>
@@ -110,7 +110,7 @@
 						</div>
 					</div>
 					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">预览合同</button></div>
-					<div class="wrap-enter"><button @click="jumpTo('success')" type="button" class="el-button el-button--primary">立即抢购</button></div>
+					<div class="wrap-enter"><button @click="toBuy('plan/success.html')" type="button" class="el-button el-button--primary">立即抢购</button></div>
 				</div>
 			</div>
 		</div>
@@ -130,26 +130,72 @@
 		el: '#order',
 		data() {
 			return {
-				nums: '',
+				inputNumberObj: {
+					step: 1,
+					controls: false
+				},
+				priceObj: {
+					readonly: true
+				},
+				detail: {
+					name: '发电站',
+					time: '2017.12.30-2018.12.30',
+					profit: 2384296,
+					price: 200,
+					sell: 2000 +  'T',
+					total: 8000 + 'T'
+				},
+				nums: 1,
 				price: '',
-				amount: ''
+				amount: 0
 			}
 		},
-		watch: {},
-		mounted: function() {},
+		watch: {
+			'nums' (val) {
+				this.amount = Number(this.nums) * Number(this.detail.price)
+			}
+		},
+		mounted: function() {
+			
+		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
+			getDetail () {
+				const planId = params('id');
+				axios.get(common_url + '/plan/detail', {
+					plan_id: planId
+				})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						this.detail = {
+							name: data.name,
+							time: data.begin + '-' + data.end,
+							statusName: this.statusList[data.status],
+							price: data.unit,
+							profit: data.profit,
+							sell: data.sell +  'T',
+							total: data.total + 'T'
+						}
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'order') {
-					jumpUrl = jumpUrl + 'plan/order.html'
-				} else if(name === 'success') {
-					jumpUrl = jumpUrl + 'plan/success.html'
+			toBuy (path) {
+				const paramStr='name=' + this.detail.name + '&time=' + this.detail.time + '&count=' + this.nums + '&mount=' + this.amount
+				jumpTo(path + '?' + paramStr)
+				const id = params('id')
+				const buyParams = {
+					plan_id: id,
+					count: nums
 				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
+				axios.get(common_url + '/plan/buy', buyParams)
+					.then(function(response) {
+						jumpTo(path + '?' + paramStr);
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			}
 		}
 	})

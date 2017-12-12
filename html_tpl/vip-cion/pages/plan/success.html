@@ -64,7 +64,7 @@
 
 	<body>
 		<div id="buySuccess" class="wrap-page">
-			<div class="back-bar"><span @click="jumpTo('index')" class="icon-back"></span> 计划详情
+			<div class="back-bar"><span onclick="jumpTo('plan/index.html')" class="icon-back"></span> 计划详情
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -76,17 +76,17 @@
 					</div>
 					<div class="list">
 						<ul>
-							<li><span class="name">发电站</span><span class="nums">8000T</span></li>
-							<li><span class="date">2017.12.30-2018.12.30</span><span></span></li>
+							<li><span class="name"> {{ successInfo.name }} </span><span class="nums"> {{ successInfo.count }} </span></li>
+							<li><span class="date"> {{ successInfo.time }} </span><span></span></li>
 						</ul>
 						<ul>
 							<li>
-								<span></span><span class="money">合计160000元</span>
+								<span></span><span class="money">合计 {{ successInfo.mount }} 元</span>
 							</li>
 						</ul>
 					</div>
 					<div class="text-tips">
-						请您用电脑登录，下载并打印两份合同，完善信息之后，签字寄到****公司地址，公司会在盖完公章之后，将合同扫描成电子版，您可在我的标的内查看合同扫描件。如需要寄送合同原件，发送邮件到***公司邮箱。
+						请您用电脑登录，下载并打印两份合同，完善信息之后，签字寄到上海市延安西路1030弄 48号1F公司地址，公司会在盖完公章之后，将合同扫描成电子版，您可在我的标的内查看合同扫描件。如需要寄送合同原件，发送邮件到***公司邮箱。
 					</div>
 				</div>
 			</div>
@@ -107,34 +107,24 @@
 		el: '#buySuccess',
 		data() {
 			return {
-				tabList: {
-					'plan': '发行计划',
-					'place': '标的一览',
-					'money': '收益统计',
-					'person': '个人中心'
-				},
-				activeName: 'plan',
-				list: [{
-
-				}, {
-
-				}]
+				successInfo: {
+					name: 'fadianzhan',
+					time: '2017.12.30-2018.12.30',
+					count: '3000T',
+					mount: '19000'
+				}
 			}
 		},
 		watch: {},
-		mounted: function() {},
-		methods: {
-			handleClick(val) {
-				console.log(val)
-			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'index') {
-					jumpUrl = jumpUrl + 'plan/index.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
+		mounted: function() {
+			this.successInfo = {
+				name: params('name'),
+				time: params('time'),
+				count: params('count'),
+				mount: params('mount')
 			}
+		},
+		methods: {
 		}
 	})
 </script>

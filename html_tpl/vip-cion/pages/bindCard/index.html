@@ -70,7 +70,7 @@
 
 	<body>
 		<div id="bindCard" class="wrap-page wrap-card">
-			<div class="back-bar"><span class="icon-back"></span> 绑定银行卡
+			<div class="back-bar"><span onclick="jumpTo('personalCenter/index.html')" class="icon-back"></span> 绑定银行卡
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -166,7 +166,7 @@
 							},
 							{
 								name: '手机号',
-								placeholder: '请输入卡类型',
+								placeholder: '请输入手机号',
 								value: ''
 							}
 						]
@@ -180,7 +180,46 @@
 		},
 		methods: {
 			bind () {
-				console.log(this.card)
+				const name = this.card.info1.inputList[0].value;
+				const code = this.card.info1.inputList[1].value;
+				const bank = this.card.info2.inputList[0].value;
+				const mobile = this.card.info2.inputList[1].value;
+				let textTips = '';
+				if(!name) {
+					textTips = "手机号不能为空！"
+				} else if (!code) {
+					textTips = "卡号不能为空！"
+				} else if (!bank) {
+					textTips = "卡类型不能为空！"
+				} else if (!mobile) {
+					textTips = "手机号不能为空！"
+				} else if (!this.card.agreement.value) {
+					textTips = "请同意用户协议！"
+				} else if(!mobile_test.test(mobile)) {
+					textTips = "手机号格式不正确！"
+				}
+				if(textTips) {
+					this.$message({
+						message: textTips,
+						type: 'error'
+					});
+					return
+				}
+				const cardInfoParams = {
+					name: name,
+					code: code,
+					bank: bank,
+					mobile: mobile
+				}
+				console.log(cardInfoParams)
+				axios.post(common_url + 'user/bindCard', cardInfoParams)
+					.then(function(response) {
+						console.log(response);
+						jumpTo('bindCard/index.html');
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			}
 		}
 	})

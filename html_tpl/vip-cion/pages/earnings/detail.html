@@ -37,7 +37,7 @@
 	<body>
 		<div id="earningsDetails" class="wrap-page">
 			<div class="back-bar">
-				<span @click="jumpTo('index')" class="icon-back"></span>
+				<span onclick="jumpTo('earnings/index.html')" class="icon-back"></span>
 				收益统计
 				<span ></span>
 			</div>
@@ -45,9 +45,6 @@
 				VIP-CION
 			</div>
 			<div class="content">
-				<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-for="(name, path) in tabList" :label="name" :name="path"></el-tab-pane>
-				</el-tabs>
 				<div class="common-width">
 					<div v-for="(item, i) in list" class="list">
 						<dl>
@@ -55,7 +52,7 @@
 							<dd> {{ item.date }} </dd>
 						</dl>
 						<span class="status">
-							{{ item.status }}
+							{{ item.statusName }}
 						</span>
 					</div>
 				</div>
@@ -77,44 +74,55 @@
 		el: '#earningsDetails',
 		data() {
 			return {
+				statusList: {
+					'0': '未兑现',
+					'1': '已兑现'
+				},
 				list: [{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '已兑现'
+						'statusName': '已兑现'
 					},
 					{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '已兑现'
+						'statusName': '已兑现'
 					},
 					{
 						'money': '¥2918',
 						'date': '2017.11.17',
-						'status': '未兑现'
+						'statusName': '未兑现'
 					}
 				]
 			}
 		},
 		watch: {},
 		mounted: function() {
-			console.log((document.body.clientHeight - 145) + 'px')
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
+			this.$nextTick(function() {
+				this.getList()
+			})
 		},
 		methods: {
-			handleClick(val) {
-				console.log(val)
-			},
-			jumpTo(name) {
-				let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
-				if(name === 'card') {
-					jumpUrl = jumpUrl + 'bindCard/index.html'
-				} else if(name === 'password') {
-					jumpUrl = jumpUrl + 'account/editPassword.html'
-				} else if(name === 'index') {
-					jumpUrl = jumpUrl + 'personalCenter/index.html'
-				}
-				console.log(jumpUrl)
-				window.location.href = jumpUrl
+			getList () {
+				axios.get(common_url + '/profit/log', {})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data;
+						let middleObj = '';
+						let list = [];
+						for(var i = 0; i < data.length; i++) {
+							middleObj = {
+								money: '¥' + data[i].date,
+								date: data[i].date,
+								statusName: this.statusList[data.status]
+							}
+							list.push(middleObj);
+						}
+						this.list = list;
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
 			}
 		}
 	})

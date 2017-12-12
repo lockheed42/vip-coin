@@ -107,7 +107,7 @@
 
 	<body>
 		<div id="edit" class="wrap-page">
-			<div class="back-bar"><span class="icon-back"></span> 个人资料
+			<div class="back-bar"><span onclick="jumpTo('personalCenter/index.html')" class="icon-back"></span> 个人资料
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -185,6 +185,33 @@
 				}
 			}
 		},
+		mounted: function () {
+		  	this.$nextTick(function () {
+			  	axios.get(common_url + '/user/info', {})
+					.then(function(response) {
+						console.log(response);
+						const data = response.data
+						// 刷新当前页面
+						this.info = [{
+							name: '姓名',
+							value: data.name
+						},
+						{
+							name: '性别',
+							value: data.sex
+						},
+						{
+							name: '身份证号',
+							value: data.id_card
+						}]
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			    // Code that will run only after the
+			    // entire view has been rendered
+		  	})
+		},
 		methods: {
 			editInfo (item) {
 				console.log(item, item.name, item.value)
@@ -205,17 +232,46 @@
 				console.log(this.edit)
 			},
 			save () {
+				let editPathName = '/user'
+				let parmasName = 'name'
 				if (this.edit.name === '姓名') {
+					editPathName = editPathName + '/saveName'
+					parmasName = 'name'
 					console.log('保存提交姓名的接口，返回新的value')
-					this.info[0].value = this.edit.value
+//					this.info[0].value = this.edit.value
+//					userParams = {
+//						name: this.edit.value
+//					}
 				} else if (this.edit.name === '性别') {
-					this.info[1].value = this.edit.value
-					console.log('保存提交性别的接口，返回新的value')
+					editPathName = editPathName + '/saveSex'
+					parmasName = 'sex'
+//					userParams = {
+//						sex: this.edit.value
+//					}
+//					console.log('保存提交性别的接口，返回新的value')
 				} else if (this.edit.name === '身份证号') {
-					this.info[2].value = this.edit.value
-					console.log('保存提交性别的接口，返回新的value')
+					editPathName = editPathName + '/saveIdCard'
+					parmasName = 'id_card'
+//					this.info[2].value = this.edit.value
+//					userParams = {
+//						id_card: this.edit.value
+//					}
+//					console.log('保存提交性别的接口，返回新的value')
 				}
+				console.log(parmasName, this.edit.value)
+				let userParams = {}
+				userParams[parmasName] = this.edit.value
+				console.log(userParams)
 				console.log('保存提交接口，返回新的value')
+				axios.post(common_url + editPathName, userParams)
+				.then(function(response) {
+					console.log(response);
+					// 刷新当前页面
+					location.reload();
+				})
+				.catch(function(error) {
+					console.log(error);
+				});
 				this.edit = {
 					name: '',
 					value: '',

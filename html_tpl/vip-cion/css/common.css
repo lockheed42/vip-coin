@@ -125,6 +125,29 @@ a {
 	cursor: pointer;
 }
 
+.nav-list ul {
+	display: flex;
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.nav-list ul li{
+	height: 45px;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	min-width: 75px;
+	margin-right: 30px;
+	color: #fff;
+	font-size: 16px;
+	justify-content: center;
+}
+
+.nav-list ul li.active {
+	border-bottom: 3px solid #cbaa67;
+}
+
 .content {
 	display: flex;
 	flex: 1;
@@ -209,12 +232,13 @@ a {
 	color: #fff;
 }
 
-.status-yellow {
-	color: #cbaa67;
+.status-red {
+	color: #c23131!important;
 }
 
-.status-red {
-	color: #c23131;
+
+.status-yellow {
+	color: #cbaa67!important;
 }
 
 .wrap-card-input {
