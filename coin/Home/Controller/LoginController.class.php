@@ -41,8 +41,11 @@ class LoginController extends CommonController
      * @apiParam {string} pwd 密码
      * @apiParam {string} pwd_sec 第二次密码
      *
+     * @apiSuccess {string} api_key key
+     * @apiSuccess {string} api_security security
+     *
      * @apiSuccessExample {json} Success-Response:
-     * {"status":"0","error":"","data":true}
+     * {"status":0,"error":"","data":{"api_key":"42gs8sdfds","api_security":"dsadn3roisdf"}}
      *
      * @apiVersion     1.0.0
      */
@@ -78,6 +81,7 @@ class LoginController extends CommonController
                     'cdate'        => date('Y-m-d H:i:s'),
                 ]
             );
+
         } catch (\Exception $e) {
 
         }
@@ -92,8 +96,11 @@ class LoginController extends CommonController
      * @apiParam {mobile} mobile 手机号码
      * @apiParam {string} pwd 密码
      *
+     * @apiSuccess {string} api_key key
+     * @apiSuccess {string} api_security security
+     *
      * @apiSuccessExample {json} Success-Response:
-     * {"status":"0","error":"","data":true}
+     * {"status":0,"error":"","data":{"api_key":"42gs8sdfds","api_security":"dsadn3roisdf"}}
      *
      * @apiVersion     1.0.0
      */
