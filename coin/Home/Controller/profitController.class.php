@@ -27,6 +27,11 @@ class ProfitController extends CommonController
      */
     public function index()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -54,6 +59,11 @@ class ProfitController extends CommonController
      */
     public function log()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',

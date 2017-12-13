@@ -9,9 +9,34 @@
 namespace Home\Controller;
 
 use Home\Common\CommonController;
+use Think\Exception;
 
 class UserController extends CommonController
 {
+    /**
+     * @api            {post} /?c=user&a=logout [用户退出]
+     * @apiDescription 用户推出
+     * @apiName        logout
+     * @apiGroup       user
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * {"status":"0","error":"","data":true}
+     *
+     * @apiVersion     1.0.0
+     */
+    public function logout()
+    {
+        try {
+            $this->checkLogin();
+
+            M('user')->where(['user_id' => $this->_user_id])->save(['api_security' => '']);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
     /**
      * @api            {get} /?c=user&a=info [个人信息]
      * @apiDescription 登录
@@ -29,19 +54,26 @@ class UserController extends CommonController
      */
     public function info()
     {
-        M('user')->where('')->find();
+        try {
+            $this->checkLogin();
 
-        $a = [
-            'status' => 0,
-            'error'  => '',
-            'data'   => [
-                'name'    => '路人甲',
-                'sex'     => '男',
-                'id_card' => '310104197704240051',
-            ],
-        ];
+            $user = M('user')->where(['user_id' => $this->_user_id])->find();
 
-        echo json_encode($a);
+            $return = [
+                'status' => 0,
+                'error'  => '',
+                'data'   => [
+                    'name'    => $user['name'],
+                    'sex'     => $user['sex'] == 1 ? '男' : '女',
+                    'id_card' => '***************' . substr($user['idcard'], -4),
+                ],
+            ];
+
+            $this->success($return);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
     }
 
     /**
@@ -59,6 +91,17 @@ class UserController extends CommonController
      */
     public function saveName()
     {
+        $name = I('post.name');
+
+        try {
+            $this->checkLogin();
+
+            M('user')->where(['user_id' => $this->_user_id])->save(['name' => $name]);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -67,7 +110,7 @@ class UserController extends CommonController
      * @apiName        saveSex
      * @apiGroup       user
      *
-     * @apiParam {string} sex 性别
+     * @apiParam {string} sex 性别。男=1，女=2
      *
      * @apiSuccessExample {json} Success-Response:
      * {"status":"0","error":"","data":true}
@@ -76,6 +119,17 @@ class UserController extends CommonController
      */
     public function saveSex()
     {
+        $sex = I('post.sex');
+
+        try {
+            $this->checkLogin();
+
+            M('user')->where(['user_id' => $this->_user_id])->save(['sex' => $sex]);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -93,6 +147,17 @@ class UserController extends CommonController
      */
     public function saveIdCard()
     {
+        $idCard = I('post.id_card');
+
+        try {
+            $this->checkLogin();
+
+            M('user')->where(['user_id' => $this->_user_id])->save(['idcard' => $idCard]);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -111,7 +176,22 @@ class UserController extends CommonController
      */
     public function changePwd()
     {
+        $idCard = I('post.pwd');
+        $verify = I('post.verify');
 
+        try {
+            $this->checkLogin();
+            $user = M('user')->where(['user_id' => $this->_user_id])->find();
+
+            $verifyCtl = new VerifyController();
+            $verifyCtl->check($user['account'], $verify);
+
+            M('user')->where(['user_id' => $this->_user_id])->save(['idcard' => $idCard]);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -132,7 +212,34 @@ class UserController extends CommonController
      */
     public function bindCard()
     {
+        $name = I('post.name');
+        $code = I('post.code');
+        $bank = I('post.bank');
+        $mobile = I('post.mobile');
 
+        try {
+            $this->checkLogin();
+
+            $bankInfo = M('bank_account')->where(['user_id' => $this->_user_id])->find();
+            if (!empty($bankInfo)) {
+                throw new Exception('已绑定银行卡');
+            }
+
+            M('bank_account')->add(
+                [
+                    'user_id'   => $this->_user_id,
+                    'bank_name' => $bank,
+                    'user_name' => $name,
+                    'code'      => $code,
+                    "mobile"    => $mobile,
+                    'cdate'     => date('Y-m-d H:i:s', time()),
+                ]
+            );
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -151,15 +258,19 @@ class UserController extends CommonController
      */
     public function getCard()
     {
-        $a = [
-            'status' => 0,
-            'error'  => '',
-            'data'   => [
-                'bank' => '光大银行',
-                'code' => '345349402342308',
-            ],
-        ];
+        try {
+            $this->checkLogin();
 
-        echo json_encode($a);
+            $bankInfo = M('bank_account')->where(['user_id' => $this->_user_id])->find();
+
+            $this->success(
+                [
+                    'bank' => $bankInfo['bank_name'],
+                    'code' => $bankInfo['code'],
+                ]
+            );
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 }

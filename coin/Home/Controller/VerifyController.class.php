@@ -19,7 +19,7 @@ class VerifyController extends CommonController
     /**
      * 发送验证码的模板
      */
-    const TEMP_CODE = 'cf89r43kfd9823kg';
+    const TEMP_CODE = 'cf9as46j9r9ggsdkg';
 
     /**
      * @api            {post} /?c=verify&a=send [发送短信]
@@ -52,7 +52,9 @@ class VerifyController extends CommonController
                     'cdate'  => date('Y-m-d H:i:s', time()),
                 ]
             );
+            $this->success(true);
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
     }
 
@@ -72,13 +74,13 @@ class VerifyController extends CommonController
             'verify' => $verify,
             'status' => 1,
         ];
-        $info = M('message_verify')->where($where)->select();
+        $info = M('message_verify')->where($where)->order(['id'=>'desc'])->find();
         if (empty($info)) {
             throw new Exception('验证码错误');
         }
 
-        M('message_verify')->where(['id' => $info[0]['id']])->save(['status' => 0]);
-        if (strtotime($info[0]['cdate']) < (time() - 600)) {
+        M('message_verify')->where(['id' => $info['id']])->save(['status' => 0]);
+        if (strtotime($info['cdate']) < (time() - 600)) {
             throw new Exception('验证码超时');
         }
     }

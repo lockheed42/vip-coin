@@ -9,27 +9,44 @@
 namespace Home\Common;
 
 use Think\Controller;
+use Think\Exception;
 
 class CommonController extends Controller
 {
-    protected $_is_need_login = true;
+    /**
+     * @var string 登录的用户id
+     */
+    protected $_user_id;
 
     public function __construct()
     {
         parent::__construct();
-        if ($this->_is_need_login === true) {
-            $this->getLoginInfo();
-        }
-
-
     }
 
     /**
-     * 验证用户信息，获取uid
+     * 检查登录
+     *
+     * @throws Exception
+     */
+    protected function checkLogin()
+    {
+        $info = $this->getLoginInfo();
+        if (empty($info)) {
+            throw new Exception('用户未登录');
+        }
+
+        $this->_user_id = $info['user_id'];
+    }
+
+    /**
+     * 根据key 和 security 获取用户信息
      */
     public function getLoginInfo()
     {
+        $apiKey = I('get.api_key');
+        $apiSecurity = I('get.api_security');
 
+        return M('user')->where(['api_key' => $apiKey, 'api_security' => $apiSecurity])->find();
     }
 
     /**
@@ -60,5 +77,12 @@ class CommonController extends Controller
             'data'   => '',
         ];
         $this->ajaxReturn(json_encode($response));
+    }
+
+    private function _notNeedLogin()
+    {
+        return [
+            'Login',
+        ];
     }
 }

@@ -61,7 +61,6 @@ class SmsController extends CommonController
         curl_close($curl);
 
         $res = json_decode($res, true);
-        var_dump($res);
         if (!isset($res['code']) || $res['code'] != self::CODE_SUCCESS) {
             throw new Exception($res['code']);
         }

@@ -34,6 +34,11 @@ class PlanController extends CommonController
      */
     public function all()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -97,6 +102,11 @@ class PlanController extends CommonController
      */
     public function detail()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -133,6 +143,11 @@ class PlanController extends CommonController
      */
     public function contract()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -162,6 +177,10 @@ class PlanController extends CommonController
      */
     public function buy()
     {
-
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 }

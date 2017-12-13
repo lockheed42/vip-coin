@@ -59,7 +59,7 @@ class LoginController extends CommonController
             $verifyCtl = new VerifyController();
             $verifyCtl->check($mobile, $verify);
 
-            $user = M('user')->where('mobile = %s', $mobile)->find();
+            $user = M('user')->where('account = %s', $mobile)->find();
             if (!empty($user)) {
                 throw new Exception('该手机号已经注册');
             }
@@ -82,8 +82,14 @@ class LoginController extends CommonController
                 ]
             );
 
+            $this->success(
+                [
+                    'api_key'      => $apiKey,
+                    'api_security' => $apiSecurity,
+                ]
+            );
         } catch (\Exception $e) {
-
+            $this->fail($e->getMessage());
         }
     }
 
@@ -109,14 +115,32 @@ class LoginController extends CommonController
         $mobile = I('post.mobile');
         $pwd = I('post.pwd');
 
-        $info = M('user')->where(
-            [
-                'account' => $mobile,
-                'pwd'     => md5($pwd),
-            ]
-        )->select();
+        try {
+            $info = M('user')->where(
+                [
+                    'account' => $mobile,
+                    'pwd'     => md5($pwd),
+                ]
+            )->find();
 
-        if (!empty($info)) {
+            if (empty($info)) {
+                throw new Exception('账号或者密码错误');
+            }
+
+            $rand = new RandController();
+            $apiSecurity = $rand->createOneCode(self::SECURITY_LENGTH);
+            M('user')
+                ->where(['user_id' => $info['user_id']])
+                ->save(['api_security' => $apiSecurity, 'udate' => date('Y-m-d H:i:s', time())]);
+
+            $this->success(
+                [
+                    'api_key'      => $info['api_key'],
+                    'api_security' => $apiSecurity,
+                ]
+            );
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
     }
 
@@ -140,22 +164,22 @@ class LoginController extends CommonController
         $mobile = I('post.mobile');
         $verify = I('post.verify');
         $pwd = I('post.pwd');
-    }
 
-    /**
-     * @api            {post} /?c=login&a=logout [用户退出]
-     * @apiDescription 用户推出
-     * @apiName        logout
-     * @apiGroup       login
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * {"status":"0","error":"","data":true}
-     *
-     * @apiVersion     1.0.0
-     */
-    public function logout()
-    {
+        try {
+            $verifyCtl = new VerifyController();
+            $verifyCtl->check($mobile, $verify);
 
+            $info = M('user')->where(['account' => $mobile])->find();
+            if (empty($info)) {
+                throw new Exception('用户不存在');
+            }
+
+            M('user')->where(['user_id' => $info['user_id']])->save(['pwd' => md5($pwd)]);
+
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**

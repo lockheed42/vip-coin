@@ -34,6 +34,11 @@ class ProjectController extends CommonController
      */
     public function all()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -99,6 +104,11 @@ class ProjectController extends CommonController
      */
     public function detail()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -137,6 +147,11 @@ class ProjectController extends CommonController
      */
     public function contract()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
