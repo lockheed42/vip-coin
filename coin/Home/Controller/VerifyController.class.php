@@ -10,10 +10,16 @@ namespace Home\Controller;
 
 
 use Home\Common\CommonController;
+use Think\Exception;
 
 class VerifyController extends CommonController
 {
     protected $_is_need_login = false;
+
+    /**
+     * 发送验证码的模板
+     */
+    const TEMP_CODE = 'cf9as46j9r9ggsdkg';
 
     /**
      * @api            {post} /?c=verify&a=send [发送短信]
@@ -32,17 +38,24 @@ class VerifyController extends CommonController
     {
         $mobile = I('post.mobile');
 
-        $verify = $this->_generateVerifyCode();
+        try {
+            $code = $this->_generateVerifyCode();
 
-        //#TODO 调用发送
+            $param = ['code' => $code];
+            $sms = new SmsController();
+            $sms->send($mobile, self::TEMP_CODE, $param);
 
-        M('message_verify')->add(
-            [
-                'mobile' => $mobile,
-                'verify' => $verify,
-                'cdate'  => date('Y-m-d H:i:s', time()),
-            ]
-        );
+            M('message_verify')->add(
+                [
+                    'mobile' => $mobile,
+                    'verify' => $code,
+                    'cdate'  => date('Y-m-d H:i:s', time()),
+                ]
+            );
+            $this->success(true);
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     /**
@@ -52,7 +65,7 @@ class VerifyController extends CommonController
      * @param $mobile
      * @param $verify
      *
-     * @return bool
+     * @throws Exception
      */
     public function check($mobile, $verify)
     {
@@ -61,17 +74,15 @@ class VerifyController extends CommonController
             'verify' => $verify,
             'status' => 1,
         ];
-        $info = M('message_verify')->where($where)->select();
+        $info = M('message_verify')->where($where)->order(['id'=>'desc'])->find();
         if (empty($info)) {
-            return false;
+            throw new Exception('验证码错误');
         }
 
-        M('message_verify')->where(['id' => $info[0]['id']])->save(['status' => 0]);
-        if (strtotime($info[0]['cdate']) < (time() - 600)) {
-            return false;
+        M('message_verify')->where(['id' => $info['id']])->save(['status' => 0]);
+        if (strtotime($info['cdate']) < (time() - 600)) {
+            throw new Exception('验证码超时');
         }
-
-        return true;
     }
 
     /**

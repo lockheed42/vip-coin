@@ -25,7 +25,8 @@ class ProjectController extends CommonController
      * @apiSuccess {string} begin 开始日期
      * @apiSuccess {string} end 结束日期
      * @apiSuccess {string} own 拥有算力
-     * @apiSuccess {string} status 状态。1=预售中，2=进行中，3=已关闭
+     * @apiSuccess {string} status 发行计划状态。1=预售中，2=进行中，3=已关闭
+     * @apiSuccess {string} project_status 我的标的状态。1=已作废，2=未生效，3=已生效
      *
      * @apiSuccessExample {json} Success-Response:
      * {"status":0,"error":"","data":[{"project_id":1,"name":"\u53d1\u7535\u7ad9","total_profit":"22300","get_profit":"2000","begin":"2017-07-23","end":"2018-03-23","total":"80000","own":"34985","status":"1"},{"project_id":2,"name":"\u5927\u578b\u8ba1\u5212","total_profit":"32300","get_profit":"23000","begin":"2017-07-23","end":"2018-03-23","total":"880000","own":"34985","status":"2"},{"project_id":3,"name":"\u5b63\u5b63\u53d1","total_profit":"8000","get_profit":"3000","begin":"2017-07-23","end":"2018-03-23","total":"380000","own":"34985","status":"3"}]}
@@ -34,6 +35,16 @@ class ProjectController extends CommonController
      */
     public function all()
     {
+        try {
+            $this->checkLogin();
+
+            $list = M('project')
+                ->join('t_plan as p ON p.plan_id = t_plan_user.plan_id')
+                ->where(['user_id' => $this->_user_id])->select();
+
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -99,6 +110,11 @@ class ProjectController extends CommonController
      */
     public function detail()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
@@ -137,6 +153,11 @@ class ProjectController extends CommonController
      */
     public function contract()
     {
+        try {
+            $this->checkLogin();
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
         $a = [
             'status' => 0,
             'error'  => '',
