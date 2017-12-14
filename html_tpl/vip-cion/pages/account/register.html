@@ -99,6 +99,7 @@
 					});
 			},
 			getYzm () {
+				console.log(common_url)
 				this.timeCount();
 				if (!this.mobile) {
 					this.$message({
@@ -110,13 +111,12 @@
 				const yzmParams = {
 					mobile: this.mobile
 				}
-				axios.post(common_url + '/verify/send', yzmParams)
-					.then(function(response) {
-						console.log(response);
-					})
-					.catch(function(error) {
-						console.log(error);
-					})
+				const urlParams = {
+					control: 'verify',
+					action: 'send'
+				}
+				const yzmInfo = apiPost(urlParams, urlParams, false)
+				console.logyzmInfo)
 			},
 			timeCount () {
 				console.log(this.yzmBtn.countdown)

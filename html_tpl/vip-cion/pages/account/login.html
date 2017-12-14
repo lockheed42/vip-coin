@@ -73,14 +73,16 @@
 					mobile: this.mobile,
 					pwd: this.password
 				}
-				return axios.post(common_url + '/login', loginParams)
-					.then(function(response) {
-						console.log(response);
-						setCookie('user', loginParams.mobile);
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+				const urlParams = {
+					control: 'login',
+					action: 'login'
+				}
+				const loginInfo = apiPost(urlParams, loginParams, false)
+				if (loginInfo) {
+					setCookie('api_key', loginInfo.api_key)
+					setCookie('api_security', loginInfo.api_security)
+					setCookie('user', loginInfo.mobile);
+				}
 			}
 		}
 	})
