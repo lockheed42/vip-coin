@@ -142,13 +142,18 @@ class PlanController extends CommonController
     {
         //#TODO 还需要定时任务来 定期清理过期标的，并恢复占用额度
         $planId = I('post.plan_id');
-        $count = I('get.count');
+        $count = I('post.count');
 
         try {
             $this->checkLogin();
 
             $userCon = new UserController();
             $userCon->checkUserAuth($this->_user_id);
+
+            $project = M('project')->where(['plan_id' => $planId, 'user_id' => $this->_user_id])->find();
+            if (!empty($project)) {
+                throw new Exception('每份发行计划用户只可购买一次');
+            }
 
             $planInfo = M('plan')->where(['plan_id' => $planId])->find();
             if (empty($planInfo)) {
@@ -165,7 +170,7 @@ class PlanController extends CommonController
 
             M()->startTrans();
 
-            M('t_plan')->where(['plan_id' => $planId])->save(['sell' => ($planInfo['sell'] + $count)]);
+            M('plan')->where(['plan_id' => $planId])->save(['sell' => ($planInfo['sell'] + $count)]);
             M('project')->add([
                 'user_id'     => $this->_user_id,
                 'plan_id'     => $planId,
@@ -176,6 +181,8 @@ class PlanController extends CommonController
             ]);
 
             M()->commit();
+
+            $this->success(true);
         } catch (\Exception $e) {
             M()->rollback();
             $this->fail($e->getMessage());
