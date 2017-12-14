@@ -52,7 +52,7 @@ class CommonController extends Controller
     /**
      * 成功的ajax响应
      *
-     * @param string $data
+     * @param string|array $data
      */
     protected function success($data)
     {
@@ -69,7 +69,7 @@ class CommonController extends Controller
      *
      * @param string $message
      */
-    public function fail($message = '')
+    protected function fail($message = '')
     {
         $response = [
             'status' => '1',
@@ -79,10 +79,43 @@ class CommonController extends Controller
         $this->ajaxReturn(json_encode($response));
     }
 
-    private function _notNeedLogin()
+    /**
+     * 过滤api接口需要返回的数据。二维数组
+     *
+     * @param array $list
+     * @param array $filterList
+     * @return array
+     */
+    protected function filterApiReturnList($list, array $filterList)
     {
-        return [
-            'Login',
-        ];
+        $return = [];
+        foreach ($list as $listKey => $data) {
+            $return[$listKey] = $this->filterApiReturn($data, $filterList);
+        }
+
+        return $return;
+    }
+
+    /**
+     * 过滤api接口需要返回的数据
+     *
+     * @param array $data
+     * @param array $filterList
+     * @return array
+     */
+    protected function filterApiReturn($data, array $filterList)
+    {
+        if (!is_array($data) || empty($data)) {
+            return [];
+        }
+
+        $return = [];
+        foreach ($data as $k => $v) {
+            if (in_array($k, $filterList)) {
+                $return[$k] = $v;
+            }
+        }
+
+        return $return;
     }
 }

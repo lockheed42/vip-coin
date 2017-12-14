@@ -176,17 +176,22 @@ class UserController extends CommonController
      */
     public function changePwd()
     {
-        $idCard = I('post.pwd');
+        $pwd = I('post.pwd');
         $verify = I('post.verify');
 
         try {
             $this->checkLogin();
+
+            if (empty($pwd)) {
+                throw new Exception('密码不能为空');
+            }
+
             $user = M('user')->where(['user_id' => $this->_user_id])->find();
 
             $verifyCtl = new VerifyController();
             $verifyCtl->check($user['account'], $verify);
 
-            M('user')->where(['user_id' => $this->_user_id])->save(['idcard' => $idCard]);
+            M('user')->where(['user_id' => $this->_user_id])->save(['pwd' => md5($pwd)]);
 
             $this->success(true);
         } catch (\Exception $e) {
@@ -219,6 +224,19 @@ class UserController extends CommonController
 
         try {
             $this->checkLogin();
+
+            if (empty($name)) {
+                throw new Exception('请填写银行卡上的姓名');
+            }
+            if (empty($code)) {
+                throw new Exception('请填写银行卡号');
+            }
+            if (empty($bank)) {
+                throw new Exception('请填写所属银行');
+            }
+            if (empty($mobile)) {
+                throw new Exception('请填写银行预留手机号码');
+            }
 
             $bankInfo = M('bank_account')->where(['user_id' => $this->_user_id])->find();
             if (!empty($bankInfo)) {
@@ -271,6 +289,28 @@ class UserController extends CommonController
             );
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * 检测用户是否有参与标的的权限。
+     *
+     * @param $userId
+     * @throws Exception
+     */
+    public function checkUserAuth($userId)
+    {
+        $userInfo = M('user')->where(['user_id' => $userId])->find();
+        if ($userInfo['name'] == '') {
+            throw new Exception('未填写真实姓名');
+        }
+        if ($userInfo['idcard'] == '') {
+            throw new Exception('未填写身份证号码');
+        }
+
+        $bankAccount = M('bank_account')->where(['user_id' => $userId])->find();
+        if (empty($bankAccount)) {
+            throw new Exception('未绑定银行卡');
         }
     }
 }
