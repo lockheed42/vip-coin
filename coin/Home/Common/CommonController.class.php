@@ -61,7 +61,7 @@ class CommonController extends Controller
             'error'  => '',
             'data'   => $data,
         ];
-        $this->ajaxReturn(json_encode($response));
+        $this->ajaxReturn($response);
     }
 
     /**
@@ -76,7 +76,7 @@ class CommonController extends Controller
             'error'  => $message,
             'data'   => '',
         ];
-        $this->ajaxReturn(json_encode($response));
+        $this->ajaxReturn($response);
     }
 
     /**
