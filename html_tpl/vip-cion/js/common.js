@@ -68,15 +68,15 @@ function setUrl (item, index) {
 
 function apiPost(url, params = null, token = true) {
 //	url.forEach(setUrl)
-	const paramUrl = '?c=' + url.control + '&a=' + url.action 
+	const paramUrl = '?c=' + url.control + '&a=' + url.action
 	return axios({
         method: 'post',
         url: common_url + paramUrl,
         params: extendToken(params, token),
         timeout: 30000,
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
-          'X-Requested-With': 'XMLHttpRequest'
+          // 'X-Requested-With': 'XMLHttpRequest'
         }
       })
         .then(checkStatus)
