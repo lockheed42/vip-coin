@@ -85,11 +85,11 @@ function apiPost(url, params = null, token = true) {
 			url: requestUrl,
 			data: params,
 			timeout: 30000,
-			//			withCredentials: true,
+			// withCredentials: true,
 			headers: {
-//				'X-Requested-With': 'XMLHttpRequest',
-//				'Content-Type': 'application/json; charset=UTF-8'
-//				'Content-Type': ' x-www-form-urlencoded'
+				// 'X-Requested-With': 'XMLHttpRequest',
+				//'Content-Type': 'application/json; charset=UTF-8'
+				//'Content-Type': ' x-www-form-urlencoded'
 			}
 		})
 		.then(checkStatus)
@@ -130,8 +130,8 @@ function checkCode(res) {
 			message: res.error,
 			type: 'error'
 		});
-		setTimeout(function () {
-			if (res.error === '用户未登录') {
+		setTimeout(function() {
+			if(res.error === '用户未登录') {
 				jumpTo('account/login.html')
 			}
 		}, 5000);
@@ -156,6 +156,22 @@ function checkCode(res) {
 		//			showError(msg, res.code)
 		//		}
 	}
+}
+
+function apiPost(url, params = null, token = true) {
+	const paramUrl = '?c=' + url.control + '&a=' + url.action
+	return axios({
+			method: 'post',
+			url: common_url + paramUrl,
+			params: extendToken(params, token),
+			timeout: 30000,
+			// withCredentials: true,
+			headers: {
+				// 'X-Requested-With': 'XMLHttpRequest'
+			}
+		})
+		.then(checkStatus)
+		.then(checkCode)
 }
 
 /**
@@ -227,6 +243,7 @@ function delCookie(name) {
 	var exp = new Date();
 	exp.setTime(exp.getTime() - 1);
 	var cval = getCookie(name);
-	if(cval != null)
+	if(cval != null) {
 		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+	}
 }
