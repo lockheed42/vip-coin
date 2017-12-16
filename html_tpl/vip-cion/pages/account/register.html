@@ -35,14 +35,16 @@
 	</body>
 
 </html>
-<!-- common.js -->
-<script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
 <script>
 	new Vue({
 		el: '#register',
@@ -83,20 +85,21 @@
 					});
 					return
 				}
+				const urlParams = {
+					control: 'login',
+					action: 'register'
+				}
 				const editParams = {
 					mobile: this.mobile,
 					verify: this.yzm,
-					pwd: this.firsPassword,
-					pwd_sec: this.secondPassword
+					pwd: this.firsPassword
 				}
-				console.log(editParams)
-				return axios.post('/edit', editParams)
-					.then(function(response) {
-						console.log(response);
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+				const registerInfo = apiPost(urlParams, editParams, false);
+				if (registerInfo) {
+					setCookie('api_key', loginInfo.api_key);
+					setCookie('api_security', loginInfo.api_security);
+					setCookie('user', loginInfo.mobile);
+				}
 			},
 			getYzm () {
 				console.log(common_url)
@@ -115,11 +118,10 @@
 					control: 'verify',
 					action: 'send'
 				}
-				const yzmInfo = apiPost(urlParams, urlParams, false)
-				console.logyzmInfo)
+				const yzmInfo = apiPost(urlParams, yzmParams, false)
+				console.logy(zmInfo)
 			},
 			timeCount () {
-				console.log(this.yzmBtn.countdown)
 				if(this.yzmBtn.countdown === 0) {
 					this.yzmBtn.disabled = false;
 					this.yzmBtn.value = "免费获取验证码";

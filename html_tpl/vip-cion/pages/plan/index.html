@@ -131,14 +131,16 @@
 	</body>
 
 </html>
-<!-- common.js -->
-<script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
 <script>
 	new Vue({
 		el: '#plan',
@@ -215,35 +217,40 @@
 		},
 		methods: {
 			getList () {
-				axios.get(common_url + '/all/plan', {})
-					.then(function(response) {
-						console.log(response);
-						const data = response.data;
-						let middleObj = '';
-						let list = [];
-						for(var i = 0; i < data.length; i++) {
-							middleObj = {
-								id: data.plan_id,
-								partLeft: {
-									'总': data.total + 'T',
-									'卖': data.sell + '10000T',
-									'剩': (Number(data.total) - Number(data.sell)) + 'T',
-								},
-								partRight: {
-									'name': data.name,
-									'time': data.begin + '-' + data.end,
-									'status': data.status,
-									'statusName': this.statusList[data.status],
-									'profit': data.profit
-								}
+				const urlParams = {
+					control: 'all',
+					action: 'plan'
+				}
+				const listInfo = apiGet(urlParams, {}, true);
+				if (listInfo && (_.isArray(listInfo))) {
+					let middleObj = '';
+					let middleItem = {};
+					let list = [];
+					for(var i = 0; i < data.length; i++) {
+						middleItem = data[i];
+						const status = _.get(middleItem, 'status');
+						const total = _.get(middleItem, 'total');
+						const sell = _.get(middleItem, 'sell');
+						const left = Number(total) - Number(sell);
+						middleObj = {
+							id: _.get(middleItem, 'plan_id'),
+							partLeft: {
+								'总': total + 'T',
+								'卖': sell + '10000T',
+								'剩': left + 'T',
+							},
+							partRight: {
+								'name': _.get(middleItem, 'name'),
+								'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+								'status': status,
+								'statusName': this.statusList[status],
+								'profit': _.get(middleItem, 'profit')
 							}
-							list.push(middleObj);
 						}
-						this.contentList = list;
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+						list.push(middleObj);
+					}
+					this.contentList = list;
+				}
 			},
 			jumpTo(path) {
 				jumpTo(path)

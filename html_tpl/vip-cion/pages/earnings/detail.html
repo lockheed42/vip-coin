@@ -61,14 +61,16 @@
 	</body>
 
 </html>
-<!-- common.js -->
-<script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
 <script>
 	new Vue({
 		el: '#earningsDetails',
@@ -104,25 +106,25 @@
 		},
 		methods: {
 			getList () {
-				axios.get(common_url + '/profit/log', {})
-					.then(function(response) {
-						console.log(response);
-						const data = response.data;
-						let middleObj = '';
-						let list = [];
-						for(var i = 0; i < data.length; i++) {
-							middleObj = {
-								money: '¥' + data[i].date,
-								date: data[i].date,
-								statusName: this.statusList[data.status]
-							}
-							list.push(middleObj);
+				const urlParams = {
+					control: 'profit',
+					action: 'log'
+				}
+				const listInfo = apiGet(urlParams, {}, true);
+				if (listInfo) {
+					const data = _.get(listInfo, 'data');
+					let middleObj = '';
+					let list = [];
+					for(var i = 0; i < data.length; i++) {
+						middleObj = {
+							money: '¥' + data[i].date,
+							date: data[i].date,
+							statusName: this.statusList[data.status]
 						}
-						this.list = list;
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+						list.push(middleObj);
+					}
+					this.list = list;
+				}
 			}
 		}
 	})

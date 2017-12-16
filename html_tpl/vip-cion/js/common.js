@@ -15,24 +15,53 @@ function jumpTo(name) {
 }
 
 /**
-   * 在参数中添加用户身份
-   */
-  function extendToken (params, token) {
-  	const timestamp=new Date().getTime();
-    return token
-      ? Object.assign({}, params, {
-        _platform: 'Web',
-        _timestamp: timestamp,
-        api_key: getCookie('api_key'),
-        api_security: getCookie('api_security'),
-        _version: '1.0'
-      })
-      : params
-  }
-
-function apiGet() {
-
+ * 在参数中添加用户身份
+ */
+function extendToken(params, token) {
+	const timestamp = new Date().getTime();
+	return token ?
+		Object.assign({}, params, {
+			_platform: 'Web',
+			_timestamp: timestamp,
+			api_key: getCookie('api_key'),
+			api_security: getCookie('api_security'),
+			_version: '1.0'
+		}) :
+		params
 }
+
+function parseParam(param) {
+	let middleStr = ''
+	for(var Key in param) {
+		middleStr = middleStr + '&' + '' + Key + '=' + param[Key] + '';
+	}
+	return middleStr;
+};
+
+function apiGet(url, params = null, token = true) {
+	let requestUrl = common_url;
+	const paramUrl = '?c=' + url.control + '&a=' + url.action;
+	requestUrl = requestUrl + paramUrl;
+	console.log(requestUrl);
+	return axios({
+			method: 'get',
+			url: requestUrl,
+			params: extendToken(params, token),
+			timeout: 30000,
+			//			withCredentials: true,
+			headers: {
+				//				'X-Requested-With': 'XMLHttpRequest',
+				//				'Content-Type': 'application/json; charset=UTF-8'
+			}
+		})
+		.then(checkStatus)
+		.then(checkCode)
+}
+
+function setUrl(item, index) {
+	return 'c='
+}
+
 /**
  * Post 请求
  *
@@ -42,125 +71,124 @@ function apiGet() {
  * @param  {Boolean}      [token=true]     是否需要添加 token 信息
  * @return {Promise}                       Promise] -> [Any]
  */
-function post (url, payload = null, token = true) {
-  url = common_url + url
-  if (token) {
-    url += qs.stringify(extendToken({}, token))
-  }
-  return axios({
-    method: 'post',
-    url: url,
-    data: payload,
-    timeout: 30000,
-    withCredentials: true,
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json; charset=UTF-8'
-    }
-  })
-    .then(checkStatus)
-    .then(checkCode)
-}
-
-function setUrl (item, index) {
-	return 'c='	
-}
-
 function apiPost(url, params = null, token = true) {
-//	url.forEach(setUrl)
-	const paramUrl = '?c=' + url.control + '&a=' + url.action 
+	let requestUrl = common_url;
+	const paramUrl = '?c=' + url.control + '&a=' + url.action;
+	requestUrl = requestUrl + paramUrl;
+	if(token) {
+		const fixedObj = extendToken({}, token);
+		const middleStr = parseParam(fixedObj);
+		requestUrl = requestUrl + middleStr;
+	}
 	return axios({
-        method: 'post',
-        url: common_url + paramUrl,
-        params: extendToken(params, token),
-        timeout: 30000,
-        withCredentials: true,
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      })
-        .then(checkStatus)
-        .then(checkCode)
+			method: 'post',
+			url: requestUrl,
+			data: params,
+			timeout: 30000,
+			//			withCredentials: true,
+			headers: {
+//				'X-Requested-With': 'XMLHttpRequest',
+//				'Content-Type': 'application/json; charset=UTF-8'
+//				'Content-Type': ' x-www-form-urlencoded'
+			}
+		})
+		.then(checkStatus)
+		.then(checkCode)
 }
 
 /**
-   * 判断 response 状态
-   */
-  function checkStatus (response) {
-    if (!response) {
-      return {
-        error: '接口异常，请求失败',
-        code: 500,
-        data: ''
-      }
-    }
-    if (!_.includes([200, 304], response.status)) {
-      return {
-        error: response.statusText || '数据异常，解析失败',
-        code: response.status || 400,
-        data: ''
-      }
-    }
-    return response.data
-  }
+ * 判断 response 状态
+ */
+function checkStatus(response) {
+	if(!response) {
+		return {
+			error: '接口异常，请求失败',
+			code: 500,
+			data: ''
+		}
+	}
+	if((response.status !== 200)) {
+		return {
+			error: response.statusText || '数据异常，解析失败',
+			code: response.status || 400,
+			data: ''
+		}
+	}
+	return response.data
+}
 
-  /**
-   * 判断 data 状态
-   */
-  function checkCode (res) {
-    if (res.code === 200 && res.data) {
-      return res.data
-    } else {
-      const errList = {
-        460: '您的账号已在其他设备上登录',
-        461: '登录信息已过期，请重新登录'
-      }
-      const err = _.get(errList, res.code)
-      const msg = err || res.error
-      if (err || msg === '身份授权错误，请重新进入！') {
-        store.commit('message/setMsg', msg)
-        if (process.browser) {
-          app.$cookie.del('__currentUser')
-          app.$cookie.del('__loginFlag')
-        }
-        redirect('/login')
-      } else {
-        showError(msg, res.code)
-      }
-    }
-  }
-  
-  /**
-   * 显示错误信息
-   */
-  function showError (msg, code = null) {
-    if (process.browser) {
-      // 浏览器端
-      const getRegex = (isGlobal = true) => {
-        return new RegExp(/\(\{##(Q\d+)##\}\)/, isGlobal ? 'g' : '')
-      }
-      if (getRegex(true).test(msg)) {
-        msg = msg.replace(getRegex(true), v => {
-          const matchNumber = v.match(getRegex(false))[1]
-          const topicNumber = _.get(store.state.topicNumbers, matchNumber)
-          return topicNumber || matchNumber
-        })
-      }
-      if (!msg) return
-      Message({
-        message: msg,
-        iconClass: 'icon icon-error',
-        customClass: 'msg msg-error',
-        duration: 2000
-      })
-    } else {
-      // 服务端
-      error({
-        statusCode: code,
-        message: msg
-      })
-    }
-  }
+/**
+ * 判断 data 状态
+ */
+function checkCode(res) {
+	if(res.code === 200 && res.data) {
+		return res.data
+	} else {
+		//		alert(res.error)
+		console.log(this)
+		this.ELEMENT.Message({
+			message: res.error,
+			type: 'error'
+		});
+		setTimeout(function () {
+			if (res.error === '用户未登录') {
+				jumpTo('account/login.html')
+			}
+		}, 5000);
+		//		this.$message({
+		//			message: res.error,
+		//			type: 'error'
+		//		});
+		//		const errList = {
+		//			460: '您的账号已在其他设备上登录',
+		//			461: '登录信息已过期，请重新登录'
+		//		}
+		//		const err = _.get(errList, res.code)
+		//		const msg = err || res.error
+		//		if(err || msg === '身份授权错误，请重新进入！') {
+		//			store.commit('message/setMsg', msg)
+		//			if(process.browser) {
+		//				app.$cookie.del('__currentUser')
+		//				app.$cookie.del('__loginFlag')
+		//			}
+		//			redirect('/login')
+		//		} else {
+		//			showError(msg, res.code)
+		//		}
+	}
+}
+
+/**
+ * 显示错误信息
+ */
+function showError(msg, code = null) {
+	if(process.browser) {
+		// 浏览器端
+		const getRegex = (isGlobal = true) => {
+			return new RegExp(/\(\{##(Q\d+)##\}\)/, isGlobal ? 'g' : '')
+		}
+		if(getRegex(true).test(msg)) {
+			msg = msg.replace(getRegex(true), v => {
+				const matchNumber = v.match(getRegex(false))[1]
+				const topicNumber = _.get(store.state.topicNumbers, matchNumber)
+				return topicNumber || matchNumber
+			})
+		}
+		if(!msg) return
+		Message({
+			message: msg,
+			iconClass: 'icon icon-error',
+			customClass: 'msg msg-error',
+			duration: 2000
+		})
+	} else {
+		// 服务端
+		error({
+			statusCode: code,
+			message: msg
+		})
+	}
+}
 
 function params(key, defaultvalue) {
 	if(!window._params) {
@@ -195,11 +223,10 @@ function getCookie(cname) {
 	return "";
 }
 
-function delCookie(name)
-{
-var exp = new Date();
-exp.setTime(exp.getTime() - 1);
-var cval=getCookie(name);
-if(cval!=null)
-document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+function delCookie(name) {
+	var exp = new Date();
+	exp.setTime(exp.getTime() - 1);
+	var cval = getCookie(name);
+	if(cval != null)
+		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }

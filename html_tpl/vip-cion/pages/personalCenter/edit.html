@@ -145,14 +145,16 @@
 	</body>
 
 </html>
-<!-- common.js -->
-<script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
 <script>
 	new Vue({
 		el: '#edit',
@@ -187,29 +189,26 @@
 		},
 		mounted: function () {
 		  	this.$nextTick(function () {
-			  	axios.get(common_url + '/user/info', {})
-					.then(function(response) {
-						console.log(response);
-						const data = response.data
-						// 刷新当前页面
-						this.info = [{
-							name: '姓名',
-							value: data.name
-						},
-						{
-							name: '性别',
-							value: data.sex
-						},
-						{
-							name: '身份证号',
-							value: data.id_card
-						}]
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
-			    // Code that will run only after the
-			    // entire view has been rendered
+				const urlParams = {
+					control: 'user',
+					action: 'info'
+				}
+				const personInfo = apiPost(urlParams, {}, true)
+				console.log(personInfo)
+				if (personInfo) {
+					this.info = [{
+						name: '姓名',
+						value: _.get(personInfo, 'name')
+					},
+					{
+						name: '性别',
+						value: _.get(personInfo, 'sex')
+					},
+					{
+						name: '身份证号',
+						value: _.get(personInfo, 'id_card')
+					}]
+				}
 		  	})
 		},
 		methods: {
@@ -258,20 +257,17 @@
 //					}
 //					console.log('保存提交性别的接口，返回新的value')
 				}
-				console.log(parmasName, this.edit.value)
 				let userParams = {}
 				userParams[parmasName] = this.edit.value
-				console.log(userParams)
 				console.log('保存提交接口，返回新的value')
-				axios.post(common_url + editPathName, userParams)
-				.then(function(response) {
-					console.log(response);
-					// 刷新当前页面
-					location.reload();
-				})
-				.catch(function(error) {
-					console.log(error);
-				});
+				const urlParams = {
+					control: 'user',
+					action: 'bindCard'
+				}
+				const personInfo = apiPost(urlParams, userParams, true)
+				if (personInfo) {
+
+				}
 				this.edit = {
 					name: '',
 					value: '',

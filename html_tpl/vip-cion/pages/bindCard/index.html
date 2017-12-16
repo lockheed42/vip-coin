@@ -129,14 +129,16 @@
 	</body>
 
 </html>
-<!-- common.js -->
-<script src="../../js/common.js"></script>
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
 <script src="../../js/element-ui@2.0.7.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
 <script>
 	new Vue({
 		el: '#bindCard',
@@ -205,21 +207,21 @@
 					});
 					return
 				}
+				const urlParams = {
+					control: 'user',
+					action: 'bindCard'
+				}
 				const cardInfoParams = {
 					name: name,
 					code: code,
 					bank: bank,
 					mobile: mobile
 				}
-				console.log(cardInfoParams)
-				axios.post(common_url + 'user/bindCard', cardInfoParams)
-					.then(function(response) {
-						console.log(response);
-						jumpTo('bindCard/index.html');
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+				const cardInfo = apiPost(urlParams, cardInfoParams, true)
+				console.log(cardInfo)
+				if (cardInfo) {
+					
+				}
 			}
 		}
 	})
