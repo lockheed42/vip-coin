@@ -213,6 +213,8 @@ abstract class Controller {
             case 'JSON' :
                 // 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
+                header('Access-Control-Allow-Origin: *');
+                header('Access-Control-Request-Method: GET, POST, OPTIONS');
                 exit(json_encode($data,$json_option));
             case 'XML'  :
                 // 返回xml格式数据

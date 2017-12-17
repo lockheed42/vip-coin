@@ -29,17 +29,16 @@ class ProfitController extends CommonController
     {
         try {
             $this->checkLogin();
+            $yesterday = M('profit_log')->where(['user_id' => $this->_user_id, 'date' => date('Y-m-d', strtotime('-1 day'))])->sum('profit');
+            $profit = 0;
+            if (!empty($yesterday)) {
+                $profit = $yesterday;
+            }
+
+            $this->success(['profit' => $profit]);
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
-        $a = [
-            'status' => 0,
-            'error'  => '',
-            'data'   => [
-                'profit' => '1234',
-            ],
-        ];
-        echo json_encode($a);
     }
 
     /**
@@ -61,6 +60,12 @@ class ProfitController extends CommonController
     {
         try {
             $this->checkLogin();
+
+            $sql
+                = "SELECT `date`, sum(`profit`) as sum , `status` from t_profit_log WHERE user_id = $this->_user_id GROUP BY `date` ORDER BY `date` DESC";
+            $rs = M()->query($sql);
+
+            $this->success($rs);
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
