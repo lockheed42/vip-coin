@@ -59,17 +59,13 @@ class UserController extends CommonController
 
             $user = M('user')->where(['user_id' => $this->_user_id])->find();
 
-            $return = [
-                'status' => 0,
-                'error'  => '',
-                'data'   => [
-                    'name'    => $user['name'],
-                    'sex'     => $user['sex'] == 1 ? '男' : '女',
-                    'id_card' => '***************' . substr($user['idcard'], -4),
-                ],
+            $data = [
+                'name'    => $user['name'],
+                'sex'     => $user['sex'] == 1 ? '男' : '女',
+                'id_card' => '***************' . substr($user['idcard'], -4),
             ];
 
-            $this->success($return);
+            $this->success($data);
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
@@ -296,6 +292,7 @@ class UserController extends CommonController
      * 检测用户是否有参与标的的权限。
      *
      * @param $userId
+     *
      * @throws Exception
      */
     public function checkUserAuth($userId)
