@@ -69,27 +69,5 @@ class ProfitController extends CommonController
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
-        $a = [
-            'status' => 0,
-            'error'  => '',
-            'data'   => [
-                [
-                    'date'   => '2017-10-14',
-                    'profit' => '1020',
-                    'status' => '0',
-                ],
-                [
-                    'date'   => '2017-10-13',
-                    'profit' => '1020',
-                    'status' => '1',
-                ],
-                [
-                    'date'   => '2017-10-12',
-                    'profit' => '1020',
-                    'status' => '1',
-                ],
-            ],
-        ];
-        echo json_encode($a);
     }
 }

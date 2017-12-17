@@ -18,7 +18,7 @@ class ProjectController extends CommonController
      * @apiName        all
      * @apiGroup       project
      *
-     * @apiSuccess {string} plan_id 计划id
+     * @apiSuccess {string} project_id 标的id
      * @apiSuccess {string} name 计划名称
      * @apiSuccess {string} total_profit 预计总收益
      * @apiSuccess {string} get_profit 已收益
@@ -42,11 +42,18 @@ class ProjectController extends CommonController
                 ->join('t_plan as p ON p.plan_id = t_project.plan_id')
                 ->where(['user_id' => $this->_user_id])->select();
 
-            //TODO get_profit，获取收益列表
+            //TODO get_profit，获取收益列表。下面为临时代码
+            if (!empty($list)) {
+                foreach ($list as $k => $v) {
+                    $list[$k]['total_profit'] = 1;
+                    $list[$k]['get_profit'] = 1;
+                }
+            }
+
             $this->success(
                 $this->filterApiReturnList(
                     $list, [
-                        'plan_id', 'name', 'total_profit', 'get_profit', 'begin', 'end', 'count', 'status', 'project_status'
+                        'project_id', 'name', 'total_profit', 'get_profit', 'begin', 'end', 'count', 'status', 'project_status'
                     ]
                 )
             );
@@ -88,6 +95,11 @@ class ProjectController extends CommonController
             $detail = M('project')
                 ->join('t_plan as p ON p.plan_id = t_project.plan_id')
                 ->where(['user_id' => $this->_user_id, 'project_id' => $projectId])->find();
+
+            if (!empty($detail)) {
+                $detail['total_profit'] = 1;
+                $detail['get_profit'] = 1;
+            }
 
             //TODO get_profit，获取收益总和
             $this->success(
