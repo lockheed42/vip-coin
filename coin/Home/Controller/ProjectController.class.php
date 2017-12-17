@@ -42,7 +42,14 @@ class ProjectController extends CommonController
                 ->join('t_plan as p ON p.plan_id = t_project.plan_id')
                 ->where(['user_id' => $this->_user_id])->select();
 
-            //TODO get_profit，获取收益列表
+            //TODO get_profit，获取收益列表。下面为临时代码
+            if (!empty($list)) {
+                foreach ($list as $k => $v) {
+                    $list[$k]['total_profit'] = 1;
+                    $list[$k]['get_profit'] = 1;
+                }
+            }
+
             $this->success(
                 $this->filterApiReturnList(
                     $list, [
@@ -88,6 +95,11 @@ class ProjectController extends CommonController
             $detail = M('project')
                 ->join('t_plan as p ON p.plan_id = t_project.plan_id')
                 ->where(['user_id' => $this->_user_id, 'project_id' => $projectId])->find();
+
+            if (!empty($detail)) {
+                $detail['total_profit'] = 1;
+                $detail['get_profit'] = 1;
+            }
 
             //TODO get_profit，获取收益总和
             $this->success(
