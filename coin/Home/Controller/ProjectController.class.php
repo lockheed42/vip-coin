@@ -18,7 +18,7 @@ class ProjectController extends CommonController
      * @apiName        all
      * @apiGroup       project
      *
-     * @apiSuccess {string} plan_id 计划id
+     * @apiSuccess {string} project_id 标的id
      * @apiSuccess {string} name 计划名称
      * @apiSuccess {string} total_profit 预计总收益
      * @apiSuccess {string} get_profit 已收益
@@ -53,7 +53,7 @@ class ProjectController extends CommonController
             $this->success(
                 $this->filterApiReturnList(
                     $list, [
-                        'plan_id', 'name', 'total_profit', 'get_profit', 'begin', 'end', 'count', 'status', 'project_status'
+                        'project_id', 'name', 'total_profit', 'get_profit', 'begin', 'end', 'count', 'status', 'project_status'
                     ]
                 )
             );
