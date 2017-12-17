@@ -45,6 +45,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#register',
@@ -94,12 +96,28 @@
 					verify: this.yzm,
 					pwd: this.firsPassword
 				}
-				const registerInfo = apiPost(urlParams, editParams, false);
-				if (registerInfo) {
-					setCookie('api_key', loginInfo.api_key);
-					setCookie('api_security', loginInfo.api_security);
-					setCookie('user', loginInfo.mobile);
-				}
+                const method = 'post';
+                const basicInfo = apiInfo(urlParams, editParams, method, false);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this
+                if (requestUrl && requestParams) {
+                    $.post(requestUrl, requestParams, function (result) {
+                        if (result.status === '0') {
+                            const loginInfo = _.get(result, 'data');
+                            const apiKey = _.get(loginInfo, 'api_key');
+                            const apiSecurity = _.get(loginInfo, 'api_security');
+                            setCookie('api_key', apiKey);
+                            setCookie('api_security', apiSecurity);
+                            setCookie('user', _this.mobile);
+                            jumpTo('account/login.html');
+						} else {
+                            checkStatus(result);
+							checkCode(result);
+						}
+                    })
+                }
 			},
 			getYzm () {
 				console.log(common_url)
@@ -118,10 +136,31 @@
 					control: 'verify',
 					action: 'send'
 				}
-				const yzmInfo = apiPost(urlParams, yzmParams, false)
-				console.logy(zmInfo)
+                const method = 'post';
+                const basicInfo = apiInfo(urlParams, yzmParams, method, false);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
+                if (requestUrl && requestParams) {
+                    $.post(requestUrl, requestParams, function (result) {
+                        if (result.status === '0') {
+                            _this.$message({
+                                message: '验证码已发送',
+                                type: 'success'
+                            });
+						} else {
+                            checkStatus(result);
+                            checkCode(result);
+						}
+                    })
+                }
 			},
 			timeCount () {
+			    if (!this.mobile) {
+			        this.$message('error', '请输入手机号');
+			        return
+				}
 				if(this.yzmBtn.countdown === 0) {
 					this.yzmBtn.disabled = false;
 					this.yzmBtn.value = "免费获取验证码";

@@ -5,10 +5,12 @@ const common_url = 'http://apim.yue-me.com'
 const mobile_test = /^1\d{10}$/; //手机格式
 
 function jumpTo(name) {
-	let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/'
+	// let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/';
+    let jumpUrl = 'http://' + window.location.host + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
-		jumpUrl = jumpUrl + name
-		window.location.href = jumpUrl
+		jumpUrl = jumpUrl + name;
+		console.log(jumpUrl);
+		window.location.href = jumpUrl;
 	} else {
 		window.history.back();
 	}
@@ -37,6 +39,25 @@ function parseParam(param) {
 	}
 	return middleStr;
 };
+
+function apiInfo (url, params = null, type = null, token = true) {
+    let requestUrl = common_url;
+    let middleParams = params;
+    const paramUrl = '?c=' + url.control + '&a=' + url.action;
+    requestUrl = requestUrl + paramUrl;
+	if (type === 'get') {
+        middleParams = extendToken(params, token)
+	} else if (type === 'post') {
+        const fixedObj = extendToken({}, token);
+        const middleStr = parseParam(fixedObj);
+        requestUrl = requestUrl + middleStr;
+	}
+	console.log(middleParams);
+	return {
+		url: requestUrl,
+		params: middleParams
+	}
+}
 
 function apiGet(url, params = null, token = true) {
 	let requestUrl = common_url;

@@ -141,6 +141,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#plan',
@@ -216,44 +218,60 @@
 			})
 		},
 		methods: {
-			getList () {
+            getList () {
 				const urlParams = {
-					control: 'all',
-					action: 'plan'
+					control: 'plan',
+					action: 'all'
 				}
-				const listInfo = apiGet(urlParams, {}, true);
-				if (listInfo && (_.isArray(listInfo))) {
-					let middleObj = '';
-					let middleItem = {};
-					let list = [];
-					for(var i = 0; i < data.length; i++) {
-						middleItem = data[i];
-						const status = _.get(middleItem, 'status');
-						const total = _.get(middleItem, 'total');
-						const sell = _.get(middleItem, 'sell');
-						const left = Number(total) - Number(sell);
-						middleObj = {
-							id: _.get(middleItem, 'plan_id'),
-							partLeft: {
-								'总': total + 'T',
-								'卖': sell + '10000T',
-								'剩': left + 'T',
-							},
-							partRight: {
-								'name': _.get(middleItem, 'name'),
-								'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
-								'status': status,
-								'statusName': this.statusList[status],
-								'profit': _.get(middleItem, 'profit')
-							}
-						}
-						list.push(middleObj);
-					}
-					this.contentList = list;
+				const basicInfo = apiInfo(urlParams, {}, 'get');
+				console.log(basicInfo);
+				const requestUrl = _.get(basicInfo, 'url');
+				const requestParams = _.get(basicInfo, 'params');
+				const _this = this;
+				if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function(result){
+                        if (result.status === '0') {
+                            const listInfo = _.get(result, 'data');
+                            console.log(listInfo);
+                            if (listInfo && (_.isArray(listInfo))) {
+                                let middleObj = '';
+                                let middleItem = {};
+                                let list = [];
+                                for(var i = 0; i < listInfo.length; i++) {
+                                    middleItem = listInfo[i];
+                                    const status = _.get(middleItem, 'status');
+                                    let statusName = ''
+									if (status) {
+                                        statusName = _this.statusList[status];
+									}
+                                    const total = _.get(middleItem, 'total');
+                                    const sell = _.get(middleItem, 'sell');
+                                    const left = Number(total) - Number(sell);
+                                    middleObj = {
+                                        id: _.get(middleItem, 'plan_id'),
+                                        partLeft: {
+                                            '总': total + 'T',
+                                            '卖': sell + '10000T',
+                                            '剩': left + 'T',
+                                        },
+                                        partRight: {
+                                            'name': _.get(middleItem, 'name'),
+                                            'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+                                            'status': status,
+                                            'statusName': statusName,
+                                            'profit': _.get(middleItem, 'profit')
+                                        }
+                                    }
+                                    list.push(middleObj);
+                                }
+                                _this.contentList = list;
+                            }
+                        }
+                    });
 				}
 			},
-			jumpTo(path) {
-				jumpTo(path)
+			jumpTo (path) {
+				jumpTo(path);
 			}
 		}
 	})

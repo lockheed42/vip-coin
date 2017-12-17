@@ -139,6 +139,9 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
+
 <script>
 	new Vue({
 		el: '#place',
@@ -204,33 +207,71 @@
 			getList () {
 				const urlParams = {
 					control: 'project',
-					action: 'plan'
+					action: 'all'
 				}
-				const listInfo = apiGet(urlParams, {}, true);
-				if (listInfo && (_.isArray(listInfo))) {
-					let middleObj = '';
-					let middleItem = {}
-					let list = [];
-					for(var i = 0; i < data.length; i++) {
-						middleItem = data[i]
-						status = _.get(middleItem, 'status')
-						middleObj = {
-							id: _.get(middleItem, 'plan_id'),
-							total: _.get(middleItem, 'total'),
-							name: _.get(middleItem, 'name'),
-							time: _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
-							status: _.get(middleItem, 'status'),
-							statusName: this.statusList[status],
-							get_profit: _.get(middleItem, 'get_profit'),
-							total_profit: _.get(middleItem, 'total_profit'),
-						}
-						list.push(middleObj);
-					}
-					this.contentList = list;
+                const method = 'get'
+                const basicInfo = apiInfo(urlParams, {}, method, true);
+                console.log(basicInfo)
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function(result){
+                        console.log(result);
+                        if (result.status === '0') {
+                            const listInfo = _.get(result, 'data');
+                            if (listInfo && (_.isArray(listInfo))) {
+                                let middleObj = '';
+                                let middleItem = {}
+                                let list = [];
+                                for(var i = 0; i < listInfo.length; i++) {
+                                    middleItem = listInfo[i]
+                                    const status = _.get(middleItem, 'status');
+                                    console.log(middleItem)
+                                    middleObj = {
+                                        id: _.get(middleItem, 'plan_id'),
+                                        total: _.get(middleItem, 'total'),
+                                        name: _.get(middleItem, 'name'),
+                                        time: _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+                                        status: _.get(middleItem, 'status'),
+                                        statusName: _this.statusList[status],
+                                        get_profit: _.get(middleItem, 'get_profit'),
+                                        total_profit: _.get(middleItem, 'total_profit'),
+                                    }
+                                    list.push(middleObj);
+                                }
+                                console.log(list)
+                                _this.contentList = list;
+                            }
+                        }
+                    });
 				}
+
+//				const listInfo = apiGet(urlParams, {}, true);
+//				if (listInfo && (_.isArray(listInfo))) {
+//					let middleObj = '';
+//					let middleItem = {}
+//					let list = [];
+//					for(var i = 0; i < data.length; i++) {
+//						middleItem = data[i]
+//						status = _.get(middleItem, 'status')
+//						middleObj = {
+//							id: _.get(middleItem, 'plan_id'),
+//							total: _.get(middleItem, 'total'),
+//							name: _.get(middleItem, 'name'),
+//							time: _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+//							status: _.get(middleItem, 'status'),
+//							statusName: this.statusList[status],
+//							get_profit: _.get(middleItem, 'get_profit'),
+//							total_profit: _.get(middleItem, 'total_profit'),
+//						}
+//						list.push(middleObj);
+//					}
+//					this.contentList = list;
+//				}
 			},
 			jumpTo(path) {
-				jumpTo(path)
+				jumpTo(path);
 			}
 		}
 	})

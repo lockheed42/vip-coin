@@ -71,6 +71,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#earningsDetails',
@@ -110,21 +112,38 @@
 					control: 'profit',
 					action: 'log'
 				}
-				const listInfo = apiGet(urlParams, {}, true);
-				if (listInfo) {
-					const data = _.get(listInfo, 'data');
-					let middleObj = '';
-					let list = [];
-					for(var i = 0; i < data.length; i++) {
-						middleObj = {
-							money: '¥' + data[i].date,
-							date: data[i].date,
-							statusName: this.statusList[data.status]
-						}
-						list.push(middleObj);
-					}
-					this.list = list;
-				}
+                const method = 'get';
+                const basicInfo = apiInfo(urlParams, {}, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function (result) {
+                        if (result.status === '0') {
+                            let middleObj = '';
+                            let list = [];
+                            const earnInfo = _.get(result, 'data');
+                            const status = _.get(earnInfo, 'status');
+                            let statusName = ''
+							if (status) {
+                                statusName = _this.statusList[status];
+							}
+                            for(var i = 0; i < earnInfo.length; i++) {
+                                middleObj = {
+                                    money: '¥' + earnInfo[i].date,
+                                    date: earnInfo[i].date,
+                                    statusName: statusName
+                                }
+                                list.push(middleObj);
+                            }
+                            _this.list = list;
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
+                        }
+                    })
+                }
 			}
 		}
 	})

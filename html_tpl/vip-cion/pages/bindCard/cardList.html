@@ -138,6 +138,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	window.onload = function () {
 		new Vue({
@@ -166,13 +168,32 @@
 						control: 'user',
 						action: 'getCard'
 					}
-					const getCardInfo = apiGet(urlParams, {}, true)
-					console.log(getCardInfo)
-					if (getCardInfo) {
-						const data = _.get(getCardInfo, 'data');
-						this.card.list[0].name = _.get(data, 'bank');
-						this.card.list[0].numbers = _.get(data, 'code');
-					}
+                    const method = 'get';
+                    const basicInfo = apiInfo(urlParams, {}, method);
+                    console.log(basicInfo);
+                    const requestUrl = _.get(basicInfo, 'url');
+                    const requestParams = _.get(basicInfo, 'params');
+                    const _this = this;
+                    if (requestUrl && requestParams) {
+                        $.get(requestUrl, requestParams, function(result) {
+                            if (result.status === '0') {
+                                const getCardInfo = _.get(result, 'data');
+                                _this.card.list[0].name = _.get(getCardInfo, 'bank');
+                                _this.card.list[0].numbers = _.get(getCardInfo, 'code');
+                            } else {
+                                checkStatus(result);
+                                checkCode(result);
+                            }
+                        })
+                    }
+//
+//					const getCardInfo = apiGet(urlParams, {}, true)
+//					console.log(getCardInfo)
+//					if (getCardInfo) {
+//						const data = _.get(getCardInfo, 'data');
+//						this.card.list[0].name = _.get(data, 'bank');
+//						this.card.list[0].numbers = _.get(data, 'code');
+//					}
 				}
 			}
 		})

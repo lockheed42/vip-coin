@@ -140,7 +140,7 @@
 	<body>
 		<div id="instro" class="wrap-page">
 			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 个人中心
-				<span></span></div>
+				<span @click="logOut">登出</span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
@@ -198,6 +198,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>script
 <script>
 	new Vue({
 		el: '#instro',
@@ -239,9 +241,74 @@
 		},
 		watch: {},
 		mounted: function() {
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px'
+			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
+			this.getUserInfo();
 		},
 		methods: {
+		    getUserInfo () {
+                const urlParams = {
+                    control: 'user',
+                    action: 'info'
+                }
+//				const personInfo = apiPost(urlParams, {}, true)
+//				console.log(personInfo)
+                const method = 'get';
+                const basicInfo = apiInfo(urlParams, {}, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function (result) {
+                        const personInfo = _.get(result, 'data');
+                        console.log(personInfo);
+                        if (result.status === '0') {
+                            _this.personalInfo = [{
+                            name: 'nickName',
+                            value: _.get(personInfo, 'name'),
+                            eidt: false
+							},
+							{
+								name: 'sex',
+								value: _.get(personInfo, 'sex'),
+								eidt: false
+							},
+							{
+								name: 'id',
+								value: _.get(personInfo, 'id_card'),
+								eidt: true
+							}]
+						} else {
+                            checkCode(result);
+                            checkStatus(result);
+                        }
+                    })
+                }
+			},
+		    logOut () {
+                const urlParams = {
+                    control: 'user',
+                    action: 'logout'
+                }
+                const method = 'post';
+                const basicInfo = apiInfo(urlParams, {}, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function (result) {
+                        if (result.status === '0') {
+                            delCookie('api_key');
+                            delCookie('api_security');
+                            jumpTo('account/login.html');
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
+                        }
+                    })
+                }
+			}
 		}
 	})
 </script>

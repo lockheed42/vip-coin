@@ -155,6 +155,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#edit',
@@ -193,22 +195,51 @@
 					control: 'user',
 					action: 'info'
 				}
-				const personInfo = apiPost(urlParams, {}, true)
-				console.log(personInfo)
-				if (personInfo) {
-					this.info = [{
-						name: '姓名',
-						value: _.get(personInfo, 'name')
-					},
-					{
-						name: '性别',
-						value: _.get(personInfo, 'sex')
-					},
-					{
-						name: '身份证号',
-						value: _.get(personInfo, 'id_card')
-					}]
-				}
+//				const personInfo = apiPost(urlParams, {}, true)
+//				console.log(personInfo)
+                const method = 'get';
+                const basicInfo = apiInfo(urlParams, {}, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function (result) {
+                        const personInfo = _.get(result, 'data');
+                        console.log(personInfo);
+                        if (result.status === '0') {
+                            _this.info = [{
+                                name: '姓名',
+                                value: _.get(personInfo, 'name')
+                            },
+							{
+								name: '性别',
+								value: _.get(personInfo, 'sex')
+							},
+							{
+								name: '身份证号',
+								value: _.get(personInfo, 'id_card')
+							}]
+                        } else {
+                            checkCode(result);
+                            checkStatus(result);
+						}
+                    })
+                }
+//				if (personInfo) {
+//					this.info = [{
+//						name: '姓名',
+//						value: _.get(personInfo, 'name')
+//					},
+//					{
+//						name: '性别',
+//						value: _.get(personInfo, 'sex')
+//					},
+//					{
+//						name: '身份证号',
+//						value: _.get(personInfo, 'id_card')
+//					}]
+//				}
 		  	})
 		},
 		methods: {
@@ -264,15 +295,30 @@
 					control: 'user',
 					action: 'bindCard'
 				}
-				const personInfo = apiPost(urlParams, userParams, true)
-				if (personInfo) {
-
-				}
-				this.edit = {
-					name: '',
-					value: '',
-					placeholder: '请输入'
-				}
+				const method = 'post';
+                const basicInfo = apiInfo(urlParams, userParams, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                if (requestUrl && requestParams) {
+                    $.post(requestUrl, requestParams, function(result) {
+                        if (result.status === '0') {
+                            window.location.reload();
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
+						}
+                    })
+                }
+//				const personInfo = apiPost(urlParams, userParams, true)
+//				if (personInfo) {
+//
+//				}
+//				this.edit = {
+//					name: '',
+//					value: '',
+//					placeholder: '请输入'
+//				}
 			}
 		}
 	})

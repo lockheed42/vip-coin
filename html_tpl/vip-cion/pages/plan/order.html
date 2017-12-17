@@ -127,11 +127,18 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#order',
 		data() {
 			return {
+                statusList: {
+                    '1': '预售中',
+                    '2': '进行中',
+                    '3': '已关闭'
+                },
 				inputNumberObj: {
 					step: 1,
 					controls: false
@@ -160,6 +167,7 @@
 		mounted: function() {
 			this.$nextTick(function() {
 				this.amount = Number(this.nums) * Number(this.detail.price);
+				this.getDetail();
 			})
 		},
 		methods: {
@@ -169,22 +177,37 @@
 					control: 'plan',
 					action: 'detail'
 				}
-				const idParams = {
-					plan_id: planId
-				}
-				const detailInfo = apiGet(urlParams, idParams, true);
-				const status = _.get(detailInfo, 'status');
-				if (detailInfo) {
-					this.detail = {
-						name: _.get(detailInfo, 'name'),
-						time:  _.get(detailInfo, 'begin') + '-' +  _.get(detailInfo, 'end'),
-						statusName: this.statusList[status],
-						price: _.get(detailInfo, 'unit'),
-						profit: _.get(detailInfo, 'profit'),
-						sell: _.get(detailInfo, 'sell') +  'T',
-						total: _.get(detailInfo, 'total') + 'T'
-					}
-				}
+                const idParams = {
+                    plan_id: planId
+                }
+                const method = 'get';
+                const basicInfo = apiInfo(urlParams, idParams, method, true);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
+                if (requestUrl && requestParams) {
+                    $.get(requestUrl, requestParams, function(result) {
+                        console.log(result);
+                        if (result.status === '0') {
+                            const detailInfo = _.get(result, 'data');
+                            const status =  _.get(detailInfo, 'status');
+                            let statusName = '';
+                            if (status) {
+                                statusName = _this.statusList[status];
+							}
+                            _this.detail = {
+                                name: _.get(detailInfo, 'name'),
+                                time:  _.get(detailInfo, 'begin') + '-' +  _.get(detailInfo, 'end'),
+                                statusName: statusName,
+                                price: _.get(detailInfo, 'price'),
+                                profit: _.get(detailInfo, 'profit'),
+                                sell: _.get(detailInfo, 'sell') +  'T',
+                                total: _.get(detailInfo, 'total') + 'T'
+                            }
+                        }
+                    });
+                }
 			},
 			toBuy (path) {
 				const paramStr='name=' + this.detail.name + '&time=' + this.detail.time + '&count=' + this.nums + '&mount=' + this.amount;
@@ -194,12 +217,23 @@
 					count: this.nums
 				}
 				const urlParams = {
-					control: 'all',
-					action: 'plan'
+					control: 'plan',
+					action: 'buy'
 				}
-				const buyInfo = apiPost(urlParams, buyParams, true);
-				if (buyInfo === true) {
-					jumpTo(path + '?' + paramStr);
+                const method = 'post';
+                const basicInfo = apiInfo(urlParams, buyParams, method, true);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                if (requestUrl && requestParams) {
+                    $.post(requestUrl, requestParams, function(result){
+                        if (result.status === '0') {
+                            jumpTo(path + '?' + paramStr);
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
+						}
+                    });
 				}
 			}
 		}

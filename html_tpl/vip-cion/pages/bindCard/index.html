@@ -139,6 +139,8 @@
 <script src="../../js/lodash.js"></script>
 <!-- common.js -->
 <script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
 <script>
 	new Vue({
 		el: '#bindCard',
@@ -217,11 +219,26 @@
 					bank: bank,
 					mobile: mobile
 				}
-				const cardInfo = apiPost(urlParams, cardInfoParams, true)
-				console.log(cardInfo)
-				if (cardInfo) {
-					
-				}
+                const method = 'post';
+                const basicInfo = apiInfo(urlParams, cardInfoParams, method);
+                console.log(basicInfo);
+                const requestUrl = _.get(basicInfo, 'url');
+                const requestParams = _.get(basicInfo, 'params');
+                if (requestUrl && requestParams) {
+                    $.post(requestUrl, requestParams, function(result) {
+                        if (result.status === '0') {
+                            console.log(result);
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
+                        }
+                    })
+                }
+//				const cardInfo = apiPost(urlParams, cardInfoParams, true)
+//				console.log(cardInfo)
+//				if (cardInfo) {
+//
+//				}
 			}
 		}
 	})
