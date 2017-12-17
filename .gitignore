@@ -3,3 +3,5 @@
 
 #日志
 coin/Runtime/
+# 配置
+coin/Common/Conf/config.php
