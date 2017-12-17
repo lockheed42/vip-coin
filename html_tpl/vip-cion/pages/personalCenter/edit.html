@@ -195,18 +195,14 @@
 					control: 'user',
 					action: 'info'
 				}
-//				const personInfo = apiPost(urlParams, {}, true)
-//				console.log(personInfo)
                 const method = 'get';
                 const basicInfo = apiInfo(urlParams, {}, method);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this
                 if (requestUrl && requestParams) {
                     $.get(requestUrl, requestParams, function (result) {
                         const personInfo = _.get(result, 'data');
-                        console.log(personInfo);
                         if (result.status === '0') {
                             _this.info = [{
                                 name: '姓名',
@@ -226,25 +222,10 @@
 						}
                     })
                 }
-//				if (personInfo) {
-//					this.info = [{
-//						name: '姓名',
-//						value: _.get(personInfo, 'name')
-//					},
-//					{
-//						name: '性别',
-//						value: _.get(personInfo, 'sex')
-//					},
-//					{
-//						name: '身份证号',
-//						value: _.get(personInfo, 'id_card')
-//					}]
-//				}
 		  	})
 		},
 		methods: {
 			editInfo (item) {
-				console.log(item, item.name, item.value)
 				this.edit = {
 					name: item.name,
 					value: item.value,
@@ -259,7 +240,6 @@
 					}
 					]
 				}
-				console.log(this.edit)
 			},
 			save () {
 				let editPathName = '/user'
@@ -268,36 +248,21 @@
 					editPathName = editPathName + '/saveName'
 					parmasName = 'name'
 					console.log('保存提交姓名的接口，返回新的value')
-//					this.info[0].value = this.edit.value
-//					userParams = {
-//						name: this.edit.value
-//					}
 				} else if (this.edit.name === '性别') {
 					editPathName = editPathName + '/saveSex'
 					parmasName = 'sex'
-//					userParams = {
-//						sex: this.edit.value
-//					}
-//					console.log('保存提交性别的接口，返回新的value')
 				} else if (this.edit.name === '身份证号') {
 					editPathName = editPathName + '/saveIdCard'
 					parmasName = 'id_card'
-//					this.info[2].value = this.edit.value
-//					userParams = {
-//						id_card: this.edit.value
-//					}
-//					console.log('保存提交性别的接口，返回新的value')
 				}
 				let userParams = {}
 				userParams[parmasName] = this.edit.value
-				console.log('保存提交接口，返回新的value')
 				const urlParams = {
 					control: 'user',
 					action: 'bindCard'
 				}
 				const method = 'post';
                 const basicInfo = apiInfo(urlParams, userParams, method);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 if (requestUrl && requestParams) {

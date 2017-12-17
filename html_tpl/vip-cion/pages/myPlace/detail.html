@@ -130,7 +130,7 @@
 						<dt>计划介绍</dt>
 						<dd> {{ detail.con }} </dd>
 					</dl>
-					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">查看合同</button></div>
+					<div class="wrap-enter preview"><button type="button" @click="toAgreement" class="el-button el-button--primary">查看合同</button></div>
 				</div>
 			</div>
 		</div>
@@ -155,13 +155,14 @@
 		data() {
 			return {
 				statusList: {
-					'1': '预售中',
-					'2': '进行中',
-					'3': '已关闭'
+					'1': '已作废',
+					'2': '未生效',
+					'3': '已生效'
 				},
 				detail: {
 					name: '发电站',
 					status: '1',
+					total: '',
 					statusName: '预售中',
 					time: '2017.12.30-2018.12.30',
 					profit: 2384296,
@@ -187,13 +188,11 @@
 				}
                 const method = 'get';
                 const basicInfo = apiInfo(urlParams, idParams, method, true);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;
                 if (requestUrl && requestParams) {
                     $.get(requestUrl, requestParams, function(result){
-                        console.log(result);
                         if (result.status === '0') {
                             const detailInfo = _.get(result, 'data');
                             const status =  _.get(detailInfo, 'status');
@@ -201,9 +200,10 @@
                                 name: _.get(detailInfo, 'name'),
                                 time:  _.get(detailInfo, 'begin') + '-' + _.get(detailInfo, 'end'),
                                 status:  _.get(detailInfo, 'status'),
+                                total: _.get(detailInfo, 'count'),
                                 statusName: _this.statusList[status],
                                 profit:  _.get(detailInfo, 'total_profit') ,
-                                con:  _.get(detailInfo, 'desc')
+                                con:  _.get(detailInfo, 'content')
                             }
                         } else {
                             checkCode(result);
@@ -211,6 +211,11 @@
 						}
                     });
                 }
+			},
+			/*预览合同*/
+			toAgreement() {
+				const path = 'myPlace/agreement.html' + '?id=' + params('id');
+				jumpTo(path);
 			}
 		}
 	})

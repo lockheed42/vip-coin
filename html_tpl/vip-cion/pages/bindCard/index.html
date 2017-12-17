@@ -221,24 +221,18 @@
 				}
                 const method = 'post';
                 const basicInfo = apiInfo(urlParams, cardInfoParams, method);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 if (requestUrl && requestParams) {
                     $.post(requestUrl, requestParams, function(result) {
                         if (result.status === '0') {
-                            console.log(result);
+							jumpTo('bindCard/cardList.html')
                         } else {
                             checkStatus(result);
                             checkCode(result);
                         }
                     })
                 }
-//				const cardInfo = apiPost(urlParams, cardInfoParams, true)
-//				console.log(cardInfo)
-//				if (cardInfo) {
-//
-//				}
 			}
 		}
 	})

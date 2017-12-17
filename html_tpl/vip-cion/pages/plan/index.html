@@ -108,7 +108,10 @@
 					</ul>
 				</div>
 				<div class="common-width">
-					<div class="list" v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
+					<div v-if="contentList.length === 0" class="no-data-tips">
+						{{ noDataTips.text }}
+					</div>
+					<div class="list" v-else v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
 						<div class="part-left">
 							<ul>
 								<li v-for="(list, index) of item.partLeft">
@@ -161,6 +164,9 @@
 					'1': '预售中',
 					'2': '进行中',
 					'3': '已关闭'
+				},
+				noDataTips: {
+					text: '暂无发行计划的数据'
 				},
 				contentList: [{
 						id: 1,
@@ -224,7 +230,6 @@
 					action: 'all'
 				}
 				const basicInfo = apiInfo(urlParams, {}, 'get');
-				console.log(basicInfo);
 				const requestUrl = _.get(basicInfo, 'url');
 				const requestParams = _.get(basicInfo, 'params');
 				const _this = this;
@@ -232,7 +237,6 @@
                     $.get(requestUrl, requestParams, function(result){
                         if (result.status === '0') {
                             const listInfo = _.get(result, 'data');
-                            console.log(listInfo);
                             if (listInfo && (_.isArray(listInfo))) {
                                 let middleObj = '';
                                 let middleItem = {};
@@ -266,6 +270,9 @@
                                 }
                                 _this.contentList = list;
                             }
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
                         }
                     });
 				}

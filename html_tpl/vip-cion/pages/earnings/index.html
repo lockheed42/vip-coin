@@ -246,7 +246,6 @@
 		},
 		watch: {},
 		mounted: function() {
-			console.log((document.body.clientHeight - 145) + 'px')
 			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
 			this.$nextTick(function() {
 				this.getEarn();
@@ -260,7 +259,6 @@
 				}
                 const method = 'get';
                 const basicInfo = apiInfo(urlParams, {}, method);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;

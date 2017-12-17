@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="../../css/common.css">
+		<title>预览合同</title>
+		<style>
+			img {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="planAgreement" class="wrap-page">
+			<div class="back-bar"><span onclick="jumpTo('plan/index.html')" class="icon-back"></span> 预览合同
+				<span></span></div>
+			<div class="title-bar">
+				VIP-CION
+			</div>
+			<div class="content">
+				<div v-if='picList.length === 0' class="no-data-tips">
+					{{ noDataTips.text }}
+				</div>
+				<div v-else v-for="item in picList" class="pic-list">
+					<img :src="item"  />
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<!-- 先引入 Vue -->
+<script src="../../js/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../js/element-ui@2.0.7.js"></script>
+<!-- axios -->
+<script src="../../js/axios.min.js"></script>
+<!-- lodash -->
+<script src="../../js/lodash.js"></script>
+<!-- common.js -->
+<script src="../../js/common.js"></script>
+<!-- jquery.js -->
+<script src="../../js/jquery.js"></script>
+<script>
+	new Vue({
+		el: '#planAgreement',
+		data() {
+			return {
+				noDataTips: {
+					text: '暂无合同的数据'
+				},
+				picList: [
+				'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1513515702&di=52d8f0e9d41793789c89ec5045d4dd73&src=http://www.downyi.com/uploadfiles/ruanjian/hezuoxiuyi.jpg',
+				'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'
+				]
+			}
+		},
+		watch: {},
+		mounted: function() {
+			this.$nextTick(function() {
+				this.previewAgreement();
+			})
+		},
+		methods: {
+			/*预览合同*/
+			previewAgreement() {
+				const urlParams = {
+					control: 'plan',
+					action: 'contract'
+				}
+				const idParams = {
+					plan_id: params('id')
+				}
+				const method = 'post';
+				const basicInfo = apiInfo(urlParams, idParams, method, true);
+				const requestUrl = _.get(basicInfo, 'url');
+				const requestParams = _.get(basicInfo, 'params');
+				const _this = this;
+				if(requestUrl && requestParams) {
+					$.post(requestUrl, requestParams, function(result) {
+						if(result.status === '0') {
+							const url = _.get(result, 'data.url');
+							if (url) {
+								_this.picList = url
+							} else {
+								_this.picList = []
+							}
+						} else {
+							checkStatus(result);
+							checkCode(result);
+						}
+					})
+				}
+			}
+		}
+	})
+</script>

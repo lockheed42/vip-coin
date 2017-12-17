@@ -105,7 +105,7 @@
 
 	<body>
 		<div id="bindCard" class="wrap-page wrap-card">
-			<div class="back-bar"><span onclick="jumpTo('bindCard/index.html')" class="icon-back"></span> 绑定银行卡
+			<div class="back-bar"><span onclick="jumpTo('personalCenter/index.html')" class="icon-back"></span> 绑定银行卡
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -170,7 +170,6 @@
 					}
                     const method = 'get';
                     const basicInfo = apiInfo(urlParams, {}, method);
-                    console.log(basicInfo);
                     const requestUrl = _.get(basicInfo, 'url');
                     const requestParams = _.get(basicInfo, 'params');
                     const _this = this;
@@ -186,14 +185,6 @@
                             }
                         })
                     }
-//
-//					const getCardInfo = apiGet(urlParams, {}, true)
-//					console.log(getCardInfo)
-//					if (getCardInfo) {
-//						const data = _.get(getCardInfo, 'data');
-//						this.card.list[0].name = _.get(data, 'bank');
-//						this.card.list[0].numbers = _.get(data, 'code');
-//					}
 				}
 			}
 		})

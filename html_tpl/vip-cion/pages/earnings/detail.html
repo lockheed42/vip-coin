@@ -114,7 +114,6 @@
 				}
                 const method = 'get';
                 const basicInfo = apiInfo(urlParams, {}, method);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;
@@ -124,14 +123,14 @@
                             let middleObj = '';
                             let list = [];
                             const earnInfo = _.get(result, 'data');
-                            const status = _.get(earnInfo, 'status');
-                            let statusName = ''
-							if (status) {
-                                statusName = _this.statusList[status];
-							}
                             for(var i = 0; i < earnInfo.length; i++) {
+                            	const status = _.get(earnInfo[i], 'status');
+	                            let statusName = ''
+								if (status) {
+	                                statusName = _this.statusList[status];
+								}
                                 middleObj = {
-                                    money: '¥' + earnInfo[i].date,
+                                    money: '¥' + earnInfo[i].sum,
                                     date: earnInfo[i].date,
                                     statusName: statusName
                                 }

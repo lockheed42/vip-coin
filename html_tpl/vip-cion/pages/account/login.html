@@ -81,29 +81,24 @@
 					control: 'login',
 					action: 'login'
 				}
-//				axios.apiPost(common_url + '?c=login&a=login', loginParams)
-//				  .then(function (response) {
-//				    console.log(response);
-//				  })
-//				  .catch(function (error) {
-//				    console.log(error);
-//				  });
 				const method = 'post';
                 const basicInfo = apiInfo(urlParams, loginParams, method, false);
-                console.log(basicInfo)
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
+                const _this = this;
                 if (requestUrl && requestParams) {
                     $.post(requestUrl, requestParams, function(result){
-                        console.log(result);
                         if (result.status === '0') {
                             const data = _.get(result, 'data');
                             const apiKey = _.get(data, 'api_key');
                             const apiSecurity = _.get(data, 'api_security');
-                            console.log(result);
                             setCookie('api_key', apiKey);
                             setCookie('api_security', apiSecurity);
+                            setCookie('user', _this.mobile);
                             jumpTo('myPlace/index.html');
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
                         }
                     });
 				}

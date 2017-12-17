@@ -70,7 +70,7 @@
 
 	<body>
 		<div id="order" class="wrap-page">
-			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/order.html')"></span> 抢购成功
+			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/order.html')"></span> 预览合同
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -109,7 +109,7 @@
 						<span class="unit">元</span>
 						</div>
 					</div>
-					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary">预览合同</button></div>
+					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary" @click="toAgreement">预览合同</button></div>
 					<div class="wrap-enter"><button @click="toBuy('plan/success.html')" type="button" class="el-button el-button--primary">立即抢购</button></div>
 				</div>
 			</div>
@@ -182,13 +182,11 @@
                 }
                 const method = 'get';
                 const basicInfo = apiInfo(urlParams, idParams, method, true);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;
                 if (requestUrl && requestParams) {
                     $.get(requestUrl, requestParams, function(result) {
-                        console.log(result);
                         if (result.status === '0') {
                             const detailInfo = _.get(result, 'data');
                             const status =  _.get(detailInfo, 'status');
@@ -205,6 +203,9 @@
                                 sell: _.get(detailInfo, 'sell') +  'T',
                                 total: _.get(detailInfo, 'total') + 'T'
                             }
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
                         }
                     });
                 }
@@ -222,7 +223,6 @@
 				}
                 const method = 'post';
                 const basicInfo = apiInfo(urlParams, buyParams, method, true);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 if (requestUrl && requestParams) {
@@ -235,6 +235,10 @@
 						}
                     });
 				}
+			},
+			toAgreement () {
+				const path = 'plan/agreement.html' + '?id=' + params('id');
+				jumpTo(path);
 			}
 		}
 	})

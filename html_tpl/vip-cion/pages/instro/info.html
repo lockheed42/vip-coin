@@ -188,7 +188,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="wrap-enter">
+					<div class="wrap-enter" v-if="!isLogin">
 						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
 						<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
 					</div>
@@ -387,8 +387,7 @@
 		},
 		methods: {
 			getDetail(id) {
-				let requestUrl = common_url
-				console.log(this.activeName)
+				let requestUrl = common_url;
 				if(this.activeName === 'info') {
 					requestUrl = requestUrl + '/info_detail.json'
 				} else if(this.activeName === 'message') {
@@ -402,8 +401,7 @@
 				const _this = this
 				return axios.get(requestUrl, requestParams)
 					.then(function(response) {
-						result = response.data
-						console.log(result)
+						result = response.data;
 						if(result.status === 0) {
 							_this.detail = result.data.detail
 						}

@@ -98,7 +98,6 @@
 				}
                 const method = 'post';
                 const basicInfo = apiInfo(urlParams, editParams, method, false);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this
@@ -120,7 +119,6 @@
                 }
 			},
 			getYzm () {
-				console.log(common_url)
 				this.timeCount();
 				if (!this.mobile) {
 					this.$message({
@@ -138,7 +136,6 @@
 				}
                 const method = 'post';
                 const basicInfo = apiInfo(urlParams, yzmParams, method, false);
-                console.log(basicInfo);
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;
@@ -158,13 +155,17 @@
 			},
 			timeCount () {
 			    if (!this.mobile) {
-			        this.$message('error', '请输入手机号');
+			        this.$message({
+			        	type: 'error', 
+			        	message: '请输入手机号'
+			        });
 			        return
 				}
 				if(this.yzmBtn.countdown === 0) {
 					this.yzmBtn.disabled = false;
 					this.yzmBtn.value = "免费获取验证码";
 					this.yzmBtn.countdown = 60;
+					return
 				} else {
 					this.yzmBtn.disabled = true;
 					this.yzmBtn.value = "重新发送(" + this.yzmBtn.countdown + ")";
@@ -173,7 +174,7 @@
 				const _this = this;
 				setTimeout(function() {
 					_this.timeCount()
-				}, 1000)
+				}, 1000);
 			}
 		}
 	})

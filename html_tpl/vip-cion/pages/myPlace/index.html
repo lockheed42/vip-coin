@@ -109,7 +109,10 @@
 						</ul>
 					</div>
 				<div class="common-width">
-					<div class="list" v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
+					<div v-if="contentList.length === 0" class="no-data-tips">
+						{{ noDataTips.text }}
+					</div>
+					<div class="list" v-else v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
 						<div class="part-left">
 							<ul>
 								<li><span class="name"> {{ item.name }} <span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}"> {{ item.statusName }} </span></span><span class="money">预计收益</span></li>
@@ -148,9 +151,9 @@
 		data() {
 			return {
 				statusList: {
-					'1': '预售中',
-					'2': '进行中',
-					'3': '已关闭'
+					'1': '已作废',
+					'2': '未生效',
+					'3': '已生效'
 				},
 				tabList: {
 					'instro/company.html': '公司简介',
@@ -160,6 +163,9 @@
 					'myPlace/index.html': '标的一览',
 					'earnings/index.html': '收益统计',
 					'personalCenter/index.html': '个人中心'
+				},
+				noDataTips: {
+					text: '暂无标的数据'
 				},
 				contentList: [{
 						id: 1,
@@ -192,14 +198,13 @@
 						'total_profit': 2384296000
 					}
 				],
+				
 				activeName: 'plan/index.html'
 			}
 		},
 		watch: {},
 		mounted: function() {
-			console.log(getCookie('user'));
 			this.$nextTick(function() {
-				console.log(getCookie('user'));
 				this.getList()
 			})
 		},
@@ -211,13 +216,11 @@
 				}
                 const method = 'get'
                 const basicInfo = apiInfo(urlParams, {}, method, true);
-                console.log(basicInfo)
                 const requestUrl = _.get(basicInfo, 'url');
                 const requestParams = _.get(basicInfo, 'params');
                 const _this = this;
                 if (requestUrl && requestParams) {
                     $.get(requestUrl, requestParams, function(result){
-                        console.log(result);
                         if (result.status === '0') {
                             const listInfo = _.get(result, 'data');
                             if (listInfo && (_.isArray(listInfo))) {
@@ -227,9 +230,8 @@
                                 for(var i = 0; i < listInfo.length; i++) {
                                     middleItem = listInfo[i]
                                     const status = _.get(middleItem, 'status');
-                                    console.log(middleItem)
                                     middleObj = {
-                                        id: _.get(middleItem, 'plan_id'),
+                                        id: _.get(middleItem, 'project_id'),
                                         total: _.get(middleItem, 'total'),
                                         name: _.get(middleItem, 'name'),
                                         time: _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
@@ -240,35 +242,14 @@
                                     }
                                     list.push(middleObj);
                                 }
-                                console.log(list)
                                 _this.contentList = list;
                             }
+                        } else {
+                            checkStatus(result);
+                            checkCode(result);
                         }
                     });
 				}
-
-//				const listInfo = apiGet(urlParams, {}, true);
-//				if (listInfo && (_.isArray(listInfo))) {
-//					let middleObj = '';
-//					let middleItem = {}
-//					let list = [];
-//					for(var i = 0; i < data.length; i++) {
-//						middleItem = data[i]
-//						status = _.get(middleItem, 'status')
-//						middleObj = {
-//							id: _.get(middleItem, 'plan_id'),
-//							total: _.get(middleItem, 'total'),
-//							name: _.get(middleItem, 'name'),
-//							time: _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
-//							status: _.get(middleItem, 'status'),
-//							statusName: this.statusList[status],
-//							get_profit: _.get(middleItem, 'get_profit'),
-//							total_profit: _.get(middleItem, 'total_profit'),
-//						}
-//						list.push(middleObj);
-//					}
-//					this.contentList = list;
-//				}
 			},
 			jumpTo(path) {
 				jumpTo(path);
