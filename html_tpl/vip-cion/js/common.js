@@ -9,14 +9,15 @@ const noDataTips = {
 	text: '暂无数据'
 }
 
-const staticUrl = 'http://' + window.location.host + '/vip-cion/static/';
+const hostUrl = 'http://' + window.location.host
+
+const staticUrl = hostUrl + '/vip-cion/static/';
 
 function jumpTo(name) {
-	 let jumpUrl = 'http://' + window.location.host + '/pages/';
-//  let jumpUrl = 'http://' + window.location.host + '/vip-coin/html_tpl/vip-cion/pages/';
+//	let jumpUrl = hostUrl + '/vip-cion/pages/';
+    let jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
 		jumpUrl = jumpUrl + name;
-		console.log(jumpUrl);
 		window.location.href = jumpUrl;
 	} else {
 		window.history.back();
