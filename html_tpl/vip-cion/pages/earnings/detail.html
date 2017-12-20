@@ -23,9 +23,11 @@
 				padding: 0px 12px;
 				box-sizing: border-box;
 			}
+			
 			.list:first-child {
 				margin-top: 20px;
 			}
+			
 			.list dd {
 				font-size: 10px;
 				color: #999999;
@@ -37,14 +39,13 @@
 	<body>
 		<div id="earningsDetails" class="wrap-page">
 			<div class="back-bar">
-				<span onclick="jumpTo('earnings/index.html')" class="icon-back"></span>
-				收益统计
-				<span ></span>
+				<span onclick="jumpTo('earnings/index.html')" class="icon-back"></span> 收益统计
+				<span></span>
 			</div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
-			<div class="content">
+			<div class="content">>
 				<div class="common-width">
 					<div v-for="(item, i) in list" class="list">
 						<dl>
@@ -74,76 +75,79 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#earningsDetails',
-		data() {
-			return {
-				statusList: {
-					'0': '未兑现',
-					'1': '已兑现'
-				},
-				list: [{
-						'money': '¥2918',
-						'date': '2017.11.17',
-						'statusName': '已兑现'
+	window.onload = function() {
+		$('.content').show();
+		new Vue({
+			el: '#earningsDetails',
+			data() {
+				return {
+					statusList: {
+						'0': '未兑现',
+						'1': '已兑现'
 					},
-					{
-						'money': '¥2918',
-						'date': '2017.11.17',
-						'statusName': '已兑现'
-					},
-					{
-						'money': '¥2918',
-						'date': '2017.11.17',
-						'statusName': '未兑现'
-					}
-				]
-			}
-		},
-		watch: {},
-		mounted: function() {
-			this.$nextTick(function() {
-				this.getList()
-			})
-		},
-		methods: {
-			getList () {
-				const urlParams = {
-					control: 'profit',
-					action: 'log'
+					list: [{
+							'money': '¥2918',
+							'date': '2017.11.17',
+							'statusName': '已兑现'
+						},
+						{
+							'money': '¥2918',
+							'date': '2017.11.17',
+							'statusName': '已兑现'
+						},
+						{
+							'money': '¥2918',
+							'date': '2017.11.17',
+							'statusName': '未兑现'
+						}
+					]
 				}
-                const method = 'get';
-                const basicInfo = apiInfo(urlParams, {}, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this;
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function (result) {
-                        if (result.status === '0') {
-                            let middleObj = '';
-                            let list = [];
-                            const earnInfo = _.get(result, 'data');
-                            for(var i = 0; i < earnInfo.length; i++) {
-                            	const status = _.get(earnInfo[i], 'status');
-	                            let statusName = ''
-								if (status) {
-	                                statusName = _this.statusList[status];
+			},
+			watch: {},
+			mounted: function() {
+				this.$nextTick(function() {
+					this.getList()
+				})
+			},
+			methods: {
+				getList() {
+					const urlParams = {
+						control: 'profit',
+						action: 'log'
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								let middleObj = '';
+								let list = [];
+								const earnInfo = _.get(result, 'data');
+								for(var i = 0; i < earnInfo.length; i++) {
+									const status = _.get(earnInfo[i], 'status');
+									let statusName = ''
+									if(status) {
+										statusName = _this.statusList[status];
+									}
+									middleObj = {
+										money: '¥' + earnInfo[i].sum,
+										date: earnInfo[i].date,
+										statusName: statusName
+									}
+									list.push(middleObj);
 								}
-                                middleObj = {
-                                    money: '¥' + earnInfo[i].sum,
-                                    date: earnInfo[i].date,
-                                    statusName: statusName
-                                }
-                                list.push(middleObj);
-                            }
-                            _this.list = list;
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    })
-                }
+								_this.list = list;
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
+				}
 			}
-		}
-	})
+		})
+	}
 </script>

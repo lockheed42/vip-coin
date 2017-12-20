@@ -23,39 +23,48 @@
 			.list {
 				margin: 25px 0px;
 			}
+			
 			.list ul {
-				color:#999999;
+				color: #999999;
 			}
+			
 			.list ul li {
 				display: flex;
 				justify-content: space-between;
 			}
+			
 			.list ul:first-child {
 				background: #323237;
 				padding: 10px 15px;
 				border-radius: 5px 5px 0px 0px;
 			}
+			
 			.list ul:first-child .name {
 				color: #fff;
 				font-size: 15px;
 			}
+			
 			.list ul:first-child .name {
 				color: #fff;
 				font-size: 15px;
 			}
+			
 			.list ul:first-child .nums {
 				color: #cbaa67;
 				font-size: 14px;
 			}
+			
 			.list ul:first-child .date {
 				font-size: 10px;
 			}
+			
 			.list ul:last-child {
 				background: #fff;
 				padding: 10px 15px;
 				border-radius: 0px 0px 5px 5px;
 			}
-			.list ul:last-child span.money{
+			
+			.list ul:last-child span.money {
 				color: #333333;
 				font-size: 12px;
 			}
@@ -105,28 +114,30 @@
 <!-- common.js -->
 <script src="../../js/common.js"></script>
 <script>
-	new Vue({
-		el: '#buySuccess',
-		data() {
-			return {
-				successInfo: {
-					name: 'fadianzhan',
-					time: '2017.12.30-2018.12.30',
-					count: '3000T',
-					mount: '19000'
+	window.onload = function() {
+		
+		new Vue({
+			el: '#buySuccess',
+			data() {
+				return {
+					successInfo: {
+						name: 'fadianzhan',
+						time: '2017.12.30-2018.12.30',
+						count: '3000T',
+						mount: '19000'
+					}
 				}
-			}
-		},
-		watch: {},
-		mounted: function() {
-			this.successInfo = {
-				name: params('name'),
-				time: params('time'),
-				count: params('count'),
-				mount: params('mount')
-			}
-		},
-		methods: {
-		}
-	})
+			},
+			watch: {},
+			mounted: function() {
+				this.successInfo = {
+					name: params('name'),
+					time: params('time'),
+					count: params('count'),
+					mount: params('mount')
+				}
+			},
+			methods: {}
+		})
+	}
 </script>

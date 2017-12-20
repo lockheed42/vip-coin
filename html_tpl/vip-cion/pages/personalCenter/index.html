@@ -37,7 +37,7 @@
 			
 			.el-tabs__active-bar {
 				height: 3px;
-				background:#cbaa67;
+				background: #cbaa67;
 			}
 			
 			.el-tabs__nav-wrap::after {
@@ -101,12 +101,14 @@
 			.other-operate .wrap-ul ul:last-child {
 				border-right: 0px;
 			}
+			
 			.other-operate .wrap-ul ul li {
 				display: flex;
-			    flex-direction: column;
-			    justify-content: center;
-			    align-items: center
+				flex-direction: column;
+				justify-content: center;
+				align-items: center
 			}
+			
 			.other-operate .wrap-ul ul li span:first-child {
 				margin-bottom: 10px
 			}
@@ -114,6 +116,7 @@
 			.icon {
 				display: inline-block;
 			}
+			
 			.icon-edit {
 				width: 12px;
 				height: 12px;
@@ -146,34 +149,34 @@
 			</div>
 			<div class="content">
 				<div class="nav-list">
-						<ul>
-							<li onclick="jumpTo('instro/company.html')">公司简介</li>
-							<li onclick="jumpTo('instro/info.html')">行业资讯</li>
-							<li onclick="jumpTo('instro/notice.html')">公司公告</li>
-							<li onclick="jumpTo('plan/index.html')">发行计划</li>
-							<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
-							<li onclick="jumpTo('earnings/index.html')">收益统计</li>
-							<li class="active">个人中心</li>
-						</ul>
-					</div>
+					<ul>
+						<li onclick="jumpTo('instro/company.html')">公司简介</li>
+						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
+						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
+						<li onclick="jumpTo('plan/index.html')">发行计划</li>
+						<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
+						<li class="active">个人中心</li>
+					</ul>
+				</div>
 				<div class="common-width">
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<img src="../../img/vip_bar.png" />
 						<ul class="person-info">
-							<li v-for="item in personalInfo" :class="item.name" >
+							<li v-for="item in personalInfo" :class="item.name">
 								{{ item.value }}
-								<span class="icon icon-edit" v-if="item.eidt" onclick="jumpTo('personalCenter/edit.html')"></span>
+								<span class="icon icon-edit" v-if="item.eidt" @click="jumpTo('personalCenter/edit.html')"></span>
 							</li>
 						</ul>
 						<div class="other-operate">
 							<div class="wrap-ul">
-								<ul onclick="jumpTo('bindCard/index.html')">
+								<ul @click="jumpTo(jumpPath)">
 									<li v-for="(name, key) in operateCard">
 										<span class="icon" :class="key"></span>
 										<span v-text="name"></span>
 									</li>
 								</ul>
-								<ul onclick="jumpTo('account/editPassword.html')">
+								<ul @click="jumpTo('account/editPassword.html')">
 									<li v-for="(name, key) in operatePassword">
 										<span class="icon" :class="key"></span>
 										<span v-text="name"></span>
@@ -201,110 +204,147 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>script
 <script>
-	new Vue({
-		el: '#instro',
-		data() {
-			return {
-				tabList: {
-					'instro/company.html': '公司简介',
-					'instro/info.html': '行业资讯',
-					'instro/notice.html': '公司公告',
-					'plan/index.html': '发行计划',
-					'myPlace/index.html': '标的一览',
-					'earnings/index.html': '收益统计',
-					'personalCenter/index.html': '个人中心'
-				},
-				activeName: 'person',
-				personalInfo: [{
-						name: 'nickName',
-						value: '我是前多多',
-						eidt: false
+	window.onload = function() {
+		new Vue({
+			el: '#instro',
+			data() {
+				return {
+					tabList: {
+						'instro/company.html': '公司简介',
+						'instro/info.html': '行业资讯',
+						'instro/notice.html': '公司公告',
+						'plan/index.html': '发行计划',
+						'myPlace/index.html': '标的一览',
+						'earnings/index.html': '收益统计',
+						'personalCenter/index.html': '个人中心'
 					},
-					{
-						name: 'sex',
-						value: '男',
-						eidt: false
+					activeName: 'person',
+					personalInfo: [{
+							name: 'nickName',
+							value: '我是前多多',
+							eidt: false
+						},
+						{
+							name: 'sex',
+							value: '男',
+							eidt: false
+						},
+						{
+							name: 'id',
+							value: '3****************2',
+							eidt: true
+						}
+					],
+					jumpPath: 'bindCard/index.html',
+					operateCard: {
+						'icon-card': '绑定银行卡',
 					},
-					{
-						name: 'id',
-						value: '3****************2',
-						eidt: true
+					operatePassword: {
+						'icon-password': '修改密码'
 					}
-				],
-				operateCard: {
-					'icon-card': '绑定银行卡'
+				}
+			},
+			watch: {},
+			mounted: function() {
+				document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
+				this.$nextTick(function() {
+					this.getUserInfo();
+					this.getCardList();
+				});
+			},
+			methods: {
+				getUserInfo() {
+					const urlParams = {
+						control: 'user',
+						action: 'info'
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							const personInfo = _.get(result, 'data');
+							if(result.status === '0') {
+								_this.personalInfo = [{
+										name: 'nickName',
+										value: _.get(personInfo, 'name'),
+										eidt: false
+									},
+									{
+										name: 'sex',
+										value: _.get(personInfo, 'sex'),
+										eidt: false
+									},
+									{
+										name: 'id',
+										value: _.get(personInfo, 'id_card'),
+										eidt: true
+									}
+								]
+							} else {
+								checkCode(result);
+								checkStatus(result);
+							}
+						})
+					}
 				},
-				operatePassword: {
-					'icon-password': '修改密码'
+				getCardList() {
+					const urlParams = {
+						control: 'user',
+						action: 'getCard'
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const getCardInfo = _.get(result, 'data');
+								const bank = _.get(getCardInfo, 'bank');
+								const code = _.get(getCardInfo, 'code');
+								if(bank && code) {
+									_this.jumpPath = 'bindCard/cardList.html'
+								}
+								
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
+				},
+				jumpTo (name) {
+					jumpTo(name);
+				},
+				logOut() {
+					const urlParams = {
+						control: 'user',
+						action: 'logout'
+					}
+					const method = 'post';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								setCookie('api_key', '');
+								setCookie('api_security', '');
+								setCookie('user', '');
+								jumpTo('account/login.html');
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
 				}
 			}
-		},
-		watch: {},
-		mounted: function() {
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
-			this.getUserInfo();
-		},
-		methods: {
-		    getUserInfo () {
-                const urlParams = {
-                    control: 'user',
-                    action: 'info'
-                }
-                const method = 'get';
-                const basicInfo = apiInfo(urlParams, {}, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function (result) {
-                        const personInfo = _.get(result, 'data');
-                        if (result.status === '0') {
-                            _this.personalInfo = [{
-                            name: 'nickName',
-                            value: _.get(personInfo, 'name'),
-                            eidt: false
-							},
-							{
-								name: 'sex',
-								value: _.get(personInfo, 'sex'),
-								eidt: false
-							},
-							{
-								name: 'id',
-								value: _.get(personInfo, 'id_card'),
-								eidt: true
-							}]
-						} else {
-                            checkCode(result);
-                            checkStatus(result);
-                        }
-                    })
-                }
-			},
-		    logOut () {
-                const urlParams = {
-                    control: 'user',
-                    action: 'logout'
-                }
-                const method = 'post';
-                const basicInfo = apiInfo(urlParams, {}, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this;
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function (result) {
-                        if (result.status === '0') {
-                            setCookie('api_key', '');
-                            setCookie('api_security', '');
-                            setCookie('user', '');
-                            jumpTo('account/login.html');
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    })
-                }
-			}
-		}
-	})
+		})
+	}
 </script>

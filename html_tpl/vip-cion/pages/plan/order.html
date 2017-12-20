@@ -45,15 +45,19 @@
 				color: #fff;
 				font-size: 15px;
 			}
+			
 			#order .wrap-card-input {
 				justify-content: space-between;
 			}
+			
 			#order .wrap-card-input .label-name {
 				min-width: 65px;
 			}
+			
 			#order .wrap-card-input input {
 				text-align: right;
 			}
+			
 			.unit {
 				color: #cbaa67;
 				display: flex;
@@ -61,6 +65,7 @@
 				margin: 0px 15px;
 				font-size: 13px;
 			}
+			
 			#order .preview {
 				justify-content: flex-end;
 				margin: 18px 0px 80px;
@@ -87,26 +92,26 @@
 					</div>
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">购买算力</span>
-						<div class="right">
-							<el-input-number placeholder="请输入购买算力" v-model="nums" :step="inputNumberObj.step" :controls="inputNumberObj.controls">
-						</div>
-						<span class="unit">T</span>
+							<div class="right">
+								<el-input-number placeholder="请输入购买算力" v-model="nums" :step="inputNumberObj.step" :controls="inputNumberObj.controls">
+							</div>
+							<span class="unit">T</span>
 						</div>
 					</div>
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">算力单价</span>
-						<div class="right">
-							<el-input placeholder="请输入算力单价" v-model="detail.price" :readonly="priceObj.readonly">
-						</div>
-						<span class="unit">元</span>
+							<div class="right">
+								<el-input placeholder="请输入算力单价" v-model="detail.price" :readonly="priceObj.readonly">
+							</div>
+							<span class="unit">元</span>
 						</div>
 					</div>
 					<div class="info-list">
 						<div class="wrap-card-input"><span class="label-name">总金额</span>
-						<div class="right">
-							<el-input placeholder="请输入总金额" v-model="amount">
-						</div>
-						<span class="unit">元</span>
+							<div class="right">
+								<el-input placeholder="请输入总金额" v-model="amount">
+							</div>
+							<span class="unit">元</span>
 						</div>
 					</div>
 					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary" @click="toAgreement">预览合同</button></div>
@@ -130,116 +135,120 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#order',
-		data() {
-			return {
-                statusList: {
-                    '1': '预售中',
-                    '2': '进行中',
-                    '3': '已关闭'
-                },
-				inputNumberObj: {
-					step: 1,
-					controls: false
-				},
-				priceObj: {
-					readonly: true
-				},
-				detail: {
-					name: '发电站',
-					time: '2017.12.30-2018.12.30',
-					profit: 2384296,
-					price: 200,
-					sell: 2000 +  'T',
-					total: 8000 + 'T'
-				},
-				nums: 1,
-				price: '',
-				amount: 0
-			}
-		},
-		watch: {
-			'nums' (val) {
-				this.amount = Number(this.nums) * Number(this.detail.price);
-			}
-		},
-		mounted: function() {
-			this.$nextTick(function() {
-				this.amount = Number(this.nums) * Number(this.detail.price);
-				this.getDetail();
-			})
-		},
-		methods: {
-			getDetail () {
-				const planId = params('id');
-				const urlParams = {
-					control: 'plan',
-					action: 'detail'
+	window.onload = function() {
+		
+		new Vue({
+			el: '#order',
+			data() {
+				return {
+					statusList: {
+						'0': '未发行',
+						'1': '预售中',
+						'2': '进行中',
+						'3': '已关闭'
+					},
+					inputNumberObj: {
+						step: 1,
+						controls: false
+					},
+					priceObj: {
+						readonly: true
+					},
+					detail: {
+						name: '发电站',
+						time: '2017.12.30-2018.12.30',
+						profit: 2384296,
+						price: 200,
+						sell: 2000 + 'T',
+						total: 8000 + 'T'
+					},
+					nums: 1,
+					price: '',
+					amount: 0
 				}
-                const idParams = {
-                    plan_id: planId
-                }
-                const method = 'get';
-                const basicInfo = apiInfo(urlParams, idParams, method, true);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this;
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function(result) {
-                        if (result.status === '0') {
-                            const detailInfo = _.get(result, 'data');
-                            const status =  _.get(detailInfo, 'status');
-                            let statusName = '';
-                            if (status) {
-                                statusName = _this.statusList[status];
+			},
+			watch: {
+				'nums' (val) {
+					this.amount = Number(this.nums) * Number(this.detail.price);
+				}
+			},
+			mounted: function() {
+				this.$nextTick(function() {
+					this.amount = Number(this.nums) * Number(this.detail.price);
+					this.getDetail();
+				})
+			},
+			methods: {
+				getDetail() {
+					const planId = params('id');
+					const urlParams = {
+						control: 'plan',
+						action: 'detail'
+					}
+					const idParams = {
+						plan_id: planId
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, idParams, method, true);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const detailInfo = _.get(result, 'data');
+								const status = _.get(detailInfo, 'status');
+								let statusName = '';
+								if(status) {
+									statusName = _this.statusList[status];
+								}
+								_this.detail = {
+									name: _.get(detailInfo, 'name'),
+									time: _.get(detailInfo, 'begin') + '-' + _.get(detailInfo, 'end'),
+									statusName: statusName,
+									price: _.get(detailInfo, 'price'),
+									profit: _.get(detailInfo, 'profit'),
+									sell: _.get(detailInfo, 'sell') + 'T',
+									total: _.get(detailInfo, 'total') + 'T'
+								}
+							} else {
+								checkStatus(result);
+								checkCode(result);
 							}
-                            _this.detail = {
-                                name: _.get(detailInfo, 'name'),
-                                time:  _.get(detailInfo, 'begin') + '-' +  _.get(detailInfo, 'end'),
-                                statusName: statusName,
-                                price: _.get(detailInfo, 'price'),
-                                profit: _.get(detailInfo, 'profit'),
-                                sell: _.get(detailInfo, 'sell') +  'T',
-                                total: _.get(detailInfo, 'total') + 'T'
-                            }
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    });
-                }
-			},
-			toBuy (path) {
-				const paramStr='name=' + this.detail.name + '&time=' + this.detail.time + '&count=' + this.nums + '&mount=' + this.amount;
-				const id = params('id');
-				const buyParams = {
-					plan_id: id,
-					count: this.nums
+						});
+					}
+				},
+				toBuy(path) {
+					const paramStr = 'name=' + this.detail.name + '&time=' + this.detail.time + '&count=' + this.nums + '&mount=' + this.amount;
+					const id = params('id');
+					const buyParams = {
+						plan_id: id,
+						count: this.nums
+					}
+					const urlParams = {
+						control: 'plan',
+						action: 'buy'
+					}
+					const method = 'post';
+					const basicInfo = apiInfo(urlParams, buyParams, method, true);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					if(requestUrl && requestParams) {
+						$.post(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								jumpTo(path + '?' + paramStr);
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						});
+					}
+				},
+				toAgreement() {
+					const path = 'plan/agreement.html' + '?id=' + params('id');
+					jumpTo(path);
 				}
-				const urlParams = {
-					control: 'plan',
-					action: 'buy'
-				}
-                const method = 'post';
-                const basicInfo = apiInfo(urlParams, buyParams, method, true);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                if (requestUrl && requestParams) {
-                    $.post(requestUrl, requestParams, function(result){
-                        if (result.status === '0') {
-                            jumpTo(path + '?' + paramStr);
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-						}
-                    });
-				}
-			},
-			toAgreement () {
-				const path = 'plan/agreement.html' + '?id=' + params('id');
-				jumpTo(path);
 			}
-		}
-	})
+		})
+	}
 </script>

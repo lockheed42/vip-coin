@@ -178,97 +178,101 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#planDetail',
-		data() {
-			return {
-				statusList: {
-					'1': '预售中',
-					'2': '进行中',
-					'3': '已关闭'
-				},
-				detail: {
-					titleInfo: {
-						name: '发电站',
-						status: '1',
-						statusName: '预售中',
-						time: '2017.12.30-2018.12.30',
-						profit: 2384296,
-						con: '计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情'
+	window.onload = function() {
+		
+		new Vue({
+			el: '#planDetail',
+			data() {
+				return {
+					statusList: {
+						'0': '未发行',
+						'1': '预售中',
+						'2': '进行中',
+						'3': '已关闭'
 					},
-					numsList: {
-						'总': '10000T',
-						'卖': '10000T',
-						'剩': '10000T'
+					detail: {
+						titleInfo: {
+							name: '发电站',
+							status: '1',
+							statusName: '预售中',
+							time: '2017.12.30-2018.12.30',
+							profit: 2384296,
+							con: '计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情计划详情'
+						},
+						numsList: {
+							'总': '10000T',
+							'卖': '10000T',
+							'剩': '10000T'
+						}
 					}
 				}
-			}
-		},
-		watch: {},
-		mounted: function() {
-			this.$nextTick(function() {
-				this.getDetail()
-			})
-		},
-		methods: {
-			getDetail() {
-				const planId = params('id');
-				const urlParams = {
-					control: 'plan',
-					action: 'detail'
-				}
-				const idParams = {
-					plan_id: planId
-				}
-				const method = 'get';
-				const basicInfo = apiInfo(urlParams, idParams, method, true);
-				const requestUrl = _.get(basicInfo, 'url');
-				const requestParams = _.get(basicInfo, 'params');
-				const _this = this;
-				if(requestUrl && requestParams) {
-					$.get(requestUrl, requestParams, function(result) {
-						if(result.status === '0') {
-							const detailInfo = _.get(result, 'data');
-							const status = _.get(detailInfo, 'status');
-							const total = _.get(detailInfo, 'total');
-							const sell = _.get(detailInfo, 'sell');
-							const left = Number(total) - Number(sell);
-							let statusName = '';
-							if(status) {
-								statusName = _this.statusList[status]
-							}
-							_this.detail = {
-								titleInfo: {
-									'name': _.get(detailInfo, 'name'),
-									'time': _.get(detailInfo, 'begin') + '-' + _.get(detailInfo, 'end'),
-									'status': status,
-									'statusName': statusName,
-									'profit': _.get(detailInfo, 'profit'),
-									'con': _.get(detailInfo, 'content')
-								},
-								numsList: {
-									'总': total + 'T',
-									'卖': sell + 'T',
-									'剩': left + 'T',
+			},
+			watch: {},
+			mounted: function() {
+				this.$nextTick(function() {
+					this.getDetail()
+				})
+			},
+			methods: {
+				getDetail() {
+					const planId = params('id');
+					const urlParams = {
+						control: 'plan',
+						action: 'detail'
+					}
+					const idParams = {
+						plan_id: planId
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, idParams, method, true);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const detailInfo = _.get(result, 'data');
+								const status = _.get(detailInfo, 'status');
+								const total = _.get(detailInfo, 'total');
+								const sell = _.get(detailInfo, 'sell');
+								const left = Number(total) - Number(sell);
+								let statusName = '';
+								if(status) {
+									statusName = _this.statusList[status]
 								}
+								_this.detail = {
+									titleInfo: {
+										'name': _.get(detailInfo, 'name'),
+										'time': _.get(detailInfo, 'begin') + '-' + _.get(detailInfo, 'end'),
+										'status': status,
+										'statusName': statusName,
+										'profit': _.get(detailInfo, 'profit'),
+										'con': _.get(detailInfo, 'content')
+									},
+									numsList: {
+										'总': total + 'T',
+										'卖': sell + 'T',
+										'剩': left + 'T',
+									}
+								}
+							} else {
+								checkStatus(result);
+								checkCode(result)
 							}
-						} else {
-							checkStatus(result);
-							checkCode(result)
-						}
-					});
+						});
+					}
+				},
+				jumpTo(name) {
+					const planId = params('id');
+					name = name + '?id=' + planId
+					jumpTo(name);
+				},
+				/*预览合同*/
+				toAgreement() {
+					const path = 'plan/agreement.html' + '?id=' + params('id');
+					jumpTo(path);
 				}
-			},
-			jumpTo(name) {
-				const planId = params('id');
-				name = name + '?id=' + planId
-				jumpTo(name);
-			},
-			/*预览合同*/
-			toAgreement() {
-				const path = 'plan/agreement.html' + '?id=' + params('id');
-				jumpTo(path);
 			}
-		}
-	})
+		})
+	}
 </script>

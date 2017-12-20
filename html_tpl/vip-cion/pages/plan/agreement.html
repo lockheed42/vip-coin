@@ -27,7 +27,7 @@
 					{{ noDataTips.text }}
 				</div>
 				<div v-else v-for="item in picList" class="pic-list">
-					<img :src="item"  />
+					<img :src="item" />
 				</div>
 			</div>
 		</div>
@@ -47,56 +47,59 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#planAgreement',
-		data() {
-			return {
-				noDataTips: {
-					text: '暂无合同的数据'
-				},
-				picList: [
-				'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1513515702&di=52d8f0e9d41793789c89ec5045d4dd73&src=http://www.downyi.com/uploadfiles/ruanjian/hezuoxiuyi.jpg',
-				'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'
-				]
-			}
-		},
-		watch: {},
-		mounted: function() {
-			this.$nextTick(function() {
-				this.previewAgreement();
-			})
-		},
-		methods: {
-			/*预览合同*/
-			previewAgreement() {
-				const urlParams = {
-					control: 'plan',
-					action: 'contract'
+	window.onload = function() {
+		
+		new Vue({
+			el: '#planAgreement',
+			data() {
+				return {
+					noDataTips: {
+						text: '暂无合同的数据'
+					},
+					picList: [
+						'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1513515702&di=52d8f0e9d41793789c89ec5045d4dd73&src=http://www.downyi.com/uploadfiles/ruanjian/hezuoxiuyi.jpg',
+						'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'
+					]
 				}
-				const idParams = {
-					plan_id: params('id')
-				}
-				const method = 'post';
-				const basicInfo = apiInfo(urlParams, idParams, method, true);
-				const requestUrl = _.get(basicInfo, 'url');
-				const requestParams = _.get(basicInfo, 'params');
-				const _this = this;
-				if(requestUrl && requestParams) {
-					$.post(requestUrl, requestParams, function(result) {
-						if(result.status === '0') {
-							const url = _.get(result, 'data.url');
-							if (url) {
-								_this.picList = url
+			},
+			watch: {},
+			mounted: function() {
+				this.$nextTick(function() {
+					this.previewAgreement();
+				})
+			},
+			methods: {
+				/*预览合同*/
+				previewAgreement() {
+					const urlParams = {
+						control: 'plan',
+						action: 'contract'
+					}
+					const idParams = {
+						plan_id: params('id')
+					}
+					const method = 'post';
+					const basicInfo = apiInfo(urlParams, idParams, method, true);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.post(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const url = _.get(result, 'data.url');
+								if(url) {
+									_this.picList = url
+								} else {
+									_this.picList = []
+								}
 							} else {
-								_this.picList = []
+								checkStatus(result);
+								checkCode(result);
 							}
-						} else {
-							checkStatus(result);
-							checkCode(result);
-						}
-					})
+						})
+					}
 				}
 			}
-		}
-	})
+		})
+	}
 </script>

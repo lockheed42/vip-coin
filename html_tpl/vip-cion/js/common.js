@@ -9,11 +9,14 @@ const noDataTips = {
 	text: '暂无数据'
 }
 
+const staticUrl = 'http://' + window.location.host + '/vip-cion/static/';
+
 function jumpTo(name) {
 	 let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/';
 //  let jumpUrl = 'http://' + window.location.host + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
 		jumpUrl = jumpUrl + name;
+		console.log(jumpUrl);
 		window.location.href = jumpUrl;
 	} else {
 		window.history.back();
@@ -157,26 +160,6 @@ function checkCode(res) {
 				jumpTo('account/login.html')
 			}
 		}, 5000);
-		//		this.$message({
-		//			message: res.error,
-		//			type: 'error'
-		//		});
-		//		const errList = {
-		//			460: '您的账号已在其他设备上登录',
-		//			461: '登录信息已过期，请重新登录'
-		//		}
-		//		const err = _.get(errList, res.code)
-		//		const msg = err || res.error
-		//		if(err || msg === '身份授权错误，请重新进入！') {
-		//			store.commit('message/setMsg', msg)
-		//			if(process.browser) {
-		//				app.$cookie.del('__currentUser')
-		//				app.$cookie.del('__loginFlag')
-		//			}
-		//			redirect('/login')
-		//		} else {
-		//			showError(msg, res.code)
-		//		}
 	}
 }
 

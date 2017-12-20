@@ -23,7 +23,7 @@
 					<el-input v-model="password" type="password" placeholder="输入密码"></el-input>
 					<div class="wrap-tips">
 						<!--<a class="tips" href="register.html">注册</a>-->
-						<a class="tips" href="">忘记密码</a>
+						<a class="tips" href="forgetPassword.html">忘记密码</a>
 					</div>
 				</div>
 				<div class="wrap-enter">
@@ -47,63 +47,65 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#login',
-		data () {
-			return {
-				mobile: '',
-				password: ''
-			}
-		},
-		methods: {
-			/*提交接口参数*/
-			login: function() {
-				let textTips = ""
-				if(!this.mobile) {
-					textTips = "手机号不能为空！";
-				} else if(!this.password) {
-					textTips = "密码不能为空！";
-				} else if(!mobile_test.test(this.mobile)) {
-					textTips = "手机号格式不正确！"
+	window.onload = function() {
+		new Vue({
+			el: '#login',
+			data() {
+				return {
+					mobile: '',
+					password: ''
 				}
-				if(textTips) {
-					this.$message({
-						message: textTips,
-						type: 'error'
-					});
-					return
-				}
-				const loginParams = {
-					mobile: this.mobile,
-					pwd: this.password
-				}
-				const urlParams = {
-					control: 'login',
-					action: 'login'
-				}
-				const method = 'post';
-                const basicInfo = apiInfo(urlParams, loginParams, method, false);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this;
-                if (requestUrl && requestParams) {
-                    $.post(requestUrl, requestParams, function(result){
-                        if (result.status === '0') {
-                            const data = _.get(result, 'data');
-                            const apiKey = _.get(data, 'api_key');
-                            const apiSecurity = _.get(data, 'api_security');
-                            setCookie('api_key', apiKey);
-                            setCookie('api_security', apiSecurity);
-                            setCookie('user', _this.mobile);
-                            jumpTo('myPlace/index.html');
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    });
-				}
+			},
+			methods: {
+				/*提交接口参数*/
+				login: function() {
+					let textTips = ""
+					if(!this.mobile) {
+						textTips = "手机号不能为空！";
+					} else if(!this.password) {
+						textTips = "密码不能为空！";
+					} else if(!mobile_test.test(this.mobile)) {
+						textTips = "手机号格式不正确！"
+					}
+					if(textTips) {
+						this.$message({
+							message: textTips,
+							type: 'error'
+						});
+						return
+					}
+					const loginParams = {
+						mobile: this.mobile,
+						pwd: this.password
+					}
+					const urlParams = {
+						control: 'login',
+						action: 'login'
+					}
+					const method = 'post';
+					const basicInfo = apiInfo(urlParams, loginParams, method, false);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.post(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const data = _.get(result, 'data');
+								const apiKey = _.get(data, 'api_key');
+								const apiSecurity = _.get(data, 'api_security');
+								setCookie('api_key', apiKey);
+								setCookie('api_security', apiSecurity);
+								setCookie('user', _this.mobile);
+								jumpTo('plan/index.html');
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						});
+					}
 
+				}
 			}
-		}
-	})
+		})
+	}
 </script>

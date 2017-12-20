@@ -15,8 +15,8 @@
 				margin-top: 20px;
 			}
 			
-			.info-input {
-			}
+			.info-input {}
+			
 			.info-list {
 				display: flex;
 				justify-content: space-between;
@@ -127,7 +127,7 @@
 						</div>
 					</div>
 					<div v-if="edit.name === '性别'">
-						<div class="info-list" v-for ="item in edit.list" >
+						<div class="info-list" v-for="item in edit.list">
 							<el-radio v-model="edit.value" :label="item.label"> {{ item.label }}</el-radio>
 							<div class="right" v-if="edit.value === item.label">
 								<span class="icon icon-selected"></span>
@@ -158,133 +158,142 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#edit',
-		data() {
-			return {
-				info: [{
-						name: '姓名',
-						value: '我是啦啦啦'
-					},
-					{
-						name: '性别',
-						value: '女'
-					},
-					{
-						name: '身份证号',
-						value: '32011144522366999'
-					}
-				],
-				edit: {
-					name: '',
-					value: '',
-					placeholder: '请输入',
-					list:[{
-						label: '男'
-					},
-					{
-						label: '女'
-					}
-					]
-				}
-			}
-		},
-		mounted: function () {
-		  	this.$nextTick(function () {
-				const urlParams = {
-					control: 'user',
-					action: 'info'
-				}
-                const method = 'get';
-                const basicInfo = apiInfo(urlParams, {}, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function (result) {
-                        const personInfo = _.get(result, 'data');
-                        if (result.status === '0') {
-                            _this.info = [{
-                                name: '姓名',
-                                value: _.get(personInfo, 'name')
-                            },
-							{
-								name: '性别',
-								value: _.get(personInfo, 'sex')
+	window.onload = function() {
+		
+		new Vue({
+			el: '#edit',
+			data() {
+				return {
+					info: [{
+							name: '姓名',
+							value: '我是啦啦啦'
+						},
+						{
+							name: '性别',
+							value: '女'
+						},
+						{
+							name: '身份证号',
+							value: '32011144522366999'
+						}
+					],
+					edit: {
+						name: '',
+						value: '',
+						placeholder: '请输入',
+						list: [{
+								label: '男'
 							},
 							{
-								name: '身份证号',
-								value: _.get(personInfo, 'id_card')
-							}]
-                        } else {
-                            checkCode(result);
-                            checkStatus(result);
-						}
-                    })
-                }
-		  	})
-		},
-		methods: {
-			editInfo (item) {
-				this.edit = {
-					name: item.name,
-					value: item.value,
-					placeholder: '请输入' + item.name
-				}
-				if (item.name === '性别') {
-					this.edit.list = [{
-						label: '男'
-					},
-					{
-						label: '女'
+								label: '女'
+							}
+						]
 					}
-					]
 				}
 			},
-			save () {
-				let editPathName = '/user'
-				let parmasName = 'name'
-				if (this.edit.name === '姓名') {
-					editPathName = editPathName + '/saveName'
-					parmasName = 'name'
-					console.log('保存提交姓名的接口，返回新的value')
-				} else if (this.edit.name === '性别') {
-					editPathName = editPathName + '/saveSex'
-					parmasName = 'sex'
-				} else if (this.edit.name === '身份证号') {
-					editPathName = editPathName + '/saveIdCard'
-					parmasName = 'id_card'
+			mounted: function() {
+				this.$nextTick(function() {
+					const urlParams = {
+						control: 'user',
+						action: 'info'
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							const personInfo = _.get(result, 'data');
+							if(result.status === '0') {
+								_this.info = [{
+										name: '姓名',
+										value: _.get(personInfo, 'name')
+									},
+									{
+										name: '性别',
+										value: _.get(personInfo, 'sex')
+									},
+									{
+										name: '身份证号',
+										value: _.get(personInfo, 'id_card')
+									}
+								]
+							} else {
+								checkCode(result);
+								checkStatus(result);
+							}
+						})
+					}
+				})
+			},
+			methods: {
+				editInfo(item) {
+					this.edit = {
+						name: item.name,
+						value: item.value,
+						placeholder: '请输入' + item.name
+					}
+					if(item.name === '性别') {
+						this.edit.list = [{
+								label: '男'
+							},
+							{
+								label: '女'
+							}
+						]
+					}
+				},
+				save() {
+					let editPathName = '/user'
+					let parmasName = 'name'
+					let actionName = ''
+					if(this.edit.name === '姓名') {
+						editPathName = editPathName + '/saveName'
+						parmasName = 'name',
+						actionName = 'saveName'
+						console.log('保存提交姓名的接口，返回新的value')
+					} else if(this.edit.name === '性别') {
+						editPathName = editPathName + '/saveSex'
+						parmasName = 'sex',
+						actionName = 'saveSex'
+					} else if(this.edit.name === '身份证号') {
+						editPathName = editPathName + '/saveIdCard'
+						parmasName = 'id_card',
+						actionName = 'saveIdCard'
+					}
+					let userParams = {}
+					userParams[parmasName] = this.edit.value
+					const urlParams = {
+						control: 'user',
+						action: actionName
+					}
+					const method = 'post';
+					const basicInfo = apiInfo(urlParams, userParams, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					if(requestUrl && requestParams) {
+						$.post(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								
+								window.location.reload();
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
+					//				const personInfo = apiPost(urlParams, userParams, true)
+					//				if (personInfo) {
+					//
+					//				}
+					//				this.edit = {
+					//					name: '',
+					//					value: '',
+					//					placeholder: '请输入'
+					//				}
 				}
-				let userParams = {}
-				userParams[parmasName] = this.edit.value
-				const urlParams = {
-					control: 'user',
-					action: 'bindCard'
-				}
-				const method = 'post';
-                const basicInfo = apiInfo(urlParams, userParams, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                if (requestUrl && requestParams) {
-                    $.post(requestUrl, requestParams, function(result) {
-                        if (result.status === '0') {
-                            window.location.reload();
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-						}
-                    })
-                }
-//				const personInfo = apiPost(urlParams, userParams, true)
-//				if (personInfo) {
-//
-//				}
-//				this.edit = {
-//					name: '',
-//					value: '',
-//					placeholder: '请输入'
-//				}
 			}
-		}
-	})
+		})
+	}
 </script>

@@ -147,139 +147,143 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#plan',
-		data() {
-			return {
-				tabList: {
-					'instro/company.html': '公司简介',
-					'instro/info.html': '行业资讯',
-					'instro/notice.html': '公司公告',
-					'plan/index.html': '发行计划',
-					'myPlace/index.html': '标的一览',
-					'earnings/index.html': '收益统计',
-					'personalCenter/index.html': '个人中心'
-				},
-				statusList: {
-					'1': '预售中',
-					'2': '进行中',
-					'3': '已关闭'
-				},
-				noDataTips: {
-					text: '暂无发行计划的数据'
-				},
-				contentList: [{
-						id: 1,
-						partLeft: {
-							'总': '10000T',
-							'卖': '10000T',
-							'剩': '10000T'
-						},
-						partRight: {
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '1',
-							'statusName': '进行中',
-							'profit': 2384296
-						}
+	window.onload = function() {
+		
+		new Vue({
+			el: '#plan',
+			data() {
+				return {
+					tabList: {
+						'instro/company.html': '公司简介',
+						'instro/info.html': '行业资讯',
+						'instro/notice.html': '公司公告',
+						'plan/index.html': '发行计划',
+						'myPlace/index.html': '标的一览',
+						'earnings/index.html': '收益统计',
+						'personalCenter/index.html': '个人中心'
 					},
-					{
-						id: 2,
-						partLeft: {
-							'总': '10000T',
-							'卖': '10000T',
-							'剩': '10000T',
-						},
-						partRight: {
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '2',
-							'statusName': '预售中',
-							'profit': 2384296
-						}
+					statusList: {
+						'0': '未发行',
+						'1': '预售中',
+						'2': '进行中',
+						'3': '已关闭'
 					},
-					{
-						id: 3,
-						partLeft: {
-							'总': '10000T',
-							'卖': '10000T',
-							'剩': '10000T',
+					noDataTips: {
+						text: '暂无发行计划的数据'
+					},
+					contentList: [{
+							id: 1,
+							partLeft: {
+								'总': '10000T',
+								'卖': '10000T',
+								'剩': '10000T'
+							},
+							partRight: {
+								'name': '计划名称',
+								'time': '2017.12.30-2018.12.30',
+								'status': '1',
+								'statusName': '进行中',
+								'profit': 2384296
+							}
 						},
-						partRight: {
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '3',
-							'statusName': '已关闭',
-							'profit': 2384296
+						{
+							id: 2,
+							partLeft: {
+								'总': '10000T',
+								'卖': '10000T',
+								'剩': '10000T',
+							},
+							partRight: {
+								'name': '计划名称',
+								'time': '2017.12.30-2018.12.30',
+								'status': '2',
+								'statusName': '预售中',
+								'profit': 2384296
+							}
+						},
+						{
+							id: 3,
+							partLeft: {
+								'总': '10000T',
+								'卖': '10000T',
+								'剩': '10000T',
+							},
+							partRight: {
+								'name': '计划名称',
+								'time': '2017.12.30-2018.12.30',
+								'status': '3',
+								'statusName': '已关闭',
+								'profit': 2384296
+							}
 						}
-					}
-				],
-				activeName: 'plan',
-			}
-		},
-		watch: {},
-		mounted: function() {
-			this.$nextTick(function() {
-				this.getList()
-			})
-		},
-		methods: {
-            getList () {
-				const urlParams = {
-					control: 'plan',
-					action: 'all'
-				}
-				const basicInfo = apiInfo(urlParams, {}, 'get');
-				const requestUrl = _.get(basicInfo, 'url');
-				const requestParams = _.get(basicInfo, 'params');
-				const _this = this;
-				if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function(result){
-                        if (result.status === '0') {
-                            const listInfo = _.get(result, 'data');
-                            if (listInfo && (_.isArray(listInfo))) {
-                                let middleObj = '';
-                                let middleItem = {};
-                                let list = [];
-                                for(var i = 0; i < listInfo.length; i++) {
-                                    middleItem = listInfo[i];
-                                    const status = _.get(middleItem, 'status');
-                                    let statusName = ''
-									if (status) {
-                                        statusName = _this.statusList[status];
-									}
-                                    const total = _.get(middleItem, 'total');
-                                    const sell = _.get(middleItem, 'sell');
-                                    const left = Number(total) - Number(sell);
-                                    middleObj = {
-                                        id: _.get(middleItem, 'plan_id'),
-                                        partLeft: {
-                                            '总': total + 'T',
-                                            '卖': sell + '10000T',
-                                            '剩': left + 'T',
-                                        },
-                                        partRight: {
-                                            'name': _.get(middleItem, 'name'),
-                                            'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
-                                            'status': status,
-                                            'statusName': statusName,
-                                            'profit': _.get(middleItem, 'profit')
-                                        }
-                                    }
-                                    list.push(middleObj);
-                                }
-                                _this.contentList = list;
-                            }
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    });
+					],
+					activeName: 'plan',
 				}
 			},
-			jumpTo (path) {
-				jumpTo(path);
+			watch: {},
+			mounted: function() {
+				this.$nextTick(function() {
+					this.getList()
+				})
+			},
+			methods: {
+				getList() {
+					const urlParams = {
+						control: 'plan',
+						action: 'all'
+					}
+					const basicInfo = apiInfo(urlParams, {}, 'get');
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const listInfo = _.get(result, 'data');
+								if(listInfo && (_.isArray(listInfo))) {
+									let middleObj = '';
+									let middleItem = {};
+									let list = [];
+									for(var i = 0; i < listInfo.length; i++) {
+										middleItem = listInfo[i];
+										const status = _.get(middleItem, 'status');
+										let statusName = ''
+										if(status) {
+											statusName = _this.statusList[status];
+										}
+										const total = _.get(middleItem, 'total');
+										const sell = _.get(middleItem, 'sell');
+										const left = Number(total) - Number(sell);
+										middleObj = {
+											id: _.get(middleItem, 'plan_id'),
+											partLeft: {
+												'总': total + 'T',
+												'卖': sell + '10000T',
+												'剩': left + 'T',
+											},
+											partRight: {
+												'name': _.get(middleItem, 'name'),
+												'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+												'status': status,
+												'statusName': statusName,
+												'profit': _.get(middleItem, 'total')
+											}
+										}
+										list.push(middleObj);
+									}
+									_this.contentList = list;
+								}
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						});
+					}
+				},
+				jumpTo(path) {
+					jumpTo(path);
+				}
 			}
-		}
-	})
+		})
+	}
 </script>

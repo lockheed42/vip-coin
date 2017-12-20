@@ -110,7 +110,7 @@
 			<div class="title-bar">
 				VIP-CION
 			</div>
-			<div class="content">
+			<div class="content">>
 				<div class="common-width">
 					<div class="card-list">
 						<div v-for="item in card.list" class="card-info" :style="'background:url('+ item.bgUrl +') no-repeat 100% 100%;background-size: 100% 100%;'">
@@ -141,10 +141,11 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	window.onload = function () {
+	window.onload = function() {
+		$('.content').show();
 		new Vue({
 			el: '#bindCard',
-			data () {
+			data() {
 				return {
 					card: {
 						tipsText: '请绑定持卡人本人的银行卡（只能绑定一张）',
@@ -163,28 +164,28 @@
 				})
 			},
 			methods: {
-				getList () {
+				getList() {
 					const urlParams = {
 						control: 'user',
 						action: 'getCard'
 					}
-                    const method = 'get';
-                    const basicInfo = apiInfo(urlParams, {}, method);
-                    const requestUrl = _.get(basicInfo, 'url');
-                    const requestParams = _.get(basicInfo, 'params');
-                    const _this = this;
-                    if (requestUrl && requestParams) {
-                        $.get(requestUrl, requestParams, function(result) {
-                            if (result.status === '0') {
-                                const getCardInfo = _.get(result, 'data');
-                                _this.card.list[0].name = _.get(getCardInfo, 'bank');
-                                _this.card.list[0].numbers = _.get(getCardInfo, 'code');
-                            } else {
-                                checkStatus(result);
-                                checkCode(result);
-                            }
-                        })
-                    }
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const getCardInfo = _.get(result, 'data');
+								_this.card.list[0].name = _.get(getCardInfo, 'bank');
+								_this.card.list[0].numbers = _.get(getCardInfo, 'code');
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
 				}
 			}
 		})

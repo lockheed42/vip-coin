@@ -179,6 +179,9 @@
 			</div>
 			<div class="content">
 				<div class="nav-list">
+					<!--<el-tabs v-model="activeName" @tab-click="handleClick">
+						<el-tab-pane v-for="(item, index) in tabList" :label="item.label" :name="item.name" @click="jumpTo(item.path)"></el-tab-pane>
+					</el-tabs>-->
 					<ul>
 						<li onclick="jumpTo('instro/company.html')">公司简介</li>
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
@@ -223,57 +226,83 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	new Vue({
-		el: '#earnings',
-		data() {
-			return {
-				tabList: {
-					'instro/company.html': '公司简介',
-					'instro/info.html': '行业资讯',
-					'instro/notice.html': '公司公告',
-					'plan/index.html': '发行计划',
-					'myPlace/index.html': '标的一览',
-					'': '收益统计',
-					'personalCenter/index.html': '个人中心'
+	window.onload = function() {
+
+		new Vue({
+			el: '#earnings',
+			data() {
+				return {
+					activeName: 'personalCenter',
+					tabList: [{
+						path: 'instro/company.html',
+						label: '公司简介',
+						name: 'company'
+					}, {
+						path: 'instro/info.html',
+						label: '行业资讯',
+						name: 'info'
+					}, {
+						path: 'instro/notice.html',
+						label: '公司公告',
+						name: 'notice'
+					}, {
+						path: 'plan/index.html',
+						label: '发行计划',
+						name: 'plan'
+					}, {
+						path: 'myPlace/index.html',
+						label: '标的一览',
+						name: 'myPlace'
+					}, {
+						path: '',
+						label: '收益统计',
+						name: 'earn'
+					}, {
+						path: 'personalCenter/index.html',
+						label: '个人中心',
+						name: 'personalCenter'
+					}],
+					earning: {
+						money: '100000000',
+						text1: '昨日总收益',
+						text2: '每日总收益明细'
+					}
+				}
+			},
+			watch: {},
+			mounted: function() {
+				document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
+				this.$nextTick(function() {
+					this.getEarn();
+				})
+			},
+			methods: {
+				handleClick () {
+					
 				},
-				activeName: 'money',
-				earning: {
-					money: '100000000',
-					text1: '昨日总收益',
-					text2: '每日总收益明细'
+				getEarn() {
+					const urlParams = {
+						control: 'profit',
+						action: 'index'
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, {}, method);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const earnInfo = _.get(result, 'data');
+								_this.earning.money = _.get(earnInfo, 'profit');
+							} else {
+								checkStatus(result);
+								checkCode(result);
+							}
+						})
+					}
 				}
 			}
-		},
-		watch: {},
-		mounted: function() {
-			document.getElementById('tabContent').style.height = (document.body.clientHeight - 170) + 'px';
-			this.$nextTick(function() {
-				this.getEarn();
-			})
-		},
-		methods: {
-			getEarn() {
-				const urlParams = {
-					control: 'profit',
-					action: 'index'
-				}
-                const method = 'get';
-                const basicInfo = apiInfo(urlParams, {}, method);
-                const requestUrl = _.get(basicInfo, 'url');
-                const requestParams = _.get(basicInfo, 'params');
-                const _this = this;
-                if (requestUrl && requestParams) {
-                    $.get(requestUrl, requestParams, function (result) {
-                        if (result.status === '0') {
-                            const earnInfo = _.get(result, 'data');
-                            _this.earning.money = _.get(earnInfo, 'profit');
-                        } else {
-                            checkStatus(result);
-                            checkCode(result);
-                        }
-                    })
-                }
-			}
-		}
-	})
+		})
+	}
 </script>
