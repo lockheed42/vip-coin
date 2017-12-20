@@ -12,7 +12,7 @@ const noDataTips = {
 const staticUrl = 'http://' + window.location.host + '/vip-cion/static/';
 
 function jumpTo(name) {
-	 let jumpUrl = 'http://' + window.location.host + '/vip-cion/pages/';
+	 let jumpUrl = 'http://' + window.location.host + '/pages/';
 //  let jumpUrl = 'http://' + window.location.host + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
 		jumpUrl = jumpUrl + name;
