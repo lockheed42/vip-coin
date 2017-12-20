@@ -62,14 +62,13 @@ class UserController extends CommonController
             $data = [
                 'name'    => $user['name'],
                 'sex'     => $user['sex'] == 1 ? '男' : '女',
-                'id_card' => '***************' . substr($user['idcard'], -4),
+                'id_card' => empty($user['idcard']) ? '' : '**** **** *******' . substr($user['idcard'], -4),
             ];
 
             $this->success($data);
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
-
     }
 
     /**
