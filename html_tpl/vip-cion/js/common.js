@@ -14,8 +14,8 @@ const hostUrl = 'http://' + window.location.host
 const staticUrl = hostUrl + '/vip-cion/static/';
 
 function jumpTo(name) {
-//	let jumpUrl = hostUrl + '/vip-cion/pages/';
-    let jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
+	let jumpUrl = hostUrl + '/pages/';
+    // let jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
 		jumpUrl = jumpUrl + name;
 		window.location.href = jumpUrl;
