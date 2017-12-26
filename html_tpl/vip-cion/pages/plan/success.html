@@ -85,12 +85,12 @@
 					</div>
 					<div class="list">
 						<ul>
-							<li><span class="name"> {{ successInfo.name }} </span><span class="nums"> {{ successInfo.count }} </span></li>
-							<li><span class="date"> {{ successInfo.time }} </span><span></span></li>
+							<li><span class="name" v-text="successInfo.name"></span><span class="nums" v-text="successInfo.count"></span></li>
+							<li><span class="date" v-text="successInfo.time"></span><span></span></li>
 						</ul>
 						<ul>
 							<li>
-								<span></span><span class="money">合计 {{ successInfo.mount }} 元</span>
+								<span></span><span class="money" v-text="successInfo.mount"></span>
 							</li>
 						</ul>
 					</div>
@@ -133,8 +133,8 @@
 				this.successInfo = {
 					name: params('name'),
 					time: params('time'),
-					count: params('count'),
-					mount: params('mount')
+					count: params('count') + 'T',
+					mount: '合计'+params('mount')+'元'
 				}
 			},
 			methods: {}

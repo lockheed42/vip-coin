@@ -47,13 +47,14 @@
 			</div>
 			<div class="content">
 				<div class="common-width">
-					<div v-for="(item, i) in list" class="list">
+					<div v-if="list.length === 0" class="no-data-tips" v-text="noDataTips.text">
+					</div>
+					<div v-else v-for="(item, i) in list" class="list">
 						<dl>
-							<dt> {{ item.money }} </dt>
-							<dd> {{ item.date }} </dd>
+							<dt v-text="item.money"></dt>
+							<dd v-text="item.date"></dd>
 						</dl>
-						<span class="status">
-							{{ item.statusName }}
+						<span class="status" v-text="item.statusName">
 						</span>
 					</div>
 				</div>
@@ -81,25 +82,14 @@
 			el: '#earningsDetails',
 			data() {
 				return {
+					noDataTips: {
+						text: '暂无收益明细数据'
+					},
 					statusList: {
 						'0': '未兑现',
 						'1': '已兑现'
 					},
-					list: [{
-							'money': '¥2918',
-							'date': '2017.11.17',
-							'statusName': '已兑现'
-						},
-						{
-							'money': '¥2918',
-							'date': '2017.11.17',
-							'statusName': '已兑现'
-						},
-						{
-							'money': '¥2918',
-							'date': '2017.11.17',
-							'statusName': '未兑现'
-						}
+					list: [
 					]
 				}
 			},

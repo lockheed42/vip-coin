@@ -10,7 +10,7 @@
 		<title>介绍</title>
 		<style>
 			.content .common-width {
-				position: relative;
+				/*position: relative;*/
 				height: 100%;
 			}
 			
@@ -46,11 +46,11 @@
 			.el-tabs__item.is-active {
 				background: #282830;
 				color: #cbaa67;
-				border-radius: 5px 5px 0px 0px;
+				border-radius: 5px;
 			}
 			
 			.tab-content {
-				position: absolute;
+				/*position: absolute;*/
 				width: 100%;
 				border: 18px solid #282830;
 				box-sizing: border-box;
@@ -69,11 +69,11 @@
 			}
 			
 			.tab-instro {
-				border-radius: 0px 5px 5px 5px;
+				border-radius: 5px;
 			}
 			
 			.tab-message {
-				border-radius: 5px 0px 5px 5px;
+				border-radius: 5px;
 			}
 			
 			.tab-content .c-title {
@@ -99,7 +99,7 @@
 			
 			.content .wrap-enter {
 				position: absolute;
-				width: 100%;
+				width: 73%;
 				bottom: 10px;
 			}
 			
@@ -139,8 +139,8 @@
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<div v-if="(activeName === 'message') && (!detail.show)">
 							<div class="list" v-for="list in message.content" @click="getDetail(list.id)">
-								<div class="c-title" v-text="list.title"> {{ list.title }} </div>
-								<div class="" v-text="list.sl_detail"> {{ list.sl_detail }}</div>
+								<div class="c-title" v-text="list.title"></div>
+								<div class="" v-text="list.sl_detail"></div>
 								<div class="wrap-tips">
 									<span v-text="list.read_nums.name + list.read_nums.value">
 							</span>

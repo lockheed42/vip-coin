@@ -136,26 +136,24 @@
 			<div class="content">
 				<div class="common-width">
 					<dl class="title-info">
-						<dt> {{ detail.titleInfo.name }} </dt>
-						<dd class="status" :class="{ 'status-red': detail.titleInfo.status === '2', 'status-yellow': detail.titleInfo.status === '1'}"> {{ detail.titleInfo.statusName }} </dd>
+						<dt v-text="detail.titleInfo.name"></dt>
+						<dd class="status" :class="{ 'status-red': detail.titleInfo.status === '2', 'status-yellow': detail.titleInfo.status === '1'}" v-text="detail.titleInfo.statusName"></dd>
 					</dl>
 					<ul class="status-list">
 						<li v-for="(item, key) of detail.numsList">
-							<span class="flag"> {{ key }}</span><span class="text"> {{ item }} </span>
+							<span class="flag" v-text="key"></span><span class="text" v-text="item"></span>
 						</li>
 					</ul>
 					<ul class="other-list">
-						<li class="date">
-							{{ detail.titleInfo.time }}
-						</li>
+						<li class="date" v-text="detail.titleInfo.time"></li>
 						<li class="money">
 							<span>预计收益</span>
-							<span> {{ detail.titleInfo.profit }} </span>
+							<span v-text="detail.titleInfo.profit"></span>
 						</li>
 					</ul>
 					<dl class="plan-detail">
 						<dt>计划介绍</dt>
-						<dd> {{ detail.titleInfo.con }} </dd>
+						<dd v-text="detail.titleInfo.con"> </dd>
 					</dl>
 					<div class="wrap-enter preview"><button type="button" class="el-button el-button--primary" @click="toAgreement">预览合同</button></div>
 				</div>
@@ -210,7 +208,7 @@
 			watch: {},
 			mounted: function() {
 				this.$nextTick(function() {
-					this.getDetail()
+//					this.getDetail();
 				})
 			},
 			methods: {

@@ -112,24 +112,23 @@
 			<div class="content">
 				<div class="common-width">
 					<dl class="title-info">
-						<dt> {{ detail.name }} </dt>
-						<dd class="status" :class="{ 'status-red': detail.status === '2', 'status-yellow': detail.status === '1'}"> {{ detail.statusName }} </dd>
+						<dt v-text="detail.name"></dt>
+						<dd class="status" :class="{ 'status-red': detail.status === '2', 'status-yellow': detail.status === '1'}" v-text="detail.statusName"></dd>
 					</dl>
 					<ul class="status-list">
-						<li><span>拥有算力</span><span class="text"> {{ detail.total }} </span></li>
+						<li><span>拥有算力</span><span class="text" v-text="detail.total"></span></li>
 					</ul>
 					<ul class="other-list">
-						<li class="date">
-							{{ detail.time }}
+						<li class="date" v-text="detail.time">
 						</li>
 						<li class="money">
 							<span>预计收益</span>
-							<span> {{ detail.profit }} </span>
+							<span v-text="detail.profit"></span>
 						</li>
 					</ul>
 					<dl class="plan-detail">
 						<dt>计划介绍</dt>
-						<dd> {{ detail.con }} </dd>
+						<dd v-text="detail.con"></dd>
 					</dl>
 					<div class="wrap-enter preview"><button type="button" @click="toAgreement" class="el-button el-button--primary">查看合同</button></div>
 				</div>

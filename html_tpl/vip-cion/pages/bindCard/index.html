@@ -77,30 +77,28 @@
 			</div>
 			<div class="content">
 				<div class="common-width">
-					<div class="tips">
-						{{ card.info1.tipsText }}
+					<div class="tips" v-text="card.info1.tipsText">
 					</div>
 					<div class="info-input">
 						<div class="wrap-card-input" v-for="item in card.info1.inputList">
-							<span class="label-name"> {{ item.name }} </span>
+							<span class="label-name" v-text="item.name"></span>
 							<el-input :placeholder="item.placeholder" v-model="item.value">
 								<template slot="prepend"> </template>
 							</el-input>
 						</div>
 					</div>
-					<div class="tips">
-						{{ card.info2.tipsText }}
+					<div class="tips" v-text="card.info2.tipsText">
 					</div>
 					<div class="info-input">
 						<div class="wrap-card-input" v-for="item in card.info2.inputList">
-							<span class="label-name"> {{ item.name }} </span>
+							<span class="label-name" v-text="item.name"></span>
 							<el-input :placeholder="item.placeholder" v-model="item.value">
 								<template slot="prepend"> </template>
 							</el-input>
 						</div>
 					</div>
 					<div class="info-input">
-						<el-radio v-model="card.agreement.value" :label="1"> {{ card.agreement.name }} </el-radio>
+						<el-radio v-model="card.agreement.value" :label="1" v-text="card.agreement.name"></el-radio>
 					</div>
 					<!--					
 					<el-input placeholder="请输入内容" v-model="input3">

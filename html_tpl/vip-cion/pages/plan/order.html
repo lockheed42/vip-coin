@@ -53,9 +53,12 @@
 			#order .wrap-card-input .label-name {
 				min-width: 65px;
 			}
-			
+			.el-input-number {
+				width: 125px;
+			}
 			#order .wrap-card-input input {
 				text-align: right;
+				width: 125px;
 			}
 			
 			.unit {
@@ -75,7 +78,7 @@
 
 	<body>
 		<div id="order" class="wrap-page">
-			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/order.html')"></span> 预览合同
+			<div class="back-bar"><span class="icon-back" onclick="jumpTo('plan/detail.html?id='+params('id'))"></span> 购买算力
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
@@ -84,10 +87,10 @@
 				<div class="common-width">
 					<div class="list">
 						<ul>
-							<li><span class="name"> {{ detail.name }}  </span><span class="white"><span class="status-yellow"> {{ detail.sell }}/</span> {{ detail.total }} </span>
+							<li><span class="name" v-text="detail.name"></span><span class="white"><span class="status-yellow" v-text="detail.sell+'/'"></span><span v-text="detail.total"></span></span>
 							</li>
-							<li><span class="money">预计收益</span><span class="nums"> {{ detail.profit }} </span></li>
-							<li><span class="date"> {{ detail.time }} </span></li>
+							<li><span class="money">预计收益</span><span class="nums" v-text="detail.profit"></span></li>
+							<li><span class="date" v-text="detail.time"></span></li>
 						</ul>
 					</div>
 					<div class="info-list">
@@ -155,16 +158,16 @@
 						readonly: true
 					},
 					detail: {
-						name: '发电站',
-						time: '2017.12.30-2018.12.30',
-						profit: 2384296,
-						price: 200,
-						sell: 2000 + 'T',
-						total: 8000 + 'T'
+						name: '',
+						time: '',
+						profit: 0,
+						price: 0,
+						sell: 0 + 'T',
+						total: 0 + 'T'
 					},
 					nums: 1,
 					price: '',
-					amount: 0
+					amount: this.nums * this.price
 				}
 			},
 			watch: {
@@ -174,7 +177,6 @@
 			},
 			mounted: function() {
 				this.$nextTick(function() {
-					this.amount = Number(this.nums) * Number(this.detail.price);
 					this.getDetail();
 				})
 			},
@@ -211,6 +213,7 @@
 									sell: _.get(detailInfo, 'sell') + 'T',
 									total: _.get(detailInfo, 'total') + 'T'
 								}
+								_this.amount = Number(_this.nums) * Number(_this.detail.price);
 							} else {
 								checkStatus(result);
 								checkCode(result);

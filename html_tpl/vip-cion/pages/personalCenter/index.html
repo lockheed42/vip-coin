@@ -105,8 +105,9 @@
 			.other-operate .wrap-ul ul li {
 				display: flex;
 				flex-direction: column;
-				justify-content: center;
-				align-items: center
+				justify-content: space-between;
+				align-items: center;
+				height: 60px;
 			}
 			
 			.other-operate .wrap-ul ul li span:first-child {
@@ -118,8 +119,8 @@
 			}
 			
 			.icon-edit {
-				width: 12px;
-				height: 12px;
+				width: 20px;
+				height: 20px;
 				background: url(../../img/icon_edit.png) no-repeat 100% 100%;
 				background-size: 100% 100%;
 			}
@@ -164,7 +165,7 @@
 						<img src="../../img/vip_bar.png" />
 						<ul class="person-info">
 							<li v-for="item in personalInfo" :class="item.name">
-								{{ item.value }}
+								<span v-text="item.value"></span>
 								<span class="icon icon-edit" v-if="item.eidt" @click="jumpTo('personalCenter/edit.html')"></span>
 							</li>
 						</ul>

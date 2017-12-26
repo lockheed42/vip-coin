@@ -12,22 +12,24 @@
 			img {
 				width: 100%;
 			}
+			.pic-list img {
+				display: flex;
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="planAgreement" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo('plan/index.html')" class="icon-back"></span> 预览合同
+			<div class="back-bar"><span onclick="jumpTo('plan/detail.html?id='+params('id'))" class="icon-back"></span> 预览合同
 				<span></span></div>
 			<div class="title-bar">
 				VIP-CION
 			</div>
 			<div class="content">
-				<div v-if='picList.length === 0' class="no-data-tips">
-					{{ noDataTips.text }}
+				<div v-if='picList.length === 0' class="no-data-tips" v-text="noDataTips.text">
 				</div>
-				<div v-else v-for="item in picList" class="pic-list">
-					<img :src="item" />
+				<div v-else class="pic-list">
+					<img v-for="item in picList" :src="item" />
 				</div>
 			</div>
 		</div>
@@ -56,10 +58,7 @@
 					noDataTips: {
 						text: '暂无合同的数据'
 					},
-					picList: [
-						'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1513515702&di=52d8f0e9d41793789c89ec5045d4dd73&src=http://www.downyi.com/uploadfiles/ruanjian/hezuoxiuyi.jpg',
-						'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png'
-					]
+					picList: []
 				}
 			},
 			watch: {},
@@ -78,13 +77,13 @@
 					const idParams = {
 						plan_id: params('id')
 					}
-					const method = 'post';
+					const method = 'get';
 					const basicInfo = apiInfo(urlParams, idParams, method, true);
 					const requestUrl = _.get(basicInfo, 'url');
 					const requestParams = _.get(basicInfo, 'params');
 					const _this = this;
 					if(requestUrl && requestParams) {
-						$.post(requestUrl, requestParams, function(result) {
+						$.get(requestUrl, requestParams, function(result) {
 							if(result.status === '0') {
 								const url = _.get(result, 'data.url');
 								if(url) {

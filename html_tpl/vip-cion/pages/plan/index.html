@@ -108,23 +108,22 @@
 					</ul>
 				</div>
 				<div class="common-width">
-					<div v-if="contentList.length === 0" class="no-data-tips">
-						{{ noDataTips.text }}
+					<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
 					</div>
 					<div class="list" v-else v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
 						<div class="part-left">
 							<ul>
-								<li v-for="(list, index) of item.partLeft">
-									<span class="flag"> {{ index }}</span>
-									<span class="text"> {{ list }} </span>
+								<li v-for="(list, index) of item.partLeft" :key="index">
+									<span class="flag" v-text="index"></span>
+									<span class="text" v-text="list"></span>
 								</li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="name"> {{ item.partRight.name }} </span><span class="money">预计收益</span></li>
-								<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}"> {{ item.partRight.statusName }} </span><span class="nums"> {{ item.partRight.profit }} </span></li>
-								<li><span class="flag"></span><span class="date"> {{ item.partRight.time }} </span></li>
+								<li><span class="name" v-text="item.partRight.name"></span><span class="money">预计收益</span></li>
+								<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}" v-text="item.partRight.statusName"></span><span class="nums" v-text="item.partRight.profit"></span></li>
+								<li><span class="flag"></span><span class="date" v-text="item.partRight.time"></span></li>
 							</ul>
 						</div>
 					</div>
@@ -171,51 +170,52 @@
 					noDataTips: {
 						text: '暂无发行计划的数据'
 					},
-					contentList: [{
-							id: 1,
-							partLeft: {
-								'总': '10000T',
-								'卖': '10000T',
-								'剩': '10000T'
-							},
-							partRight: {
-								'name': '计划名称',
-								'time': '2017.12.30-2018.12.30',
-								'status': '1',
-								'statusName': '进行中',
-								'profit': 2384296
-							}
-						},
-						{
-							id: 2,
-							partLeft: {
-								'总': '10000T',
-								'卖': '10000T',
-								'剩': '10000T',
-							},
-							partRight: {
-								'name': '计划名称',
-								'time': '2017.12.30-2018.12.30',
-								'status': '2',
-								'statusName': '预售中',
-								'profit': 2384296
-							}
-						},
-						{
-							id: 3,
-							partLeft: {
-								'总': '10000T',
-								'卖': '10000T',
-								'剩': '10000T',
-							},
-							partRight: {
-								'name': '计划名称',
-								'time': '2017.12.30-2018.12.30',
-								'status': '3',
-								'statusName': '已关闭',
-								'profit': 2384296
-							}
-						}
+					contentList: [
+//					{
+//							id: 1,
+//							partLeft: {
+//								'总': '10000T',
+//								'卖': '10000T',
+//								'剩': '10000T'
+//							},
+//							partRight: {
+//								'name': '计划名称',
+//								'time': '2017.12.30-2018.12.30',
+//								'status': '1',
+//								'statusName': '进行中',
+//								'profit': 2384296
+//							}
+//						},
+//						{
+//							id: 2,
+//							partLeft: {
+//								'总': '10000T',
+//								'卖': '10000T',
+//								'剩': '10000T',
+//							},
+//							partRight: {
+//								'name': '计划名称',
+//								'time': '2017.12.30-2018.12.30',
+//								'status': '2',
+//								'statusName': '预售中',
+//								'profit': 2384296
+//							}
+//						},
+//						{
+//							id: 3,
+//							partLeft: {
+//								'总': '10000T',
+//								'卖': '10000T',
+//								'剩': '10000T',
+//							},
+//							partRight: {
+//								'name': '计划名称',
+//								'time': '2017.12.30-2018.12.30',
+//								'status': '3',
+//								'statusName': '已关闭',
+//								'profit': 2384296
+//							}
+//						}
 					],
 					activeName: 'plan',
 				}

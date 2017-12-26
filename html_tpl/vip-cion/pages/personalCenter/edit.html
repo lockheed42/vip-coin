@@ -128,14 +128,14 @@
 					</div>
 					<div v-if="edit.name === '性别'">
 						<div class="info-list" v-for="item in edit.list">
-							<el-radio v-model="edit.value" :label="item.label"> {{ item.label }}</el-radio>
+							<el-radio v-model="edit.value" :label="item.label" v-text="item.label"></el-radio>
 							<div class="right" v-if="edit.value === item.label">
 								<span class="icon icon-selected"></span>
 							</div>
 						</div>
 					</div>
 					<div class="list-input" v-else-if="edit.name">
-						<span class="label-name"> {{ edit.name }} </span>
+						<span class="label-name" v-text="edit.name"></span>
 						<el-input :placeholder="edit.placeholder" v-model="edit.value">
 						</el-input>
 					</div>
@@ -229,6 +229,13 @@
 			},
 			methods: {
 				editInfo(item) {
+					if (item.value) {
+						this.$message({
+							message: '个人资料只能修改一次！',
+							type: 'warning'
+						});
+						return
+					}
 					this.edit = {
 						name: item.name,
 						value: item.value,

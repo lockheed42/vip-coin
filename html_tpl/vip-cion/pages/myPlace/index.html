@@ -117,20 +117,19 @@
 					</ul>
 				</div>
 				<div class="common-width">
-					<div v-if="contentList.length === 0" class="no-data-tips">
-						{{ noDataTips.text }}
+					<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
 					</div>
 					<div class="list" v-else v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
 						<div class="part-left">
 							<ul>
-								<li><span class="name"> {{ item.name }} <span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}"> {{ item.statusName }} </span></span><span class="money">预计收益</span></li>
-								<li><span class="status-yellow "> {{ item.total }} </span><span class="status-yellow"> {{ item.total_profit }} </span></li>
-								<li><span class="date"> {{ item.time }} </span><span></span></li>
+								<li><span class="name" v-text="item.name"></span><span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}" v-text="item.statusName"></span><span class="money">预计收益</span></li>
+								<li><span class="status-yellow" v-text="item.total"></span><span class="status-yellow" v-text="item.total_profit"></span></li>
+								<li><span class="date" v-text="item.time"></span><span></span></li>
 							</ul>
 						</div>
 						<div class="part-right">
 							<ul>
-								<li><span class="flag">已收益</span><span class="money"> {{ item.get_profit }} </span></li>
+								<li><span class="flag">已收益</span><span class="money" v-text="item.get_profit"></span></li>
 							</ul>
 						</div>
 					</div>
@@ -155,7 +154,7 @@
 
 <script>
 	window.onload = function() {
-		
+
 		new Vue({
 			el: '#place',
 			data() {
@@ -241,7 +240,7 @@
 										middleItem = listInfo[i]
 										const status = _.get(middleItem, 'project_status');
 										let statusName = ''
-										if (status) {
+										if(status) {
 											statusName = _this.statusList[status];
 										}
 										middleObj = {

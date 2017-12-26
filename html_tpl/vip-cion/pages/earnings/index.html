@@ -118,8 +118,8 @@
 			}
 			
 			.icon-edit {
-				width: 12px;
-				height: 12px;
+				width: 20px;
+				height: 20px;
 				background: url(../../img/icon_edit.png) no-repeat 100% 100%;
 				background-size: 100% 100%;
 			}
@@ -196,8 +196,7 @@
 					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
 						<img src="../../img/vip_bar.png" />
 						<div class="data-list">
-							<div class="money">
-								{{ earning.money }}
+							<div class="money" v-text="earning.money">
 							</div>
 							<div class="text1">
 								昨日总收益
@@ -263,7 +262,7 @@
 						name: 'personalCenter'
 					}],
 					earning: {
-						money: '100000000',
+						money: 0,
 						text1: '昨日总收益',
 						text2: '每日总收益明细'
 					}
