@@ -14,8 +14,8 @@ const hostUrl = 'http://' + window.location.host
 const staticUrl = hostUrl + '/vip-cion/static/';
 
 function jumpTo(name) {
-	let jumpUrl = hostUrl + '/pages/';
-    // let jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
+//	let jumpUrl = hostUrl + '/vip-cion/pages/';
+       let jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
 	if(name) {
 		jumpUrl = jumpUrl + name;
 		window.location.href = jumpUrl;
@@ -161,6 +161,28 @@ function checkCode(res) {
 				jumpTo('account/login.html')
 			}
 		}, 5000);
+	}
+}
+
+function checkLogin () {
+	const urlParams = {
+		control: 'plan',
+		action: 'all'
+	}
+	const basicInfo = apiInfo(urlParams, {}, 'get');
+	const requestUrl = _.get(basicInfo, 'url');
+	const requestParams = _.get(basicInfo, 'params');
+	const _this = this;
+	if(requestUrl && requestParams) {
+		$.get(requestUrl, requestParams, function(result) {
+			if(result.status === '0') {
+				
+			} else {
+				setCookie('api_key', '');
+				setCookie('api_security', '');
+				setCookie('user', '');
+			}
+		});
 	}
 }
 

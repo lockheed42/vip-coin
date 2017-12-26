@@ -316,6 +316,9 @@
 				}
 			},
 			mounted: function() {
+				this.$nextTick(function() {
+					checkLogin();
+				});
 				if(getCookie('user')) {
 					this.isLogin = true
 				}
