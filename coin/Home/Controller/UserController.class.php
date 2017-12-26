@@ -91,6 +91,11 @@ class UserController extends CommonController
         try {
             $this->checkLogin();
 
+            $user = M('user')->where(['user_id' => $this->_user_id])->find();
+            if ($user['name'] != '') {
+                throw new Exception('姓名无法修改');
+            }
+
             M('user')->where(['user_id' => $this->_user_id])->save(['name' => $name]);
 
             $this->success(true);
@@ -146,6 +151,11 @@ class UserController extends CommonController
 
         try {
             $this->checkLogin();
+
+            $user = M('user')->where(['user_id' => $this->_user_id])->find();
+            if ($user['idcard'] != '') {
+                throw new Exception('身份证无法修改');
+            }
 
             M('user')->where(['user_id' => $this->_user_id])->save(['idcard' => $idCard]);
 
