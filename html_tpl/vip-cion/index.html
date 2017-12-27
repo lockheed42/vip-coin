@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title>中间页</title>
 	</head>
+
 	<body>
 	</body>
+
 </html>
-<script src="js/common.js"></script>
 <script>
-	window.onload = function () {
-		jumpTo('instro/company.html');
+	window.onload = function() {
+		var hostUrl = 'http://' + window.location.host;
+//		var jumpUrl = hostUrl + '/vip-cion/pages/';
+		var jumpUrl =  hostUrl + '/vip-coin/html_tpl/vip-cion/pages/';
+		jumpUrl = jumpUrl + 'instro/company.html';
+		window.location.href = jumpUrl;
 	}
 </script>
