@@ -1,112 +1,121 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<!-- 引入样式 -->
-		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
-		<link rel="stylesheet" href="../../css/common.css">
-		<title>我的标的</title>
-		<style>
-			.list {
-				height: 88px;
-				width: 100%;
-				border-radius: 4px;
-				display: flex;
-				box-shadow: #666 0px 0px 10px;
-				box-sizing: border-box;
-				margin-top: 10px;
-			}
-			
-			.list li {
-				margin-bottom: 5px;
-				font-size: 12px;
-				display: flex;
-				justify-content: space-between;
-				min-height: 20px;
-			}
-			
-			.list .part-left {
-				flex: 1;
-				align-content: center;
-				padding: 10px 15px 10px 10px;
-				border-radius: 5px 0px 0px 5px;
-				background: url(../../img/bar_bg.png) no-repeat;
-				background-size: 100% 100%;
-			}
-			
-			.list .part-right {
-				width: 25%;
-				background: #fff;
-				padding: 10px 15px 10px 10px;
-				border-radius: 0px 5px 5px 0px;
-			}
-			
-			.list .part-right .money {
-				color: #816835;
-			}
-			
-			.list .part-right ul {
-				height: 100%;
-				display: flex;
-			}
-			
-			.list .part-right li {
-				width: 100%;
-				height: 100%;
-				display: flex;
-				align-items: center;
-				flex-direction: column;
-				justify-content: center;
-			}
-			
-			.list .part-right li span {
-				margin-bottom: 6px;
-			}
-			
-			.list .part-left li {
-				box-sizing: border-box;
-				align-items: center;
-			}
-			
-			.list .part-left li .text {
-				font-size: 14px
-			}
-			
-			.name {
-				color: #fff;
-				font-size: 15px;
-			}
-			
-			.money,
-			.nums,
-			.date {
-				color: #bababa;
-			}
-			
-			.status,
-			.nums {
-				font-size: 10px;
-			}
-			
-			.date,
-			.status {
-				color: #999999;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+	<link rel="stylesheet" href="../../css/common.css">
+	<title>我的标的</title>
+	<style>
+		.list {
+			height: 88px;
+			width: 100%;
+			border-radius: 4px;
+			display: flex;
+			box-shadow: #666 0px 0px 10px;
+			box-sizing: border-box;
+			margin-top: 10px;
+		}
 
-	<body>
-		<div id="place" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 我的标的
-				<span></span></div>
-			<div class="title-bar">
-				VIP-CION
-			</div>
-			<div class="content">
-				<div class="nav-list">
-					<ul>
+		.list li {
+			margin-bottom: 5px;
+			font-size: 12px;
+			display: flex;
+			justify-content: space-between;
+			min-height: 20px;
+		}
+
+		.list .part-left {
+			flex: 1;
+			align-content: center;
+			padding: 10px 15px 10px 10px;
+			border-radius: 5px 0px 0px 5px;
+			background: url(../../img/bar_bg.png) no-repeat;
+			background-size: 100% 100%;
+		}
+
+		.list .part-right {
+			width: 25%;
+			background: #fff;
+			padding: 10px 15px 10px 10px;
+			border-radius: 0px 5px 5px 0px;
+		}
+
+		.list .part-right .money {
+			color: #816835;
+		}
+
+		.list .part-right ul {
+			height: 100%;
+			display: flex;
+		}
+
+		.list .part-right li {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.list .part-right li span {
+			margin-bottom: 6px;
+		}
+
+		.list .part-left li {
+			box-sizing: border-box;
+			align-items: center;
+		}
+
+		.list .part-left li .text {
+			font-size: 14px
+		}
+
+		.name {
+			color: #fff;
+			font-size: 15px;
+		}
+
+		.money,
+		.nums,
+		.date {
+			color: #bababa;
+		}
+
+		.status,
+		.nums {
+			font-size: 10px;
+		}
+
+		.date,
+		.status {
+			color: #999999;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="place" class="wrap-page">
+		<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 我的标的
+			<span></span></div>
+		<div class="title-bar">
+			VIP-CION
+		</div>
+		<div class="content">
+			<div class="nav-list">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-if="isLogin" label="发行计划" name="plan/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="收益统计" name="earnings/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
+					<el-tab-pane label="公司简介" name="instro/company.html"></el-tab-pane>
+					<el-tab-pane label="行业资讯" name="instro/info.html"></el-tab-pane>
+					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="标的一览" name="none"></el-tab-pane>
+				</el-tabs>
+				<!--<ul>
 						<li onclick="jumpTo('instro/company.html')">公司简介</li>
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
@@ -114,29 +123,30 @@
 						<li class="active">标的一览</li>
 						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
 						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
-					</ul>
+					</ul>-->
+			</div>
+			<div class="common-width">
+				<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
 				</div>
-				<div class="common-width">
-					<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
+				<div class="list" v-else v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
+					<div class="part-left">
+						<ul>
+							<li><span class="name" v-text="item.name"></span><span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}"
+								 v-text="item.statusName"></span><span class="money">预计收益</span></li>
+							<li><span class="status-yellow" v-text="item.total"></span><span class="status-yellow" v-text="item.total_profit"></span></li>
+							<li><span class="date" v-text="item.time"></span><span></span></li>
+						</ul>
 					</div>
-					<div class="list" v-else v-for="item in contentList" @click="jumpTo('myPlace/detail.html?id=' + item.id)">
-						<div class="part-left">
-							<ul>
-								<li><span class="name" v-text="item.name"></span><span class="status" :class="{ 'status-red': item.status === '2', 'status-yellow': item.status === '1'}" v-text="item.statusName"></span><span class="money">预计收益</span></li>
-								<li><span class="status-yellow" v-text="item.total"></span><span class="status-yellow" v-text="item.total_profit"></span></li>
-								<li><span class="date" v-text="item.time"></span><span></span></li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="flag">已收益</span><span class="money" v-text="item.get_profit"></span></li>
-							</ul>
-						</div>
+					<div class="part-right">
+						<ul>
+							<li><span class="flag">已收益</span><span class="money" v-text="item.get_profit"></span></li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 
 </html>
 <!-- 先引入 Vue -->
@@ -153,12 +163,14 @@
 <script src="../../js/jquery.js"></script>
 
 <script>
-	window.onload = function() {
+	window.onload = function () {
 
 		new Vue({
 			el: '#place',
 			data() {
 				return {
+					activeName: 'none',
+					isLogin: false,
 					statusList: {
 						'1': '已作废',
 						'2': '未生效',
@@ -177,47 +189,54 @@
 						text: '暂无标的数据'
 					},
 					contentList: [{
-							id: 1,
-							'total': '10000T',
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '1',
-							'statusName': '进行中',
-							'get_profit': 2384296,
-							'total_profit': 2384296000
-						},
-						{
-							id: 2,
-							'total': '10000T',
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '2',
-							'statusName': '进行中',
-							'get_profit': 2384296,
-							'total_profit': 2384296000
-						},
-						{
-							id: 3,
-							'total': '10000T',
-							'name': '计划名称',
-							'time': '2017.12.30-2018.12.30',
-							'status': '3',
-							'statusName': '已关闭',
-							'get_profit': 2384296,
-							'total_profit': 2384296000
-						}
-					],
-
-					activeName: 'plan/index.html'
+						id: 1,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '1',
+						'statusName': '进行中',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					},
+					{
+						id: 2,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '2',
+						'statusName': '进行中',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					},
+					{
+						id: 3,
+						'total': '10000T',
+						'name': '计划名称',
+						'time': '2017.12.30-2018.12.30',
+						'status': '3',
+						'statusName': '已关闭',
+						'get_profit': 2384296,
+						'total_profit': 2384296000
+					}
+					]
 				}
 			},
 			watch: {},
-			mounted: function() {
-				this.$nextTick(function() {
+			mounted: function () {
+				if (getCookie('user')) {
+					this.isLogin = true
+				}
+				this.$nextTick(function () {
 					this.getList()
 				})
 			},
 			methods: {
+				handleClick() {
+					const name = this.activeName;
+					if (name !== 'none') {
+						jumpTo(name);
+					}
+				},
 				getList() {
 					const urlParams = {
 						control: 'project',
@@ -228,19 +247,19 @@
 					const requestUrl = _.get(basicInfo, 'url');
 					const requestParams = _.get(basicInfo, 'params');
 					const _this = this;
-					if(requestUrl && requestParams) {
-						$.get(requestUrl, requestParams, function(result) {
-							if(result.status === '0') {
+					if (requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function (result) {
+							if (result.status === '0') {
 								const listInfo = _.get(result, 'data');
-								if(listInfo && (_.isArray(listInfo))) {
+								if (listInfo && (_.isArray(listInfo))) {
 									let middleObj = '';
 									let middleItem = {}
 									let list = [];
-									for(var i = 0; i < listInfo.length; i++) {
+									for (var i = 0; i < listInfo.length; i++) {
 										middleItem = listInfo[i]
 										const status = _.get(middleItem, 'project_status');
 										let statusName = ''
-										if(status) {
+										if (status) {
 											statusName = _this.statusList[status];
 										}
 										middleObj = {
@@ -270,4 +289,5 @@
 			}
 		})
 	}
+
 </script>

@@ -1,131 +1,109 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<!-- 引入样式 -->
-		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
-		<link rel="stylesheet" href="../../css/common.css">
-		<title>介绍</title>
-		<style>
-			.content .common-width {
-				/*position: relative;*/
-				height: 100%;
-			}
-			
-			.content img {
-				width: 100%;
-			}
-			
-			.el-tabs {
-				margin-top: 10px;
-			}
-			
-			.el-tabs__nav {
-				display: flex;
-				width: 100%;
-			}
-			
-			.el-tabs .el-tabs__item {
-				color: #fff;
-				font-size: 16px;
-				padding: 0px;
-				flex: 1;
-				text-align: center;
-			}
-			
-			.el-tabs__active-bar {
-				display: none;
-			}
-			
-			.el-tabs__nav-wrap::after {
-				display: none;
-			}
-			
-			.el-tabs__item.is-active {
-				background: #282830;
-				color: #cbaa67;
-				border-radius: 5px;
-			}
-			
-			.tab-content {
-				/*position: absolute;*/
-				width: 100%;
-				border: 18px solid #282830;
-				box-sizing: border-box;
-				/*top: 50px;*/
-				bottom: 70px;
-				background: #282830;
-				color: #999999;
-				font-size: 13px;
-				border-radius: 10px;
-				overflow-y: auto;
-			}
-			
-			.tab-content p {
-				text-indent: 22px;
-				line-height: 20px;
-			}
-			
-			.tab-instro {
-				border-radius: 5px;
-			}
-			
-			.tab-message {
-				border-radius: 5px;
-			}
-			
-			.tab-content .c-title {
-				color: #cbaa67;
-				margin-bottom: 20px;
-			}
-			
-			.tab-content .list {
-				border-bottom: 1px dotted #999999;
-				padding-bottom: 10px;
-				margin-bottom: 20px;
-			}
-			
-			.tab-content .list:last-child {
-				margin-bottom: 0px;
-			}
-			
-			.list .wrap-tips {
-				display: flex;
-				justify-content: space-between;
-				margin-top: 20px;
-			}
-			
-			.content .wrap-enter {
-				position: absolute;
-				width: 73%;
-				bottom: 10px;
-			}
-			
-			.list-detail .wrap-tips {
-				display: flex;
-				flex-direction: column;
-				justify-content: flex-end;
-				text-align: right;
-			}
-			
-			.list-detail .wrap-tips span {
-				margin-bottom: 5px;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+	<link rel="stylesheet" href="../../css/common.css">
+	<title>介绍</title>
+	<style>
+		.content .common-width {
+			/*position: relative;*/
+			height: 100%;
+		}
 
-	<body>
-		<div id="instro" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
-				<span></span></div>
-			<div class="title-bar">
-				VIP-CION
-			</div>
-			<div class="content">
-				<div class="nav-list">
-					<ul>
+		.content img {
+			width: 100%;
+		}
+
+		.tab-content {
+			/*position: absolute;*/
+			width: 100%;
+			border: 18px solid #282830;
+			box-sizing: border-box;
+			/*top: 50px;*/
+			bottom: 70px;
+			background: #282830;
+			color: #999999;
+			font-size: 13px;
+			border-radius: 10px;
+			overflow-y: auto;
+		}
+
+		.tab-content p {
+			text-indent: 22px;
+			line-height: 20px;
+		}
+
+		.tab-instro {
+			border-radius: 5px;
+		}
+
+		.tab-message {
+			border-radius: 5px;
+		}
+
+		.tab-content .c-title {
+			color: #cbaa67;
+			margin-bottom: 20px;
+		}
+
+		.tab-content .list {
+			border-bottom: 1px dotted #999999;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		.tab-content .list:last-child {
+			margin-bottom: 0px;
+		}
+
+		.list .wrap-tips {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 20px;
+		}
+
+		.content .wrap-enter {
+			position: absolute;
+			width: 73%;
+			bottom: 10px;
+		}
+
+		.list-detail .wrap-tips {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			text-align: right;
+		}
+
+		.list-detail .wrap-tips span {
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="instro" class="wrap-page">
+		<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
+			<span></span></div>
+		<div class="title-bar">
+			VIP-CION
+		</div>
+		<div class="content">
+			<div class="nav-list">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-if="isLogin" label="发行计划" name="plan/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="收益统计" name="earnings/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
+					<el-tab-pane label="公司简介" name="none"></el-tab-pane>
+					<el-tab-pane label="行业资讯" name="instro/info.html"></el-tab-pane>
+					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
+				</el-tabs>
+				<!--<ul>
 						<li class="active">公司简介</li>
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
@@ -133,24 +111,24 @@
 						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">标的一览</li>
 						<li v-if="isLogin" onclick="jumpTo('earnings/index.html')">收益统计</li>
 						<li v-if="isLogin" onclick="jumpTo('personalCenter/index.html')">个人中心</li>
-					</ul>
+					</ul>-->
+			</div>
+			<div class="common-width">
+				<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
+					<div v-if="activeName === 'none'">
+						<img :src="instro.picUrl">
+						<p v-for="list in instro.content" v-text="list">
+						</p>
+					</div>
 				</div>
-				<div class="common-width">
-					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
-						<div v-if="activeName === 'instro'">
-							<img :src="instro.picUrl">
-							<p v-for="list in instro.content" v-text="list">
-							</p>
-						</div>
-					</div>
-					<div class="wrap-enter" v-if="!isLogin">
-						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
-						<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
-					</div>
+				<div class="wrap-enter" v-if="!isLogin">
+					<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
+					<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 
 </html>
 <!-- 先引入 Vue -->
@@ -166,11 +144,12 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	window.onload = function() {
+	window.onload = function () {
 		new Vue({
 			el: '#instro',
 			data() {
 				return {
+					activeName: 'none',
 					load: false,
 					tabList: {
 						'instro': '公司简介',
@@ -178,7 +157,6 @@
 						'message': '公告通知'
 					},
 					isLogin: false,
-					activeName: 'instro',
 					instro: {
 						picUrl: '../../img/intro_banner.png',
 						content: ['比特币交易网（BtcTrade.com）创办于2013年4月，是中国最早的比特币交易平台之一，现由北京币云科技有限公司负责主体运营。',
@@ -189,25 +167,31 @@
 				}
 			},
 			watch: {
-				'activeName' () {
+				'activeName'() {
 					this.detail.show = false
 				}
 			},
-			mounted: function() {
-				this.$nextTick(function() {
+			mounted: function () {
+				this.$nextTick(function () {
 					checkLogin();
 				});
-				if(getCookie('user')) {
+				if (getCookie('user')) {
 					this.isLogin = true
 				}
 				document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px';
 			},
 			methods: {
+				handleClick() {
+					const name = this.activeName;
+					if (name !== 'none') {
+						jumpTo(name);
+					}
+				},
 				getDetail(id) {
 					let requestUrl = common_url;
-					if(this.activeName === 'info') {
+					if (this.activeName === 'info') {
 						requestUrl = requestUrl + '/info_detail.json'
-					} else if(this.activeName === 'message') {
+					} else if (this.activeName === 'message') {
 						requestUrl = requestUrl + '/message_detail.json'
 					}
 					const requestParams = {
@@ -216,13 +200,13 @@
 					let result = '';
 					const _this = this;
 					return axios.get(requestUrl, requestParams)
-						.then(function(response) {
+						.then(function (response) {
 							result = response.data;
-							if(result.status === 0) {
+							if (result.status === 0) {
 								_this.detail = result.data.detail;
 							}
 						})
-						.catch(function(error) {
+						.catch(function (error) {
 							console.log(error);
 						});
 
@@ -230,4 +214,5 @@
 			}
 		})
 	}
+
 </script>

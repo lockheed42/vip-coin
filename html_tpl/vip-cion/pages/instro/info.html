@@ -1,131 +1,109 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<!-- 引入样式 -->
-		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
-		<link rel="stylesheet" href="../../css/common.css">
-		<title>介绍</title>
-		<style>
-			.content .common-width {
-				/*position: relative;*/
-				height: 100%;
-			}
-			
-			.content img {
-				width: 100%;
-			}
-			
-			.el-tabs {
-				margin-top: 10px;
-			}
-			
-			.el-tabs__nav {
-				display: flex;
-				width: 100%;
-			}
-			
-			.el-tabs .el-tabs__item {
-				color: #fff;
-				font-size: 16px;
-				padding: 0px;
-				flex: 1;
-				text-align: center;
-			}
-			
-			.el-tabs__active-bar {
-				display: none;
-			}
-			
-			.el-tabs__nav-wrap::after {
-				display: none;
-			}
-			
-			.el-tabs__item.is-active {
-				background: #282830;
-				color: #cbaa67;
-				border-radius: 5px;
-			}
-			
-			.tab-content {
-				/*position: absolute;*/
-				width: 100%;
-				border: 18px solid #282830;
-				box-sizing: border-box;
-				/*top: 50px;*/
-				bottom: 70px;
-				background: #282830;
-				color: #999999;
-				font-size: 13px;
-				border-radius: 10px;
-				overflow-y: auto;
-			}
-			
-			.tab-content p {
-				text-indent: 22px;
-				line-height: 20px;
-			}
-			
-			.tab-instro {
-				border-radius: 5px;
-			}
-			
-			.tab-message {
-				border-radius: 5px;
-			}
-			
-			.tab-content .c-title {
-				color: #cbaa67;
-				margin-bottom: 20px;
-			}
-			
-			.tab-content .list {
-				border-bottom: 1px dotted #999999;
-				padding-bottom: 10px;
-				margin-bottom: 20px;
-			}
-			
-			.tab-content .list:last-child {
-				margin-bottom: 0px;
-			}
-			
-			.list .wrap-tips {
-				display: flex;
-				justify-content: space-between;
-				margin-top: 20px;
-			}
-			
-			.content .wrap-enter {
-				position: absolute;
-				width: 73%;
-				bottom: 10px;
-			}
-			
-			.list-detail .wrap-tips {
-				display: flex;
-				flex-direction: column;
-				justify-content: flex-end;
-				text-align: right;
-			}
-			
-			.list-detail .wrap-tips span {
-				margin-bottom: 5px;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+	<link rel="stylesheet" href="../../css/common.css">
+	<title>介绍</title>
+	<style>
+		.content .common-width {
+			/*position: relative;*/
+			height: 100%;
+		}
 
-	<body>
-		<div id="instro" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
-				<span></span></div>
-			<div class="title-bar">
-				VIP-CION
-			</div>
-			<div class="content">
-				<div class="nav-list">
-					<ul>
+		.content img {
+			width: 100%;
+		}
+
+		.tab-content {
+			/*position: absolute;*/
+			width: 100%;
+			border: 18px solid #282830;
+			box-sizing: border-box;
+			/*top: 50px;*/
+			bottom: 70px;
+			background: #282830;
+			color: #999999;
+			font-size: 13px;
+			border-radius: 10px;
+			overflow-y: auto;
+		}
+
+		.tab-content p {
+			text-indent: 22px;
+			line-height: 20px;
+		}
+
+		.tab-instro {
+			border-radius: 5px;
+		}
+
+		.tab-message {
+			border-radius: 5px;
+		}
+
+		.tab-content .c-title {
+			color: #cbaa67;
+			margin-bottom: 20px;
+		}
+
+		.tab-content .list {
+			border-bottom: 1px dotted #999999;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		.tab-content .list:last-child {
+			margin-bottom: 0px;
+		}
+
+		.list .wrap-tips {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 20px;
+		}
+
+		.content .wrap-enter {
+			position: absolute;
+			width: 73%;
+			bottom: 10px;
+		}
+
+		.list-detail .wrap-tips {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			text-align: right;
+		}
+
+		.list-detail .wrap-tips span {
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="instro" class="wrap-page">
+		<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> vip-cion 用户端M站
+			<span></span></div>
+		<div class="title-bar">
+			VIP-CION
+		</div>
+		<div class="content">
+			<div class="nav-list">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-if="isLogin" label="发行计划" name="plan/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin"label="收益统计" name="earnings/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
+					<el-tab-pane label="公司简介" name="instro/company.html"></el-tab-pane>
+					<el-tab-pane label="行业资讯" name="none"></el-tab-pane>
+					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
+				</el-tabs>
+				<!--<ul>
 						<li onclick="jumpTo('instro/company.html')">公司简介</li>
 						<li class="active">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
@@ -133,44 +111,44 @@
 						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">标的一览</li>
 						<li v-if="isLogin" onclick="jumpTo('earnings/index.html')">收益统计</li>
 						<li v-if="isLogin" onclick="jumpTo('personalCenter/index.html')">个人中心</li>
-					</ul>
+					</ul>-->
+			</div>
+			<div class="common-width">
+				<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
+					<div v-if="(activeName === 'none') && (!detail.show)">
+						<div class="list" v-for="list in info.content" @click="getDetail(list.id)">
+							<div class="c-title" v-if="list.title" v-text="list.title"></div>
+							<div class="" v-text="list.sl_detail"></div>
+							<div class="wrap-tips">
+								<span v-text="list.read_nums.name + list.read_nums.value">
+							</span>
+								<span v-text="list.current_date">
+							</span>
+							</div>
+						</div>
+					</div>
+					<div class="list-detail" v-if="detail.show">
+						<div class="c-title" v-if="detail.title" v-text="detail.title"></div>
+						<img :src="detail.picUrl" v-if="detail.picUrl">
+						<p v-text="detail.name"></p>
+						<p v-for="list in detail.content" v-text="list">
+						</p>
+						<div class="wrap-tips" v-text="detail.publisher">
+							<span>
+						</span>
+							<span v-text="detail.time">
+						</span>
+						</div>
+					</div>
 				</div>
-				<div class="common-width">
-					<div class="tab-content" :class="'tab-'+activeName" id="tabContent">
-						<div v-if="(activeName === 'info') && (!detail.show)">
-							<div class="list" v-for="list in info.content" @click="getDetail(list.id)">
-								<div class="c-title" v-if="list.title" v-text="list.title"></div>
-								<div class="" v-text="list.sl_detail"></div>
-								<div class="wrap-tips">
-									<span v-text="list.read_nums.name + list.read_nums.value">
-							</span>
-									<span v-text="list.current_date">
-							</span>
-								</div>
-							</div>
-						</div>
-						<div class="list-detail" v-if="detail.show">
-							<div class="c-title" v-if="detail.title" v-text="detail.title"></div>
-							<img :src="detail.picUrl" v-if="detail.picUrl">
-							<p v-text="detail.name"></p>
-							<p v-for="list in detail.content" v-text="list">
-							</p>
-							<div class="wrap-tips" v-text="detail.publisher">
-								<span>
-						</span>
-								<span v-text="detail.time">
-						</span>
-							</div>
-						</div>
-					</div>
-					<div class="wrap-enter" v-if="!isLogin">
-						<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
-						<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
-					</div>
+				<div class="wrap-enter" v-if="!isLogin">
+					<el-button type="primary" onclick="jumpTo('account/login.html')">登录</el-button>
+					<el-button type="primary" onclick="jumpTo('account/register.html')">注册</el-button>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 
 </html>
 <!-- 先引入 Vue -->
@@ -186,18 +164,18 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	window.onload = function() {
+	window.onload = function () {
 		new Vue({
 			el: '#instro',
 			data() {
 				return {
+					activeName: 'none',
 					tabList: {
 						'instro': '公司简介',
 						'info': '行业资讯',
 						'message': '公告通知'
 					},
 					isLogin: false,
-					activeName: 'info',
 					detail: {
 						show: false,
 						title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
@@ -212,133 +190,140 @@
 					},
 					info: {
 						content: [{
-								id: '1',
-								current_date: '2017-11-01',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
+							id: '1',
+							current_date: '2017-11-01',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
 							},
-							{
-								id: '2',
-								current_date: '2017-11-02',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '2',
+							current_date: '2017-11-02',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
 							},
-							{
-								id: '3',
-								current_date: '2017-11-03',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '3',
+							current_date: '2017-11-03',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
 							},
-							{
-								id: '4',
-								current_date: '2017-11-04',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
-							}, {
-								id: '5',
-								current_date: '2017-11-05',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '4',
+							current_date: '2017-11-04',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
 							},
-							{
-								id: '6',
-								current_date: '2017-11-06',
-								read_nums: {
-									name: '阅读量：',
-									value: '123546'
-								},
-								title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
-								sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
-								all_list_detail: [
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
-									'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
-									'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
-								]
-							}
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						}, {
+							id: '5',
+							current_date: '2017-11-05',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						},
+						{
+							id: '6',
+							current_date: '2017-11-06',
+							read_nums: {
+								name: '阅读量：',
+								value: '123546'
+							},
+							title: '华尔街巨头试行DLT 用区块链智能合约管理股权互换交易',
+							sl_detail: '包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完',
+							all_list_detail: [
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。',
+								'包括高盛（GoldmanSachs）和摩根大通（JPMorgan）在内的一些华尔街巨头已经完成了一项试点',
+								'使用区块链智能合约来管理股权互换交易和交易后生命周期事件。'
+							]
+						}
 						]
 					}
 				}
 			},
 			watch: {
-				'activeName' () {
+				'activeName'() {
 					this.detail.show = false
 				}
 			},
-			mounted: function() {
-				this.$nextTick(function() {
+			mounted: function () {
+				this.$nextTick(function () {
 					checkLogin();
 				});
-				if(getCookie('user')) {
+				if (getCookie('user')) {
 					this.isLogin = true
 				}
 				document.getElementById('tabContent').style.height = (document.body.clientHeight - 210) + 'px';
 			},
 			methods: {
+				handleClick() {
+					const name = this.activeName;
+					if (name !== 'none') {
+						jumpTo(name);
+					}
+				},
 				getDetail(id) {
 					let requestUrl = staticUrl;
-					if(this.activeName === 'info') {
-						requestUrl = requestUrl + 'info_detail.json'
-					} else if(this.activeName === 'message') {
-						requestUrl = requestUrl + 'message_detail.json'
-					}
+					// if(this.activeName === 'info') {
+					// 	requestUrl = requestUrl + 'info_detail.json'
+					// } else if(this.activeName === 'message') {
+					// 	requestUrl = requestUrl + 'message_detail.json'
+					// }
+					requestUrl = requestUrl + 'info_detail.json'
 					const requestParams = {
 						id: id
 					}
 					let result = ''
 					// const detailInfo = apiGet(urlParams, {}, true);
 					const _this = this
-					$.get(requestUrl, requestParams, function(result) {
+					$.get(requestUrl, requestParams, function (result) {
 						console.log(result);
 						_this.detail = result.data.detail
 					})
@@ -346,4 +331,5 @@
 			}
 		})
 	}
+
 </script>

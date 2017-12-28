@@ -34,7 +34,11 @@
 			}
 			
 			.info-list .el-radio {
-				width: 100%
+				width: 100%;
+				width: 100%;
+			    height: 100%;
+			    display: flex;
+			    align-items: center;
 			}
 			
 			.info-list .el-radio__inner {
@@ -128,7 +132,7 @@
 					</div>
 					<div v-if="edit.name === '性别'">
 						<div class="info-list" v-for="item in edit.list">
-							<el-radio v-model="edit.value" :label="item.label" v-text="item.label"></el-radio>
+							<el-radio v-model="edit.value" :label="item.label"> {{ item.label }} </el-radio>
 							<div class="right" v-if="edit.value === item.label">
 								<span class="icon icon-selected"></span>
 							</div>
@@ -212,7 +216,8 @@
 									},
 									{
 										name: '性别',
-										value: _.get(personInfo, 'sex')
+//										value: _.get(personInfo, 'sex')
+value: ''
 									},
 									{
 										name: '身份证号',
@@ -242,6 +247,7 @@
 						placeholder: '请输入' + item.name
 					}
 					if(item.name === '性别') {
+						this.edit.value = '男'
 						this.edit.list = [{
 								label: '男'
 							},

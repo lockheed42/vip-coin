@@ -1,103 +1,112 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<!-- 引入样式 -->
-		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
-		<link rel="stylesheet" href="../../css/common.css">
-		<title>发行计划</title>
-		<style>
-			.list {
-				height: 88px;
-				width: 100%;
-				border-radius: 4px;
-				background: url(../../img/bar_bg.png) no-repeat;
-				background-size: 100% 100%;
-				display: flex;
-				box-shadow: #666 0px 0px 10px;
-				box-sizing: border-box;
-				margin-top: 10px;
-			}
-			
-			.list li {
-				margin-bottom: 5px;
-				font-size: 12px;
-				display: flex;
-				justify-content: space-between;
-				min-height: 20px;
-			}
-			
-			.list .part-left {
-				width: 36%;
-				background: #fff;
-				align-content: center;
-				padding: 10px 15px 10px 10px;
-				border-radius: 5px 0px 0px 5px;
-			}
-			
-			.list .part-right {
-				flex: 1;
-				padding: 10px 15px 10px 10px;
-				border-radius: 0px 0px 5px 5px;
-			}
-			
-			.list .part-left li {
-				box-sizing: border-box;
-				align-items: center;
-			}
-			
-			.list .part-left li .flag {
-				font-size: 10px;
-				width: 18px;
-				height: 18px;
-				border-radius: 4px;
-				color: #816835;
-				border: 1px solid #816835;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 10px;
-			}
-			
-			.list .part-left li .text {
-				font-size: 14px
-			}
-			
-			.name {
-				color: #fff;
-				font-size: 15px;
-			}
-			
-			.money,
-			.nums,
-			.date {
-				color: #bababa;
-			}
-			
-			.status,
-			.nums {
-				font-size: 10px;
-			}
-			
-			.date,
-			.status {
-				color: #999999;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+	<link rel="stylesheet" href="../../css/common.css">
+	<title>发行计划</title>
+	<style>
+		.list {
+			height: 88px;
+			width: 100%;
+			border-radius: 4px;
+			background: url(../../img/bar_bg.png) no-repeat;
+			background-size: 100% 100%;
+			display: flex;
+			box-shadow: #666 0px 0px 10px;
+			box-sizing: border-box;
+			margin-top: 10px;
+		}
 
-	<body>
-		<div id="plan" class="wrap-page">
-			<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 发行计划
-				<span></span></div>
-			<div class="title-bar">
-				VIP-CION
-			</div>
-			<div class="content">
-				<div class="nav-list">
-					<ul>
+		.list li {
+			margin-bottom: 5px;
+			font-size: 12px;
+			display: flex;
+			justify-content: space-between;
+			min-height: 20px;
+		}
+
+		.list .part-left {
+			width: 36%;
+			background: #fff;
+			align-content: center;
+			padding: 10px 15px 10px 10px;
+			border-radius: 5px 0px 0px 5px;
+		}
+
+		.list .part-right {
+			flex: 1;
+			padding: 10px 15px 10px 10px;
+			border-radius: 0px 0px 5px 5px;
+		}
+
+		.list .part-left li {
+			box-sizing: border-box;
+			align-items: center;
+		}
+
+		.list .part-left li .flag {
+			font-size: 10px;
+			width: 18px;
+			height: 18px;
+			border-radius: 4px;
+			color: #816835;
+			border: 1px solid #816835;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 10px;
+		}
+
+		.list .part-left li .text {
+			font-size: 14px
+		}
+
+		.name {
+			color: #fff;
+			font-size: 15px;
+		}
+
+		.money,
+		.nums,
+		.date {
+			color: #bababa;
+		}
+
+		.status,
+		.nums {
+			font-size: 10px;
+		}
+
+		.date,
+		.status {
+			color: #999999;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="plan" class="wrap-page">
+		<div class="back-bar"><span onclick="jumpTo()" class="icon-back"></span> 发行计划
+			<span></span></div>
+		<div class="title-bar">
+			VIP-CION
+		</div>
+		<div class="content">
+			<div class="nav-list">
+				<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane v-if="isLogin" label="发行计划" name="none"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="收益统计" name="earnings/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
+					<el-tab-pane label="公司简介" name="instro/company.html"></el-tab-pane>
+					<el-tab-pane label="行业资讯" name="instro/info.html"></el-tab-pane>
+					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
+				</el-tabs>
+				<!--<ul>
 						<li onclick="jumpTo('instro/company.html')">公司简介</li>
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
@@ -105,32 +114,33 @@
 						<li onclick="jumpTo('myPlace/index.html')">标的一览</li>
 						<li onclick="jumpTo('earnings/index.html')">收益统计</li>
 						<li onclick="jumpTo('personalCenter/index.html')">个人中心</li>
-					</ul>
+					</ul>-->
+			</div>
+			<div class="common-width">
+				<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
 				</div>
-				<div class="common-width">
-					<div v-if="contentList.length === 0" class="no-data-tips" v-text="noDataTips.text">
+				<div class="list" v-else v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
+					<div class="part-left">
+						<ul>
+							<li v-for="(list, index) of item.partLeft" :key="index">
+								<span class="flag" v-text="index"></span>
+								<span class="text" v-text="list"></span>
+							</li>
+						</ul>
 					</div>
-					<div class="list" v-else v-for="item in contentList" @click="jumpTo('plan/detail.html?id='+item.id)">
-						<div class="part-left">
-							<ul>
-								<li v-for="(list, index) of item.partLeft" :key="index">
-									<span class="flag" v-text="index"></span>
-									<span class="text" v-text="list"></span>
-								</li>
-							</ul>
-						</div>
-						<div class="part-right">
-							<ul>
-								<li><span class="name" v-text="item.partRight.name"></span><span class="money">预计收益</span></li>
-								<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}" v-text="item.partRight.statusName"></span><span class="nums" v-text="item.partRight.profit"></span></li>
-								<li><span class="flag"></span><span class="date" v-text="item.partRight.time"></span></li>
-							</ul>
-						</div>
+					<div class="part-right">
+						<ul>
+							<li><span class="name" v-text="item.partRight.name"></span><span class="money">预计收益</span></li>
+							<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}"
+								 v-text="item.partRight.statusName"></span><span class="nums" v-text="item.partRight.profit"></span></li>
+							<li><span class="flag"></span><span class="date" v-text="item.partRight.time"></span></li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
+	</div>
+</body>
 
 </html>
 <!-- 先引入 Vue -->
@@ -146,12 +156,14 @@
 <!-- jquery.js -->
 <script src="../../js/jquery.js"></script>
 <script>
-	window.onload = function() {
-		
+	window.onload = function () {
+
 		new Vue({
 			el: '#plan',
 			data() {
 				return {
+					activeName: 'none',
+					isLogin: false,
 					tabList: {
 						'instro/company.html': '公司简介',
 						'instro/info.html': '行业资讯',
@@ -171,62 +183,70 @@
 						text: '暂无发行计划的数据'
 					},
 					contentList: [
-//					{
-//							id: 1,
-//							partLeft: {
-//								'总': '10000T',
-//								'卖': '10000T',
-//								'剩': '10000T'
-//							},
-//							partRight: {
-//								'name': '计划名称',
-//								'time': '2017.12.30-2018.12.30',
-//								'status': '1',
-//								'statusName': '进行中',
-//								'profit': 2384296
-//							}
-//						},
-//						{
-//							id: 2,
-//							partLeft: {
-//								'总': '10000T',
-//								'卖': '10000T',
-//								'剩': '10000T',
-//							},
-//							partRight: {
-//								'name': '计划名称',
-//								'time': '2017.12.30-2018.12.30',
-//								'status': '2',
-//								'statusName': '预售中',
-//								'profit': 2384296
-//							}
-//						},
-//						{
-//							id: 3,
-//							partLeft: {
-//								'总': '10000T',
-//								'卖': '10000T',
-//								'剩': '10000T',
-//							},
-//							partRight: {
-//								'name': '计划名称',
-//								'time': '2017.12.30-2018.12.30',
-//								'status': '3',
-//								'statusName': '已关闭',
-//								'profit': 2384296
-//							}
-//						}
-					],
-					activeName: 'plan',
+						//					{
+						//							id: 1,
+						//							partLeft: {
+						//								'总': '10000T',
+						//								'卖': '10000T',
+						//								'剩': '10000T'
+						//							},
+						//							partRight: {
+						//								'name': '计划名称',
+						//								'time': '2017.12.30-2018.12.30',
+						//								'status': '1',
+						//								'statusName': '进行中',
+						//								'profit': 2384296
+						//							}
+						//						},
+						//						{
+						//							id: 2,
+						//							partLeft: {
+						//								'总': '10000T',
+						//								'卖': '10000T',
+						//								'剩': '10000T',
+						//							},
+						//							partRight: {
+						//								'name': '计划名称',
+						//								'time': '2017.12.30-2018.12.30',
+						//								'status': '2',
+						//								'statusName': '预售中',
+						//								'profit': 2384296
+						//							}
+						//						},
+						//						{
+						//							id: 3,
+						//							partLeft: {
+						//								'总': '10000T',
+						//								'卖': '10000T',
+						//								'剩': '10000T',
+						//							},
+						//							partRight: {
+						//								'name': '计划名称',
+						//								'time': '2017.12.30-2018.12.30',
+						//								'status': '3',
+						//								'statusName': '已关闭',
+						//								'profit': 2384296
+						//							}
+						//						}
+					]
 				}
 			},
 			watch: {},
-			mounted: function() {
-				this.$nextTick(function() {
+			mounted: function () {
+				if (getCookie('user')) {
+					this.isLogin = true
+				}
+				this.$nextTick(function () {
 					this.getList()
 				})
 			},
 			methods: {
+				handleClick() {
+					const name = this.activeName;
+					if (name !== 'none') {
+						jumpTo(name);
+					}
+				},
 				getList() {
 					const urlParams = {
 						control: 'plan',
@@ -236,19 +256,19 @@
 					const requestUrl = _.get(basicInfo, 'url');
 					const requestParams = _.get(basicInfo, 'params');
 					const _this = this;
-					if(requestUrl && requestParams) {
-						$.get(requestUrl, requestParams, function(result) {
-							if(result.status === '0') {
+					if (requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function (result) {
+							if (result.status === '0') {
 								const listInfo = _.get(result, 'data');
-								if(listInfo && (_.isArray(listInfo))) {
+								if (listInfo && (_.isArray(listInfo))) {
 									let middleObj = '';
 									let middleItem = {};
 									let list = [];
-									for(var i = 0; i < listInfo.length; i++) {
+									for (var i = 0; i < listInfo.length; i++) {
 										middleItem = listInfo[i];
 										const status = _.get(middleItem, 'status');
 										let statusName = ''
-										if(status) {
+										if (status) {
 											statusName = _this.statusList[status];
 										}
 										const total = _.get(middleItem, 'total');
@@ -286,4 +306,5 @@
 			}
 		})
 	}
+
 </script>
