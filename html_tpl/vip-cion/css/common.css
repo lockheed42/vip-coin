@@ -250,7 +250,7 @@ a {
 	color: #fff;
 }
 
-.wrap-enter .el-button {
+.wrap-enter .el-button, .download-btn{
 	width: 200px;
 	height: 50px;
 	background: #cbaa67;
@@ -260,11 +260,11 @@ a {
 	color: #222222;
 }
 
-.el-button:hover {
+.el-button:hover ,.download-btn:hover{
 	background: #dfa225;
 }
 
-.el-button:active {
+.el-button:active,.download-btn:active {
 	background: #ffab00;
 }
 
@@ -306,7 +306,7 @@ a {
     margin-bottom: 0px;
 }
 
-.preview .el-button {
+.preview .el-button , .download-btn{
 	width: 75px;
 	height: 30px;
 	line-height: 30px;
@@ -316,6 +316,14 @@ a {
 	align-items: center;
 	justify-content: center;*/
 	text-align: center;
+}
+
+.download-btn {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    font-size: 13px;
 }
 
 /*隐藏element的messge的icon*/

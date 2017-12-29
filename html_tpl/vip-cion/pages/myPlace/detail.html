@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<!-- 引入样式 -->
-		<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.0.9/theme-chalk/index.css">
 		<link rel="stylesheet" href="../../css/common.css">
 		<title>标的详情</title>
 		<style>
@@ -93,6 +93,9 @@
 				color: #999999;
 				line-height: 22px;
 			}
+			.wrap-enter {
+				justify-content: space-between;
+			}
 			
 			.preview {
 				padding: 12px;
@@ -130,7 +133,7 @@
 						<dt>计划介绍</dt>
 						<dd v-text="detail.con"></dd>
 					</dl>
-					<div class="wrap-enter preview"><button type="button" @click="toAgreement" class="el-button el-button--primary">查看合同</button></div>
+					<div class="wrap-enter preview"><a :href="downloadAddress" class="download-btn">下载合同</a><button type="button" @click="toAgreement" class="el-button el-button--primary">查看合同</button></div>
 				</div>
 			</div>
 		</div>
@@ -140,7 +143,7 @@
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
-<script src="../../js/element-ui@2.0.7.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.0.9/index.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
 <!-- lodash -->
@@ -151,7 +154,7 @@
 <script src="../../js/jquery.js"></script>
 <script>
 	window.onload = function() {
-		
+
 		new Vue({
 			el: '#placeDetail',
 			data() {
@@ -169,13 +172,14 @@
 						time: '',
 						profit: 0,
 						con: ''
-					}
+					},
+					downloadAddress: ''
 				}
 			},
 			watch: {},
 			mounted: function() {
 				this.$nextTick(function() {
-					this.getDetail()
+					this.getDetail();
 				})
 			},
 			methods: {
@@ -198,6 +202,7 @@
 							if(result.status === '0') {
 								const detailInfo = _.get(result, 'data');
 								const status = _.get(detailInfo, 'status');
+								const planId = _.get(detailInfo, 'plan_id')
 								_this.detail = {
 									name: _.get(detailInfo, 'name'),
 									time: _.get(detailInfo, 'begin') + '-' + _.get(detailInfo, 'end'),
@@ -207,6 +212,36 @@
 									profit: _.get(detailInfo, 'total_profit'),
 									con: _.get(detailInfo, 'content')
 								}
+								if (planId) {
+									_this.getAgreementAddress(planId);
+								}
+							} else {
+								checkCode(result);
+								checkStatus(result);
+							}
+						});
+					}
+				},
+				/*下载 合同*/
+				getAgreementAddress (planId) {
+					const urlParams = {
+						control: 'plan',
+						action: 'contract'
+					}
+					const idParams = {
+						plan_id: planId
+					}
+					const method = 'get';
+					const basicInfo = apiInfo(urlParams, idParams, method, true);
+					const requestUrl = _.get(basicInfo, 'url');
+					const requestParams = _.get(basicInfo, 'params');
+					const _this = this;
+					if(requestUrl && requestParams) {
+						$.get(requestUrl, requestParams, function(result) {
+							if(result.status === '0') {
+								const contractInfo = _.get(result, 'data');
+								_this.downloadAddress = _.get(contractInfo, 'download');
+								console.log(_this.detail);
 							} else {
 								checkCode(result);
 								checkStatus(result);
