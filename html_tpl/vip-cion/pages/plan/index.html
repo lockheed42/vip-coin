@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<meta id="eqMobileViewport" name="viewport" content="width=320, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!-- 引入样式 -->
-	<link rel="stylesheet" href="../../css/element-ui@2.0.7.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.0.9/theme-chalk/index.css">
 	<link rel="stylesheet" href="../../css/common.css">
 	<title>发行计划</title>
 	<style>
@@ -98,13 +98,13 @@
 		<div class="content">
 			<div class="nav-list">
 				<el-tabs v-model="activeName" @tab-click="handleClick">
-					<el-tab-pane v-if="isLogin" label="发行计划" name="none"></el-tab-pane>
 					<el-tab-pane v-if="isLogin" label="收益统计" name="earnings/index.html"></el-tab-pane>
 					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="发行计划" name="none"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
 					<el-tab-pane label="公司简介" name="instro/company.html"></el-tab-pane>
 					<el-tab-pane label="行业资讯" name="instro/info.html"></el-tab-pane>
 					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
-					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
 				</el-tabs>
 				<!--<ul>
 						<li onclick="jumpTo('instro/company.html')">公司简介</li>
@@ -146,7 +146,7 @@
 <!-- 先引入 Vue -->
 <script src="../../js/vue.js"></script>
 <!-- 引入组件库 -->
-<script src="../../js/element-ui@2.0.7.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.0.9/index.js"></script>
 <!-- axios -->
 <script src="../../js/axios.min.js"></script>
 <!-- lodash -->
@@ -286,7 +286,7 @@
 												'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
 												'status': status,
 												'statusName': statusName,
-												'profit': _.get(middleItem, 'total')
+												'profit': _.get(middleItem, 'profit')
 											}
 										}
 										list.push(middleObj);
