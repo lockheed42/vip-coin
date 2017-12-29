@@ -98,7 +98,7 @@
 					<el-tab-pane v-if="isLogin" label="收益统计" name="earnings/index.html"></el-tab-pane>
 					<el-tab-pane v-if="isLogin" label="个人中心" name="personalCenter/index.html"></el-tab-pane>
 					<el-tab-pane v-if="isLogin" label="发行计划" name="plan/index.html"></el-tab-pane>
-					<el-tab-pane v-if="isLogin" label="标的一览" name="myPlace/index.html"></el-tab-pane>
+					<el-tab-pane v-if="isLogin" label="我的标的" name="myPlace/index.html"></el-tab-pane>
 					<el-tab-pane label="公司简介" name="none"></el-tab-pane>
 					<el-tab-pane label="行业资讯" name="instro/info.html"></el-tab-pane>
 					<el-tab-pane label="公司公告" name="instro/notice.html"></el-tab-pane>
@@ -108,7 +108,7 @@
 						<li onclick="jumpTo('instro/info.html')">行业资讯</li>
 						<li onclick="jumpTo('instro/notice.html')">公司公告</li>
 						<li v-if="isLogin" onclick="jumpTo('plan/index.html')">发行计划</li>
-						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">标的一览</li>
+						<li v-if="isLogin" onclick="jumpTo('myPlace/index.html')">我的标的</li>
 						<li v-if="isLogin" onclick="jumpTo('earnings/index.html')">收益统计</li>
 						<li v-if="isLogin" onclick="jumpTo('personalCenter/index.html')">个人中心</li>
 					</ul>-->
