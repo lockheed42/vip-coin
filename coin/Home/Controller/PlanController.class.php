@@ -100,9 +100,10 @@ class PlanController extends CommonController
      * @apiParam {string} plan_id 计划id
      *
      * @apiSuccess {string} url 合同地址列表
+     * @apiSuccess {string} download 合同下载地址
      *
      * @apiSuccessExample {json} Success-Response:
-     * {"status":0,"error":"","data":{"url":["http:xxxx.com\/aaa.jpg","http:xxxx.com\/b.jpg"]}}
+     * {"status":0,"error":"","data":{"url":["http:xxxx.com\/aaa.jpg","http:xxxx.com\/b.jpg"],"download":["http:xxxx.com\/aaa.docx"]}}
      *
      * @apiVersion     1.0.0
      */
@@ -115,10 +116,10 @@ class PlanController extends CommonController
 
             $info = M('plan_contract')->where(['plan_id' => $planId])->find();
             if (!empty($info)) {
-                $info = json_decode($info['preview_url'], true);
+                $url = json_decode($info['preview_url'], true);
             }
 
-            $this->success(['url' => $info]);
+            $this->success(['url' => $url, 'download' => $info['file_url']]);
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
         }
