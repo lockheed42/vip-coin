@@ -18,7 +18,7 @@ class ProfitController extends CommonController
      * @apiName        index
      * @apiGroup       profit
      *
-     * @apiSuccess {string} profit 昨日收益额度
+     * @apiSuccess {string} profit 当日收益额度
      *
      * @apiSuccessExample {json} Success-Response:
      * {"status":0,"error":"","data":{"profit":"1234"}}
@@ -29,10 +29,10 @@ class ProfitController extends CommonController
     {
         try {
             $this->checkLogin();
-            $yesterday = M('profit_log')->where(['user_id' => $this->_user_id, 'date' => date('Y-m-d', strtotime('-1 day'))])->sum('profit');
+            $today = M('profit_log')->where(['user_id' => $this->_user_id, 'date' => date('Y-m-d')])->sum('profit');
             $profit = 0;
-            if (!empty($yesterday)) {
-                $profit = $yesterday;
+            if (!empty($today)) {
+                $profit = $today;
             }
 
             $this->success(['profit' => $profit]);

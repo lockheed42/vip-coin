@@ -44,7 +44,7 @@ class PlanController extends CommonController
         try {
             $this->checkLogin();
 
-            $planList = M('plan')->order()->select();
+            $planList = M('plan')->order('plan_id desc')->select();
 
             $this->success($this->filterApiReturnList($planList, ['plan_id', 'name', 'profit', 'begin', 'end', 'total', 'sell', 'status']));
         } catch (\Exception $e) {

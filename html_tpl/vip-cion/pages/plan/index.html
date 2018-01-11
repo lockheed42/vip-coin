@@ -278,12 +278,12 @@
 											id: _.get(middleItem, 'plan_id'),
 											partLeft: {
 												'总': total + 'T',
-												'卖': sell + '10000T',
+												'卖': sell + 'T',
 												'剩': left + 'T',
 											},
 											partRight: {
 												'name': _.get(middleItem, 'name'),
-												'time': _.get(middleItem, 'begin') + '-' + _.get(middleItem, 'end'),
+												'time': _.get(middleItem, 'begin') + ' ~ ' + _.get(middleItem, 'end'),
 												'status': status,
 												'statusName': statusName,
 												'profit': _.get(middleItem, 'profit')

@@ -214,6 +214,7 @@ class UserController extends CommonController
      * @apiParam {string} code 银行卡号
      * @apiParam {string} bank 银行名称
      * @apiParam {string} mobile 银行预留手机号
+     * @apiParam {string} reg_bank 开户行名称
      *
      * @apiSuccessExample {json} Success-Response:
      * {"status":"0","error":"","data":true}
@@ -226,6 +227,7 @@ class UserController extends CommonController
         $code = I('post.code');
         $bank = I('post.bank');
         $mobile = I('post.mobile');
+        $regBank = I('post.reg_bank');
 
         try {
             $this->checkLogin();
@@ -242,6 +244,9 @@ class UserController extends CommonController
             if (empty($mobile)) {
                 throw new Exception('请填写银行预留手机号码');
             }
+            if (empty($regBank)) {
+                throw new Exception('请填写开户行信息');
+            }
 
             $bankInfo = M('bank_account')->where(['user_id' => $this->_user_id])->find();
             if (!empty($bankInfo)) {
@@ -255,6 +260,7 @@ class UserController extends CommonController
                     'user_name' => $name,
                     'code'      => $code,
                     "mobile"    => $mobile,
+                    "reg_bank"  => $regBank,
                     'cdate'     => date('Y-m-d H:i:s', time()),
                 ]
             );
