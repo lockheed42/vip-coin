@@ -130,9 +130,9 @@
 					</div>
 					<div class="part-right">
 						<ul>
-							<li><span class="name" v-text="item.partRight.name"></span><span class="money">预计收益</span></li>
+							<li><span class="name" v-text="item.partRight.name"></span><span class="money"></span></li>
 							<li><span class="status" :class="{ 'status-red': item.partRight.status === '2', 'status-yellow': item.partRight.status === '1'}"
-								 v-text="item.partRight.statusName"></span><span class="nums" v-text="item.partRight.profit"></span></li>
+								 v-text="item.partRight.statusName"></span><!--<span class="nums" v-text="item.partRight.profit"></span>--></li>
 							<li><span class="flag"></span><span class="date" v-text="item.partRight.time"></span></li>
 						</ul>
 					</div>
