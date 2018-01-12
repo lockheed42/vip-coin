@@ -172,6 +172,11 @@
 									name: '手机号',
 									placeholder: '请输入手机号',
 									value: ''
+								},
+								{
+									name: '开户行名称',
+									placeholder: '请输入开户行名称',
+									value: ''
 								}
 							]
 						},
@@ -188,6 +193,7 @@
 					const code = this.card.info1.inputList[1].value;
 					const bank = this.card.info2.inputList[0].value;
 					const mobile = this.card.info2.inputList[1].value;
+					const bankName = this.card.info2.inputList[2].value;
 					let textTips = '';
 					if(!name) {
 						textTips = "手机号不能为空！"
@@ -201,6 +207,8 @@
 						textTips = "请同意用户协议！"
 					} else if(!mobile_test.test(mobile)) {
 						textTips = "手机号格式不正确！"
+					} else if (!bankName) {
+						textTips = "开户行名称不能为空！"
 					}
 					if(textTips) {
 						this.$message({
@@ -217,7 +225,8 @@
 						name: name,
 						code: code,
 						bank: bank,
-						mobile: mobile
+						mobile: mobile,
+						reg_bank: bankName
 					}
 					const method = 'post';
 					const basicInfo = apiInfo(urlParams, cardInfoParams, method);
